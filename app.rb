@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/reloader' if development?
+require 'sinatra/activerecord'
 
 set :public_folder, File.dirname(__FILE__) + '/public'
 
