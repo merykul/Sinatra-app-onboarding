@@ -5,7 +5,7 @@ require 'sinatra/activerecord'
 set :public_folder, File.dirname(__FILE__) + '/public'
 
 get '/homepage' do
-  "Hello world!"
+  erb :homepage
 end
 
 post '/create_person' do
