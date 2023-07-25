@@ -17,6 +17,14 @@ get '/homepage' do
   erb :homepage
 end
 
+# RESTful Records Controllers Actions
+# index
+get '/people_list' do
+  @records = People.all
+  erb(:"records/index")
+end
+
+# create_person_form
 post '/create_person' do
   first_name = params[:first_name]
   second_name = params[:second_name]
@@ -44,10 +52,7 @@ delete '/delete_person_record' do
   'Delete record page'
 end
 
-get '/people_list' do
-  'Page should display records list'
-end
-
+# Error handling pages
 error 404 do
   'Ops, entered endpoint is not valid :)'
 end
