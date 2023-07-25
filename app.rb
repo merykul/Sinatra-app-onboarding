@@ -1,8 +1,17 @@
 require 'sinatra'
+# this allows us to refresh the app on the browser without needing to restart the web server
 require 'sinatra/reloader' if development?
 require 'sinatra/activerecord'
 
-set :public_folder, File.dirname(__FILE__) + '/public'
+# global settings
+configure do
+  set :root, File.dirname(__FILE__ )
+  set :public_folder, File.dirname(__FILE__) + '/public'
+
+  register Sinatra::ActiveRecordExtension
+end
+
+set :database_file, 'config/database.yml'
 
 get '/homepage' do
   erb :homepage
