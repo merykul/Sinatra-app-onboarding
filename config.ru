@@ -6,4 +6,4 @@ Bundler.require
 require './app'
 
 # Models
-require_relative './models/people'
+require_relative './models/records'
