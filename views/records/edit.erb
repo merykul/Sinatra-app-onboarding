@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit Person</title>
+  <link rel="stylesheet" type="text/css" href="/edit.css">
+</head>
+<body>
+<h1>Edit Person</h1>
+<form action="/records/<%= @record.id %>/edit" method="post">
+  <input type="hidden" name="_method" value="put">
+  <label for="first_name">First Name:</label>
+  <input type="text" name="first_name" value="<%= @record.first_name %>" required>
+  <br>
+  <label for="second_name">Second Name:</label>
+  <input type="text" name="second_name" value="<%= @record.second_name %>" required>
+  <br>
+  <label for="city">City:</label>
+  <input type="text" name="city" value="<%= @record.city %>" required>
+  <br>
+  <label for="date_of_birth">Date of Birth:</label>
+  <input type="date" name="date_of_birth" value="<%= @record.date_of_birth %>" required>
+  <br>
+  <div class="container">
+    <button type="submit">Save</button>
+    <a href="/homepage" class="button">Go to homepage</a>
+    <a href="/people_list" class="button">Cancel</a>
+  </div>
+</form>
+</body>
+</html>

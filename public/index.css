@@ -17,6 +17,23 @@ table {
     border: 1px solid #ccc;
 }
 
+/* Button Styles */
+a.button {
+    display: block; /* Make the button a block-level element */
+    width: 120px; /* Set the width of the button */
+    margin: 20px auto; /* Center the button horizontally with some margin */
+    padding: 10px 20px;
+    background-color: #008000;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+a.button:hover {
+    background-color: #006400;
+}
+
 th, td {
     padding: 10px;
     text-align: left;
