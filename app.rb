@@ -53,6 +53,11 @@ delete '/delete_person_record' do
 end
 
 # Error handling pages
-error 404 do
+error 404, 400, 401, 403 do
   'Ops, entered endpoint is not valid :)'
+  redirect('/homepage')
+end
+
+error 500, 501, 502, 503, 504, 505 do
+  'Ops, server error'
 end
