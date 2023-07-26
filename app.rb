@@ -1,5 +1,4 @@
 require 'sinatra'
-# this allows us to refresh the app on the browser without needing to restart the web server
 require 'sinatra/reloader' if development?
 require 'sinatra/activerecord'
 require_relative 'models/records'
@@ -73,14 +72,16 @@ get '/records/:id/edit' do
   erb(:"records/edit")
 end
 
+get '/records/:id/delete' do
+  @record = Records.find(params[:id])
+  erb(:"records/delete")
+end
+
 delete '/records/:id/delete' do
   @record = Records.find(params[:id])
-  if @record.destroy
-    redirect('/added_person_form')
-  else
-    redirect("/records/#{@record.id}")
-  end
-  'Delete record page'
+  @record.delete
+
+  redirect "/people_list"
 end
 
 # Error handling pages
