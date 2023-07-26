@@ -2,12 +2,12 @@ require 'sinatra'
 # this allows us to refresh the app on the browser without needing to restart the web server
 require 'sinatra/reloader' if development?
 require 'sinatra/activerecord'
+require_relative 'models/records'
 
 # global settings
 configure do
   set :root, File.dirname(__FILE__ )
   set :public_folder, File.dirname(__FILE__) + '/public'
-
   register Sinatra::ActiveRecordExtension
 end
 
@@ -56,12 +56,21 @@ get '/added_person_form' do
   erb :create_person_form
 end
 
-# update
-put '/records/:id' do
+# edit
+put '/records/:id/edit' do
   @record = Records.find(params[:id])
-  # TODO
+  @record.update(
+    first_name: params[:first_name],
+    second_name: params[:second_name],
+    city: params[:city],
+    date_of_birth: params[:date_of_birth]
+  )
+  redirect "/people_list"
+end
+
+get '/records/:id/edit' do
+  @record = Records.find(params[:id])
   erb(:"records/edit")
-  'Edit person page'
 end
 
 delete '/records/:id/delete' do
@@ -77,7 +86,6 @@ end
 # Error handling pages
 error 404, 400, 401, 403 do
   'Ops, entered endpoint is not valid :)'
-  redirect('/homepage')
 end
 
 error 500, 501, 502, 503, 504, 505 do
