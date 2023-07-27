@@ -6,15 +6,22 @@
 </head>
 <body>
 <h1>Create a Person</h1>
+<% if @error_messages %>
+  <div class="error-message">
+    <% @error_messages.each do |error| %>
+      <%= error %><br>
+    <% end %>
+  </div>
+<% end %>
 <form action="/create_person" method="post">
   <label for="first_name">First Name:</label>
-  <input type="text" name="first_name" required>
+  <input type="text" name="first_name">
   <br>
   <label for="second_name">Second Name:</label>
-  <input type="text" name="second_name" required>
+  <input type="text" name="second_name">
   <br>
   <label for="city">City:</label>
-  <input type="text" name="city" required>
+  <input type="text" name="city">
   <br>
   <label for="date_of_birth">Date of Birth:</label>
   <input type="date" name="date_of_birth">

@@ -6,6 +6,18 @@ body {
     margin: 20px;
 }
 
+/* Add some basic styles for the error message */
+div.error-message-edit {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+div.error-message-edit::before {
+    content: "⚠ "; /* Add a warning icon before the error message */
+    font-size: 14px;
+}
+
 h1 {
     color: #444;
     text-align: center;

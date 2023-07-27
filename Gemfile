@@ -6,6 +6,8 @@ gem 'json'
 gem 'sinatra-activerecord' #ports ActiveRecord for Sinatra
 gem 'activerecord'
 gem 'rake'
+gem 'sinatra-validation'
+gem 'sinatra-flash'
 gem 'faraday'
 gem 'http'
 gem 'webrick'

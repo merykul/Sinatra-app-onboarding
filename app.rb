@@ -37,10 +37,6 @@ post '/create_person' do
   city = params[:city]
   date_of_birth = params[:date_of_birth]
 
-  if first_name.empty? || second_name.empty? || city.empty?
-    puts "Fill in all required fields (first and second name, city)"
-  end
-
   record = Records.new(
     first_name: first_name,
     second_name: second_name,
@@ -48,13 +44,13 @@ post '/create_person' do
     date_of_birth: date_of_birth
   )
 
-  birth_date_message = date_of_birth.empty? ? "Date of birth is unknown" : "Date of birth: #{date_of_birth}"
-
-  if record.save
-    "Person is added to the records! Full name: #{first_name} #{second_name}, City: #{city}, #{birth_date_message}"
+  if record.valid?
+    record.save
+    "Person is added to the records! Full name: #{first_name} #{second_name}, City: #{city}"
     redirect('/people_list')
   else
-    'Failed to save the record'
+    @error_messages = record.errors.full_messages
+    erb :create_person_form
   end
 end
 
@@ -71,7 +67,14 @@ put '/records/:id/edit' do
     city: params[:city],
     date_of_birth: params[:date_of_birth]
   )
-  redirect "/people_list"
+
+  if @record.valid?
+    @record.save
+    redirect "/people_list"
+  else
+    @error_messages = @record.errors.full_messages
+    erb(:"records/edit")
+  end
 end
 
 get '/records/:id/edit' do
