@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cities</title>
+  <link rel="stylesheet" type="text/css" href="/statistics.css">
+</head>
+<body>
+<h1>Cities Statistics</h1>
+<table>
+  <tr>
+    <th>City name</th>
+    <th>Number of registered people</th>
+  </tr>
+  <% @statistics.each do |st| %>
+    <tr>
+      <td><%= st.city %></td>
+      <td><%= st.number_of_records %></td>
+    </tr>
+  <% end %>
+</table>
+<a href="/homepage" class="button">Go to home page</a>
+<a href="/people_list" class="button">Get all records</a>
+</body>
+</html>

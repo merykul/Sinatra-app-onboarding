@@ -7,3 +7,4 @@ require './app'
 
 # Models
 require_relative './models/records'
+require_relative './models/city'

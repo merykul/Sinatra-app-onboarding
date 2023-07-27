@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/reloader' if development?
 require 'sinatra/activerecord'
 require_relative 'models/records'
+require_relative 'models/city'
 
 # global settings
 configure do
@@ -21,6 +22,12 @@ end
 get '/people_list' do
   @records = Records.all
   erb(:"records/index")
+end
+
+# statistics
+get '/cities_statistics' do
+  @statistics = City.all
+  erb(:"cities/statistics")
 end
 
 # create_person_form

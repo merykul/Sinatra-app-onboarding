@@ -10,13 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_26_123254) do
+ActiveRecord::Schema.define(version: 2023_07_27_134258) do
+
+  create_table "cities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "city"
+    t.integer "number_of_records", default: 0
+  end
 
   create_table "records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "first_name"
     t.string "second_name"
     t.string "city"
     t.date "date_of_birth"
+    t.index ["city"], name: "fk_records_city"
   end
 
 end
