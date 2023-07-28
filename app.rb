@@ -3,6 +3,7 @@ require 'sinatra/reloader' if development?
 require 'sinatra/activerecord'
 require_relative 'models/records'
 require_relative 'models/city'
+require_relative 'models/user'
 
 # global settings
 configure do
@@ -13,8 +14,13 @@ end
 
 set :database_file, 'config/database.yml'
 
-get '/homepage' do
-  erb :homepage
+get '/start' do
+  erb(:"user/start_page")
+end
+
+# user's login page
+get '/log_in_form' do
+  erb(:"user/login_page")
 end
 
 # RESTful Records Controllers Actions
