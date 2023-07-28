@@ -148,7 +148,7 @@ end
 
 # Error handling pages
 error 404, 400, 401, 403 do
-  'Ops, entered endpoint is not valid :)'
+  erb :error_400ish
 end
 
 error 500, 501, 502, 503, 504, 505 do
