@@ -23,7 +23,24 @@ get '/log_in_form' do
   erb(:"user/login_page")
 end
 
-# RESTful Records Controllers Actions
+post '/log_in' do
+  username = params[:username]
+  password = params[:password]
+
+  @user = User.find_by(:username => username)
+  if @user && @user.password == password
+    puts "Successful logged in!"
+    redirect '/homepage'
+  else
+    @error_messages = ["Invalid username or password"]
+    erb(:"user/login_page")
+  end
+end
+
+get '/homepage' do
+  erb :homepage
+end
+
 # index
 get '/people_list' do
   @records = Records.all
@@ -34,6 +51,11 @@ end
 get '/cities_statistics' do
   @statistics = City.all
   erb(:"cities/statistics")
+end
+
+# to create record:
+get '/added_person_form' do
+  erb :create_person_form
 end
 
 # create_person_form
@@ -60,11 +82,13 @@ post '/create_person' do
   end
 end
 
-get '/added_person_form' do
-  erb :create_person_form
+# edit
+
+get '/records/:id/edit' do
+  @record = Records.find(params[:id])
+  erb(:"records/edit")
 end
 
-# edit
 put '/records/:id/edit' do
   @record = Records.find(params[:id])
   @record.update(
@@ -81,11 +105,6 @@ put '/records/:id/edit' do
     @error_messages = @record.errors.full_messages
     erb(:"records/edit")
   end
-end
-
-get '/records/:id/edit' do
-  @record = Records.find(params[:id])
-  erb(:"records/edit")
 end
 
 get '/records/:id/delete' do
