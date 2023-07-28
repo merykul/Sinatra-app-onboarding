@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true
   validates :second_name, presence: true
   validates :password, presence: true, uniqueness: true, length: { within: 6..15, message: 'password must have length from 6 to 15 sym.' }
-  validates :password_validation, presence: true
+  validates :password_validation
 
   def password_validation
     unless password.match?(/\A(?=.*[a-zA-Z])(?=.*\d)(?=.*\W)/)

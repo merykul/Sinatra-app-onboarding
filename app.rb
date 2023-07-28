@@ -37,6 +37,33 @@ post '/log_in' do
   end
 end
 
+# sign up user:
+get '/sign_up_form' do
+  erb(:"user/sign_up_page")
+end
+
+post '/sign_up' do
+  username = params[:username]
+  password = params[:password]
+  first_name = params[:first_name]
+  second_name = params[:second_name]
+
+  user = User.new(
+    username: username,
+    password: password,
+    first_name: first_name,
+    second_name: second_name
+  )
+
+  if user.valid?
+    user.save
+    redirect '/homepage'
+  else
+    @error_messages = user.errors.full_messages
+    erb(:"user/sign_up_page")
+  end
+end
+
 get '/homepage' do
   erb :homepage
 end
