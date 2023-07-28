@@ -6,13 +6,13 @@ gem 'json'
 gem 'sinatra-activerecord' #ports ActiveRecord for Sinatra
 gem 'activerecord'
 gem 'rake'
-gem 'sinatra-validation'
 gem 'sinatra-flash'
 gem 'faraday'
 gem 'http'
 gem 'webrick'
 gem 'falcon'
 gem 'thin'
+gem 'faker'
 
 group :development do
   gem 'mysql2' # development database adapter gem
