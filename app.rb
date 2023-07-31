@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sinatra/reloader' if development?
 require 'sinatra/activerecord'
+require 'dotenv/load'
 require_relative 'models/records'
 require_relative 'models/city'
 require_relative 'models/user'
@@ -9,6 +10,10 @@ require_relative 'models/user'
 configure do
   set :root, File.dirname(__FILE__ )
   set :public_folder, File.dirname(__FILE__) + '/public'
+  set :database_file, 'config/database.yml'
+  set :sessions, true
+  set :session_secret, ENV['SESSION_SECRET']
+
   register Sinatra::ActiveRecordExtension
 end
 
