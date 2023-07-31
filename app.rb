@@ -154,3 +154,22 @@ end
 error 500, 501, 502, 503, 504, 505 do
   'Ops, server error'
 end
+
+# Helpers
+
+helpers do
+
+  def logged_in?
+    !!session[:user_id]
+  end
+
+  def current_user
+    User.find_by(:id == session[:user_id])
+  end
+
+  def redirect_if_not_logged_in
+    if !logged_in?
+      redirect to '/login'
+    end
+  end
+end
