@@ -1,5 +1,5 @@
 require 'faker'
-require_relative '../app/models/user.rb'
+require_relative '../app/models/user'
 require_relative '../app/models/records'
 
 puts "🌱 Seeding data..."

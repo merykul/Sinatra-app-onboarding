@@ -1,3 +1,5 @@
+require_relative 'application_controller'
+
 class SessionsController < ApplicationController
 
   get '/start' do
