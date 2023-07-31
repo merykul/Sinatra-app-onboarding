@@ -25,7 +25,7 @@ class SessionsController < ApplicationController
       puts "Successful logged in!"
       redirect to '/homepage'
     else
-      @error_messages = ["Invalid username or password #{username}, #{password}"]
+      @error_messages = ["Invalid #{username} username or #{password} password!"]
       erb(:"user/login_page")
     end
   end
