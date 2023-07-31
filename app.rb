@@ -44,13 +44,13 @@ post '/log_in' do
   username = params[:username]
   password = params[:password]
 
-  user = User.find_by(:username == username)
+  user = User.find_by(:username => username)
   if user && user.authenticate(password)
     session[:user_id] = user.id
     puts "Successful logged in!"
     redirect to '/homepage'
   else
-    @error_messages = ["Invalid username or password"]
+    @error_messages = ["Invalid username or password #{username}, #{password}"]
     erb(:"user/login_page")
   end
 end
@@ -82,10 +82,10 @@ post '/sign_up' do
       second_name: second_name,
       password_confirmation: params[:password_confirmation]
     )
-    session[:user_id] = @user.id
 
     if @user.valid?
       @user.save
+      session[:user_id] = @user.id
       redirect '/homepage'
     else
       @error_messages = @user.errors.full_messages
@@ -217,7 +217,7 @@ helpers do
   end
 
   def current_user
-    User.find_by(:id == session[:user_id])
+    User.find_by(:id => session[:user_id])
   end
 
   def redirect_if_not_logged_in
