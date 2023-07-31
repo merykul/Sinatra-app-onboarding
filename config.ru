@@ -18,4 +18,6 @@ require_relative './models/records'
 require_relative './models/city'
 require_relative './models/user.rb'
 
-run './app/controllers/application_controller'
+run ApplicationController
+use RecordsController
+use SessionsController
