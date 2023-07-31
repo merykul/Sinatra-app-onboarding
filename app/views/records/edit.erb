@@ -14,7 +14,7 @@
   </div>
 <% end %>
 <form action="/records/<%= @record.id %>/edit" method="post">
-  <input type="hidden" name="_method" value="put">
+  <input type="hidden" name="_method" value="patch">
   <label for="first_name">First Name:</label>
   <input type="text" name="first_name" value="<%= @record.first_name %>">
   <br>

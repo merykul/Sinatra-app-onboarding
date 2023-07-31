@@ -73,14 +73,17 @@ class RecordsController < ApplicationController
     end
   end
 
-  put '/records/:id/edit' do
+  patch '/records/:id/edit' do
     @record = Records.find(params[:id])
+    puts "Record id is retrieved: #{params[:id]}"
+
     @record.update(
       first_name: params[:first_name],
       second_name: params[:second_name],
       city: params[:city],
       date_of_birth: params[:date_of_birth]
     )
+    puts "Record is updated, but not validated yet"
 
     if @record.valid?
       @record.save

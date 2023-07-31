@@ -16,8 +16,10 @@ class ApplicationController < Sinatra::Base
     set :sessions, true
     set :session_secret, ENV['SESSION_SECRET']
     set :views, Proc.new { File.join(root, "/app/views") }
+    set :method_override => true
 
     register Sinatra::ActiveRecordExtension
+    use Rack::MethodOverride
   end
 
   #main route
