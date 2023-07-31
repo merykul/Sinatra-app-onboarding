@@ -36,6 +36,7 @@ GEM
       async
     async-pool (0.4.0)
       async (>= 1.25)
+    bcrypt (3.1.19)
     bond (0.5.1)
     build-environment (1.13.0)
     concurrent-ruby (1.2.2)
@@ -110,6 +111,8 @@ GEM
       rack (>= 1.0)
     public_suffix (5.0.3)
     rack (2.2.7)
+    rack-flash (0.1.2)
+      rack
     rack-protection (3.0.6)
       rack
     rack-test (0.6.3)
@@ -127,6 +130,7 @@ GEM
     samovar (2.2.0)
       console (~> 1.0)
       mapping (~> 1.0)
+    session_secret_generator (0.1.0)
     sinatra (3.0.6)
       mustermann (~> 3.0)
       rack (~> 2.2, >= 2.2.4)
@@ -168,6 +172,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
+  bcrypt (~> 3.1.7)
   dotenv
   faker
   falcon
@@ -175,7 +180,9 @@ DEPENDENCIES
   http
   json
   mysql2
+  rack-flash
   rake
+  session_secret_generator
   sinatra
   sinatra-activerecord
   sinatra-contrib
