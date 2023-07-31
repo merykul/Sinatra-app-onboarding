@@ -9,11 +9,13 @@ require_relative './config/database.yml'
 require_relative '.env'
 
 # Controllers
-require './app'
+require_relative './app/controllers/records_controller'
+require_relative './app/controllers/sessions_controller'
+require_relative './app/controllers/application_controller'
 
 # Models
 require_relative './models/records'
 require_relative './models/city'
 require_relative './models/user.rb'
 
-run './app'
+run './app/controllers/application_controller'
