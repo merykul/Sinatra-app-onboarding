@@ -14,6 +14,7 @@ require 'dotenv/load'
 require_relative './app/controllers/application_controller'
 require_relative './app/controllers/records_controller'
 require_relative './app/controllers/sessions_controller'
+require_relative './app/controllers/download_controller'
 
 # Models
 require_relative 'app/models/records'
@@ -23,3 +24,4 @@ require_relative 'app/models/user'
 run ApplicationController
 use RecordsController
 use SessionsController
+use DownloadController
