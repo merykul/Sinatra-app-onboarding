@@ -3,8 +3,15 @@ class RecordsController < ApplicationController
   # index
   get '/people_list' do
     if logged_in?
-      @records = Records.all
-      erb(:"../views/records/index")
+      city_filter = params[:city]
+
+      if city_filter && !city_filter.strip.empty?
+        @records = Records.where("city" => "#{city_filter}")
+        erb(:"../views/records/people_list")
+      else
+        @records = Records.all
+        erb(:"../views/records/people_list")
+      end
     else
       redirect to '/start'
     end

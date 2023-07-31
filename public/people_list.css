@@ -20,7 +20,7 @@ table {
 /* Button Styles */
 a.button {
     display: block; /* Make the button a block-level element */
-    width: 120px; /* Set the width of the button */
+    width: 220px; /* Set the width of the button */
     margin: 20px auto; /* Center the button horizontally with some margin */
     padding: 10px 20px;
     background-color: #008000;
@@ -50,4 +50,40 @@ tr:nth-child(even) {
 
 tr:hover {
     background-color: #d0e0d0;
+}
+
+/* Search Form Styles */
+form {
+    text-align: center;
+    margin-top: 30px;
+}
+
+label {
+    display: block;
+    font-size: 16px;
+    color: #008000; /* Green color */
+    margin-bottom: 5px;
+}
+
+input[type="text"] {
+    width: 300px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #008000; /* Green border */
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #008000; /* Green background */
+    color: white; /* White text color */
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #006400; /* Darker green background on hover */
 }
