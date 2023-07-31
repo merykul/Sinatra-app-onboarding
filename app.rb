@@ -17,25 +17,33 @@ configure do
   register Sinatra::ActiveRecordExtension
 end
 
-set :database_file, 'config/database.yml'
-
-get '/start' do
-  erb(:"user/start_page")
+get '/' do
+  if logged_in?
+    @user = current_user
+    erb :homepage
+  else
+    redirect to '/log_in_form'
+  end
 end
 
 # user's login page
 get '/log_in_form' do
-  erb(:"user/login_page")
+  if logged_in?
+    redirect to '/homepage'
+  else
+    erb(:"user/login_page")
+  end
 end
 
 post '/log_in' do
   username = params[:username]
   password = params[:password]
 
-  @user = User.find_by(:username => username)
-  if @user && @user.password == password
+  user = User.find_by(:username == username)
+  if user && user.authenticate(password)
+    session[:user_id] = user.id
     puts "Successful logged in!"
-    redirect '/homepage'
+    redirect to '/homepage'
   else
     @error_messages = ["Invalid username or password"]
     erb(:"user/login_page")
@@ -44,29 +52,35 @@ end
 
 # sign up user:
 get '/sign_up_form' do
-  erb(:"user/sign_up_page")
+  if logged_in?
+    redirect to '/homepage'
+  else
+    erb(:"user/sign_up_page")
+  end
 end
 
 post '/sign_up' do
-  username = params[:username]
-  password = params[:password]
-  first_name = params[:first_name]
-  second_name = params[:second_name]
+    username = params[:username]
+    password = params[:password]
+    first_name = params[:first_name]
+    second_name = params[:second_name]
 
-  user = User.new(
-    username: username,
-    password: password,
-    first_name: first_name,
-    second_name: second_name
-  )
+    @user = User.new(
+      username: username,
+      password: password,
+      first_name: first_name,
+      second_name: second_name,
+      password_confirmation: params[:password_confirmation]
+    )
+    session[:user_id] = @user.id
 
-  if user.valid?
-    user.save
-    redirect '/homepage'
-  else
-    @error_messages = user.errors.full_messages
-    erb(:"user/sign_up_page")
-  end
+    if @user.valid?
+      @user.save
+      redirect '/homepage'
+    else
+      @error_messages = @user.errors.full_messages
+      erb(:"user/sign_up_page")
+    end
 end
 
 get '/homepage' do
