@@ -55,6 +55,11 @@ post '/log_in' do
   end
 end
 
+get '/log_out' do
+  session.clear
+  redirect to '/start'
+end
+
 # sign up user:
 get '/sign_up_form' do
   if logged_in?
@@ -89,24 +94,40 @@ post '/sign_up' do
 end
 
 get '/homepage' do
-  erb :homepage
+  if logged_in?
+    erb :homepage
+  else
+    erb(:"user/login_page")
+  end
 end
 
 # index
 get '/people_list' do
-  @records = Records.all
-  erb(:"records/index")
+  if logged_in?
+    @records = Records.all
+    erb(:"records/index")
+  else
+    redirect to '/start'
+  end
 end
 
 # statistics
 get '/cities_statistics' do
-  @statistics = City.all
-  erb(:"cities/statistics")
+  if logged_in?
+    @statistics = City.all
+    erb(:"cities/statistics")
+  else
+    redirect to '/start'
+  end
 end
 
 # to create record:
 get '/added_person_form' do
-  erb :create_person_form
+  if logged_in?
+    erb :create_person_form
+  else
+    redirect to '/start'
+  end
 end
 
 # create_person_form
@@ -136,8 +157,12 @@ end
 # edit
 
 get '/records/:id/edit' do
-  @record = Records.find(params[:id])
-  erb(:"records/edit")
+  if logged_in?
+    @record = Records.find(params[:id])
+    erb(:"records/edit")
+  else
+    redirect to '/start'
+  end
 end
 
 put '/records/:id/edit' do
@@ -159,8 +184,12 @@ put '/records/:id/edit' do
 end
 
 get '/records/:id/delete' do
-  @record = Records.find(params[:id])
-  erb(:"records/delete")
+  if logged_in?
+    @record = Records.find(params[:id])
+    erb(:"records/delete")
+  else
+    redirect to '/start'
+  end
 end
 
 delete '/records/:id/delete' do
