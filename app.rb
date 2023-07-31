@@ -26,6 +26,11 @@ get '/' do
   end
 end
 
+# don't need this page, but let it be here for now
+get '/start' do
+  erb(:"user/start_page")
+end
+
 # user's login page
 get '/log_in_form' do
   if logged_in?
