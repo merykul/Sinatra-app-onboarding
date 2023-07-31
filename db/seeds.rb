@@ -1,6 +1,6 @@
 require 'faker'
-require_relative '../models/user.rb'
-require_relative '../models/records'
+require_relative '../app/models/user.rb'
+require_relative '../app/models/records'
 
 puts "🌱 Seeding data..."
 puts "🌱 Generating TestUser for you..."

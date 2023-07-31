@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
 
   get '/start' do
-    erb(:"user/start_page")
+    erb :'user/start_page'
   end
 
   # user's login page
@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
     if logged_in?
       redirect to '/homepage'
     else
-      erb(:"user/login_page")
+      erb(:"/user/login_page")
     end
   end
 

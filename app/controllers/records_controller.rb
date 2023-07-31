@@ -4,7 +4,7 @@ class RecordsController < ApplicationController
   get '/people_list' do
     if logged_in?
       @records = Records.all
-      erb(:"records/index")
+      erb(:"../views/records/index")
     else
       redirect to '/start'
     end
