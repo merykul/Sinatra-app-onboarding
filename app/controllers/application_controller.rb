@@ -34,12 +34,20 @@ class ApplicationController < Sinatra::Base
   end
 
   # Error handling pages
-  error 404, 400, 401, 403 do
-    erb :error_400ish
+  error 404 do
+    erb(:"errors/error_404")
+  end
+
+  error 401 do
+    erb(:"errors/error_401")
+  end
+
+  error 403 do
+    erb(:"errors/error_403")
   end
 
   error 500, 501, 502, 503, 504, 505 do
-    'Ops, server error'
+    erb(:"errors/error_500")
   end
 
   # Helpers
