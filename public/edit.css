@@ -1,4 +1,4 @@
-/* style.css */
+/* edit.css */
 
 body {
     font-family: Arial, sans-serif;
@@ -7,21 +7,21 @@ body {
 }
 
 /* Add some basic styles for the error message */
-.error-message {
+div.error-message-edit {
     color: red;
     font-size: 12px;
     margin-top: 5px;
 }
 
-.error-message::before {
+div.error-message-edit::before {
     content: "⚠ "; /* Add a warning icon before the error message */
     font-size: 14px;
 }
 
 h1 {
     color: #444;
-    text-align: center; /* Center the heading */
-    margin-bottom: 20px; /* Add some space below the heading */
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 form {
@@ -50,52 +50,35 @@ input[type="date"] {
     margin-bottom: 20px;
 }
 
-input[type="submit"] {
-    background-color: #006400;
-    color: #fff;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-input[type="submit"]:hover {
-    background-color: #006400;
-    color: #fff;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
+button[type="submit"],
 a.button {
-    display: block; /* Make the button a block-level element */
-    width: 120px; /* Set the width of the button */
-    margin: 20px auto; /* Center the button horizontally with some margin */
-    padding: 10px 20px;
+    display: inline-block;
+    width: calc(33.33% - 10px); /* Set the width of both buttons to one-third of the container minus some spacing */
+    padding: 10px 0; /* Vertically center the text within the button */
     background-color: #008000;
     color: white;
     text-decoration: none;
     border-radius: 5px;
-    text-align: center;
+    cursor: pointer;
+    margin-bottom: 10px; /* Add some spacing between buttons */
+    text-align: center; /* Center the text within the button */
+    vertical-align: middle; /* Vertically align the text within the button */
 }
 
+button[type="submit"]:hover,
 a.button:hover {
     background-color: #006400;
 }
 
 .container {
     display: flex;
-    justify-content: space-between; /* Align items with space between them */
     max-width: 400px;
     margin: 0 auto;
+    justify-content: space-between; /* Align items with space between them */
 }
 
 input[type="submit"],
 a.button {
     flex: 1; /* Set both buttons to grow equally to fill the container */
-    width: 100%; /* Set the width of both buttons to 100% of the container */
     margin: 5px; /* Add some spacing between buttons */
 }

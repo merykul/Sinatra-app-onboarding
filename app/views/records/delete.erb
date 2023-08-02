@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Delete Record</title>
+  <link rel="stylesheet" type="text/css" href="/delete.css">
+</head>
+<body>
+<h1>Delete Person Record</h1>
+<form action="/records/<%= @record.id %>/delete" method="post">
+  <input type="hidden" name="_method" value="delete">
+  <label for="first_name">First Name:</label>
+  <input type="text" name="first_name" value="<%= @record.first_name %>" disabled>
+  <br>
+  <label for="second_name">Second Name:</label>
+  <input type="text" name="second_name" value="<%= @record.second_name %>" disabled>
+  <br>
+  <label for="city">City:</label>
+  <input type="text" name="city" value="<%= @record.city %>" disabled>
+  <br>
+  <label for="date_of_birth">Date of Birth:</label>
+  <input type="date" name="date_of_birth" value="<%= @record.date_of_birth %>" disabled>
+  <br>
+  <div class="container">
+    <button type="submit">Delete</button>
+    <a href="/homepage" class="button">Go to homepage</a>
+    <a href="/people_list" class="button">Cancel</a>
+  </div>
+</form>
+</body>
+</html>

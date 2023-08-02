@@ -1,0 +1,72 @@
+/* delete.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    margin: 20px;
+}
+
+h1 {
+    color: #444;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+input[type="text"],
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+button[type="submit"],
+a.button {
+    display: inline-block;
+    width: calc(33.33% - 10px); /* Set the width of both buttons to one-third of the container minus some spacing */
+    padding: 10px 0; /* Vertically center the text within the button */
+    background-color: #008000;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px; /* Add some spacing between buttons */
+    text-align: center; /* Center the text within the button */
+    vertical-align: middle; /* Vertically align the text within the button */
+}
+
+button[type="submit"]:hover,
+a.button:hover {
+    background-color: #006400;
+}
+
+.container {
+    display: flex;
+    max-width: 400px;
+    margin: 0 auto;
+    justify-content: space-between; /* Align items with space between them */
+}
+
+input[type="submit"],
+a.button {
+    flex: 1; /* Set both buttons to grow equally to fill the container */
+    margin: 5px; /* Add some spacing between buttons */
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Log in</title>
+  <link rel="stylesheet" type="text/css" href="/login_page.css">
+</head>
+<body>
+<h1>Log in</h1>
+<% if @error_messages %>
+  <div class="error-message">
+    <% @error_messages.each do |error| %>
+      <%= error %><br>
+    <% end %>
+  </div>
+<% end %>
+<form action="/log_in" method="post" id="login_form">
+  <label for="username">Username:</label>
+  <input type="text" name="username">
+  <br>
+  <label for="password">Password:</label>
+  <input type="text" name="password">
+  <br>
+  <div class="container">
+    <input type="submit" value="Log in">
+    <a href="/start" class="button">Back</a>
+  </div>
+</form>
+</body>
+</html>
