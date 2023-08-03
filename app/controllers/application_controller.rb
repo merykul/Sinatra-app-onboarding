@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'sinatra/reloader' if development?
+require 'sinatra/reloader' if development? || test?
 require 'sinatra/activerecord'
 require 'dotenv/load'
 require 'axlsx'

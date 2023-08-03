@@ -26,7 +26,7 @@ puts"🌱 Generating random Records..."
   Records.create(first_name: first_name, second_name: second_name, city: city, date_of_birth: date_of_birth)
 end
 
-puts "Generating records with Ivano-Frankivsk city"
+puts "🌱 Generating records with Ivano-Frankivsk city"
 3.times do
   first_name = Faker::Name.unique.name
   second_name = Faker::Name.last_name

@@ -17,15 +17,12 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'axlsx', '~> 2.0', '>= 2.0.1'
 gem 'nokogiri', '~> 1.15', '>= 1.15.3'
 
-group :development do
+group :development || test do
   gem 'mysql2' # development database adapter gem
   gem 'tux'
   gem 'session_secret_generator'
   gem 'dotenv', require: 'dotenv/load' # Shim to load environment variables from .env into ENV in development
   gem 'faker'
-end
-
-group :test do
   gem 'rspec-html-matchers'
   gem 'rack-test'
   gem 'test-unit'

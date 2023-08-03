@@ -4,3 +4,10 @@ development:
   username: usermariia
   password: 0396
   host: localhost
+
+test:
+  adapter: mysql2
+  database: records_test
+  username: usermariia
+  password: 0396
+  host: localhost
