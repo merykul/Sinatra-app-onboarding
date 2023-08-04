@@ -72,10 +72,31 @@ RSpec.describe '[Sessions API]' do
       end
     end
 
-    context 'when user with such username already exists' do
-      it 'displays "Username has already been taken" error message'
-      it 'duplicated user is not saved to users table'
-      it 'response code is 200 OK, and user still on sign up page'
+    context 'when username already exists' do
+      before(:each) do
+        clear_cookies #Clear the session
+        @username = 'TestUser'
+        @password = Faker::Alphanumeric.alphanumeric(number: 10)
+        p "------------------------ User creds: #{@username}, #{@password} ------------------------"
+
+        post '/sign_up', username: @username, password: @password, first_name: 'Test', second_name: 'User'
+
+        p '------------------------ Last response after sing up ------------------------------'
+        p last_response
+        p '-----------------------------------------------------------------------------------'
+      end
+
+      it 'displays "Username has already been taken" error message' do
+        expect(last_response.body).to include('Username has already been taken')
+      end
+
+      it 'duplicated user is not saved to users table' do
+        expect(User.where(:username => @username).count).to eq(1)
+      end
+
+      it 'response code is 200 OK' do
+        expect(last_response.status).to eq 200
+      end
     end
 
     context 'when parameters are empty' do
