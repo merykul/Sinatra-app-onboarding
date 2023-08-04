@@ -43,9 +43,12 @@ RSpec.describe '[Sessions API]' do
   end
 
   describe 'POST /sign_up' do
+    before(:each) do
+      clear_cookies #Clear the session
+    end
+
     context 'when request with valid parameters values' do
       before(:each) do
-        clear_cookies #Clear the session
         @username = Faker::Internet.unique.username
         @password = Faker::Alphanumeric.alphanumeric(number: 10)
         p "------------------------ New user creds: #{@username}, #{@password} ------------------------"
@@ -74,7 +77,6 @@ RSpec.describe '[Sessions API]' do
 
     context 'when username already exists' do
       before(:each) do
-        clear_cookies #Clear the session
         @username = 'TestUser'
         @password = Faker::Alphanumeric.alphanumeric(number: 10)
         p "------------------------ User creds: #{@username}, #{@password} ------------------------"
@@ -100,8 +102,35 @@ RSpec.describe '[Sessions API]' do
     end
 
     context 'when parameters are empty' do
-      it 'fields validation error messages are displayed'
-      it 'response code is 200 OK, and user still on sign up page'
+      before(:each) do
+        @username = nil
+        @password = nil
+        p "------------------------ User creds: #{@username}, #{@password} ------------------------"
+
+        post '/sign_up', username: @username, password: @password, first_name: nil, second_name: nil
+
+        p '------------------------ Last response after sing up ------------------------------'
+        p last_response
+        p '-----------------------------------------------------------------------------------'
+      end
+
+      it 'fields validation error messages are displayed' do
+        expect(last_response.body).to include("Password can't be blank")
+        expect(last_response.body).to include("Username can't be blank")
+        expect(last_response.body).to include('Username username length should be 4-20 symbols')
+        expect(last_response.body).to include("First name can't be blank")
+        expect(last_response.body).to include("Second name can't be blank")
+        expect(last_response.body).to include("Password can't be blank")
+        expect(last_response.body).to include('Password password must have length from 6 to 15 sym.')
+      end
+
+      it 'response code is 200 OK' do
+        expect(last_response.status).to eq 200
+      end
+
+      it 'user still on sign up page' do
+        expect(last_response.body).to include('Registration form')
+      end
     end
   end
 
