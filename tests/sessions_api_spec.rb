@@ -141,23 +141,43 @@ RSpec.describe '[Sessions API]' do
       clear_cookies #Clear the session
     end
 
+    let(:invalid_username) { 'Fake' }
+    let(:invalid_password) { 'Fake123456!' }
+    let(:valid_username) { 'TestUser' }
+    let(:valid_password) { 'Test123456!' }
+
     context 'with valid users username and password' do
       before(:each) do
-
+        log_in(valid_username, valid_password)
       end
 
       it 'redirects user to homepage' do
-
+        follow_redirect!
+        expect(last_response.body).to include('My Home Page')
+        expect(last_request.path).to eq('/homepage')
       end
 
-      it 'response code is 200 OK' do
-
+      it 'response code is 302 Temporary redirected' do
+        expect(last_response.status).to eq 302
       end
     end
 
     context 'with invalid username and password' do
-      it 'error message "Invalid [username] username or [password] password!" is displayed'
-      it 'response code is 200 OK, and user is redirected to log in page again'
+      before(:each) do
+        log_in(invalid_username, invalid_password)
+      end
+
+      it 'error message "Invalid [username] username or [password] password!" is displayed' do
+        expect(last_response.body).to include("Invalid #{invalid_username} username or #{invalid_password} password!")
+      end
+
+      it 'response code is 200 OK' do
+        expect(last_response.status).to eq 200
+      end
+
+      it 'user still on log in page' do
+        expect(last_response.body).to include('Log in')
+      end
     end
   end
 
