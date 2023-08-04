@@ -72,7 +72,7 @@ class SessionsController < ApplicationController
     if logged_in?
       erb :homepage
     else
-      erb(:"user/login_page")
+      redirect to '/start'
     end
   end
 end
