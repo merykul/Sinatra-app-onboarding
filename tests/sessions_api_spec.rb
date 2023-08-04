@@ -1,8 +1,9 @@
 require_relative 'helpers/spec_helper'
 require_relative '../app/controllers/sessions_controller'
+require_relative '../app/controllers/records_controller'
 require 'faker'
 
-RSpec.describe 'Sessions API' do
+RSpec.describe '[Sessions API]' do
   include AuthHelper
 
   def app
@@ -11,11 +12,13 @@ RSpec.describe 'Sessions API' do
 
   describe 'GET /log_in_form' do
     context 'when logged in' do
-      clear_cookies #Clear the session
-      log_in('TestUser', 'Test123456!')
+      before(:each) do
+        clear_cookies #Clear the session
+        log_in('TestUser', 'Test123456!')
 
-      get '/log_in_form'
-      follow_redirect!
+        get '/log_in_form'
+        follow_redirect!
+      end
 
       it 'redirects to homepage' do
         expect(last_request.path).to eq('/homepage')
@@ -24,7 +27,10 @@ RSpec.describe 'Sessions API' do
     end
 
     context 'when not logged in' do
-      get '/log_in_form'
+      before(:each) do
+        clear_cookies #Clear the session
+        get '/log_in_form'
+      end
 
       it 'redirects to login page' do
         expect(last_response.body).to include('Log in')
@@ -38,24 +44,31 @@ RSpec.describe 'Sessions API' do
 
   describe 'POST /sign_up' do
     context 'when request with valid parameters values' do
-      #Given
-      username = Faker::Internet.unique.username
-      password = Faker::Alphanumeric.alphanumeric(number: 10)
+      before(:each) do
+        clear_cookies #Clear the session
+        @username = Faker::Internet.unique.username
+        @password = Faker::Alphanumeric.alphanumeric(number: 10)
+        p "------------------------ New user creds: #{@username}, #{@password} ------------------------"
 
-      #When
-      post '/sign_up', username: username, password: password
+        post '/sign_up', username: @username, password: @password, first_name: 'Test', second_name: 'User'
 
-      #Then
+        p '------------------------ Last response after sing up ------------------------------'
+        p last_response
+        p '-----------------------------------------------------------------------------------'
+      end
+
       it 'user is created' do
-
+        expect(User.all).to include User.find_by(:username => @username)
       end
 
       it 'user is redirected to homepage' do
-
+        follow_redirect!
+        expect(last_response.body).to include('My Home Page')
+        expect(last_request.path).to eq('/homepage')
       end
 
-      it 'response code is 200 OK' do
-        expect(last_response.status).to eq 200
+      it 'response code is 302 Found (Temporary Redirect)' do
+        expect(last_response.status).to eq 302
       end
     end
 
@@ -72,6 +85,10 @@ RSpec.describe 'Sessions API' do
   end
 
   describe 'POST /log_in' do
+    before(:all) do
+      clear_cookies #Clear the session
+    end
+
     context 'with valid users username and password' do
       it 'redirects user to homepage'
       it 'response code is 200 OK'
@@ -89,6 +106,10 @@ RSpec.describe 'Sessions API' do
     end
 
     context 'when not authorised' do
+      before(:all) do
+        clear_cookies #Clear the session
+      end
+
       it 'status code is 200'
     end
   end
@@ -100,6 +121,10 @@ RSpec.describe 'Sessions API' do
 
   describe 'GET /homepage' do
     context 'when not authorised' do
+      before(:all) do
+        clear_cookies #Clear the session
+      end
+
       it 'user is redirected to log in page'
       it 'status code is 200'
     end
