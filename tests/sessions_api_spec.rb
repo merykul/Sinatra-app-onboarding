@@ -47,14 +47,14 @@ RSpec.describe '[Sessions API]' do
       clear_cookies #Clear the session
     end
 
-    let(:last_response_log_message) { '------------------------ Last response after sing up ------------------------------' }
-    let(:end_log_line) { '-----------------------------------------------------------------------------------' }
+    let(:last_response_log_message) { '------------------------------------------------------ Last response after sing up ------------------------------------------------------------' }
+    let(:end_log_line) { '-----------------------------------------------------------------------------------------------------------------------------------------------' }
     let(:random_password) { Faker::Alphanumeric.alphanumeric(number: 10) }
 
     context 'when request with valid parameters values' do
       before(:each) do
         @username = Faker::Internet.unique.username
-        p "------------------------ User creds: #{@username}, #{random_password} ------------------------"
+        p "------------------------------------------------------ User creds: #{@username}, #{random_password} ------------------------------------------------------"
 
         post '/sign_up', username: @username, password: random_password, first_name: 'Test', second_name: 'User'
 
@@ -81,7 +81,7 @@ RSpec.describe '[Sessions API]' do
     context 'when username already exists' do
       before(:each) do
         @username = 'TestUser'
-        p "------------------------ User creds: #{@username}, #{random_password} ------------------------"
+        p "------------------------------------------------------ User creds: #{@username}, #{random_password} ------------------------------------------------------"
 
         post '/sign_up', username: @username, password: random_password, first_name: 'Test', second_name: 'User'
 
@@ -107,7 +107,7 @@ RSpec.describe '[Sessions API]' do
       before(:each) do
         @username = nil
         @password = nil
-        p "------------------------ User creds: nil, nil ------------------------"
+        p "------------------------------------------------------ User creds: nil, nil ------------------------------------------------------"
 
         post '/sign_up', username: @username, password: @password, first_name: nil, second_name: nil
 
@@ -181,7 +181,7 @@ RSpec.describe '[Sessions API]' do
     end
   end
 
-  describe 'GET /start' do
+  describe '[GET /start]' do
     before(:each) do
       clear_cookies #Clear the session
     end
@@ -189,6 +189,8 @@ RSpec.describe '[Sessions API]' do
     context 'when logged in' do
       before(:each) do
         log_in('TestUser', 'Test123456!')
+
+        get '/start'
       end
 
       it 'status code is 200 OK' do
@@ -197,15 +199,26 @@ RSpec.describe '[Sessions API]' do
     end
 
     context 'when not authorised' do
+      before(:each) do
+        get '/start'
+      end
+
       it 'status code is 200' do
         expect(last_response.status).to eq 200
       end
     end
   end
 
-  describe 'GET /log_out' do
+  describe '[GET /log_out]' do
+
+    let(:last_response_log_message) { '------------------------------------------------------ Last response ------------------------------------------------------------' }
+    let(:end_log_line) { '-----------------------------------------------------------------------------------------------------------------------------------------------' }
+
     before(:each) do
       clear_cookies #Clear the session
+      log_in('TestUser', 'Test123456!')
+
+      get '/log_out'
     end
 
     it 'user is redirected to start page' do
@@ -214,24 +227,60 @@ RSpec.describe '[Sessions API]' do
       expect(last_request.path).to eq('/start')
     end
 
-    it 'status code is 200' do
-      expect(last_response.status).to eq 200
+    it 'status code is 302 Found (Temporary redirect)' do
+      expect(last_response.status).to eq 302
+    end
+
+    it 'user can not access /homepage anymore' do
+
     end
   end
 
-  describe 'GET /homepage' do
+  describe '[GET /homepage]' do
+
+    let(:last_response_log_message) { '------------------------------------------------------ Last response ------------------------------------------------------------' }
+    let(:end_log_line) { '-----------------------------------------------------------------------------------------------------------------------------------------------' }
+
     context 'when not authorised' do
-      before(:all) do
+      before(:each) do
         clear_cookies #Clear the session
+
+        get '/homepage'
+        follow_redirect!
+        p last_response_log_message
+        p last_response
+        p end_log_line
       end
 
-      it 'user is redirected to log in page'
-      it 'status code is 200'
+      it 'user is redirected to start page' do
+        expect(last_response.body).to include('Hello 🌱, Do you have an account?')
+        expect(last_request.path).to eq('/start')
+      end
+
+      it 'status code is 200' do
+        expect(last_response.status).to eq 200
+      end
     end
 
     context 'when logged in' do
-      it 'status code is 200'
-      it 'user is redirected to homepage'
+      before(:each) do
+        clear_cookies #Clear the session
+        log_in('TestUser', 'Test123456!')
+
+        get '/homepage'
+        p last_response_log_message
+        p last_response
+        p end_log_line
+      end
+
+      it 'response code is 200 OK' do
+        expect(last_response.status).to eq 200
+      end
+
+      it 'user is redirected to homepage' do
+        expect(last_response.body).to include('My Home Page')
+        expect(last_request.path).to eq('/homepage')
+      end
     end
   end
 end
