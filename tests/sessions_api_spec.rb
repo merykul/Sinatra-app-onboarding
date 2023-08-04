@@ -47,17 +47,20 @@ RSpec.describe '[Sessions API]' do
       clear_cookies #Clear the session
     end
 
+    let(:last_response_log_message) { '------------------------ Last response after sing up ------------------------------' }
+    let(:end_log_line) { '-----------------------------------------------------------------------------------' }
+    let(:random_password) { Faker::Alphanumeric.alphanumeric(number: 10) }
+
     context 'when request with valid parameters values' do
       before(:each) do
         @username = Faker::Internet.unique.username
-        @password = Faker::Alphanumeric.alphanumeric(number: 10)
-        p "------------------------ New user creds: #{@username}, #{@password} ------------------------"
+        p "------------------------ User creds: #{@username}, #{random_password} ------------------------"
 
-        post '/sign_up', username: @username, password: @password, first_name: 'Test', second_name: 'User'
+        post '/sign_up', username: @username, password: random_password, first_name: 'Test', second_name: 'User'
 
-        p '------------------------ Last response after sing up ------------------------------'
+        p last_response_log_message
         p last_response
-        p '-----------------------------------------------------------------------------------'
+        p end_log_line
       end
 
       it 'user is created' do
@@ -78,14 +81,13 @@ RSpec.describe '[Sessions API]' do
     context 'when username already exists' do
       before(:each) do
         @username = 'TestUser'
-        @password = Faker::Alphanumeric.alphanumeric(number: 10)
-        p "------------------------ User creds: #{@username}, #{@password} ------------------------"
+        p "------------------------ User creds: #{@username}, #{random_password} ------------------------"
 
-        post '/sign_up', username: @username, password: @password, first_name: 'Test', second_name: 'User'
+        post '/sign_up', username: @username, password: random_password, first_name: 'Test', second_name: 'User'
 
-        p '------------------------ Last response after sing up ------------------------------'
+        p last_response_log_message
         p last_response
-        p '-----------------------------------------------------------------------------------'
+        p end_log_line
       end
 
       it 'displays "Username has already been taken" error message' do
@@ -105,13 +107,13 @@ RSpec.describe '[Sessions API]' do
       before(:each) do
         @username = nil
         @password = nil
-        p "------------------------ User creds: #{@username}, #{@password} ------------------------"
+        p "------------------------ User creds: nil, nil ------------------------"
 
         post '/sign_up', username: @username, password: @password, first_name: nil, second_name: nil
 
-        p '------------------------ Last response after sing up ------------------------------'
+        p last_response_log_message
         p last_response
-        p '-----------------------------------------------------------------------------------'
+        p end_log_line
       end
 
       it 'fields validation error messages are displayed' do
@@ -140,8 +142,17 @@ RSpec.describe '[Sessions API]' do
     end
 
     context 'with valid users username and password' do
-      it 'redirects user to homepage'
-      it 'response code is 200 OK'
+      before(:each) do
+
+      end
+
+      it 'redirects user to homepage' do
+
+      end
+
+      it 'response code is 200 OK' do
+
+      end
     end
 
     context 'with invalid username and password' do
