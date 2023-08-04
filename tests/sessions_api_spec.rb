@@ -182,22 +182,41 @@ RSpec.describe '[Sessions API]' do
   end
 
   describe 'GET /start' do
+    before(:each) do
+      clear_cookies #Clear the session
+    end
+
     context 'when logged in' do
-      it 'status code is 200 OK'
+      before(:each) do
+        log_in('TestUser', 'Test123456!')
+      end
+
+      it 'status code is 200 OK' do
+        expect(last_response.status).to eq 200
+      end
     end
 
     context 'when not authorised' do
-      before(:all) do
-        clear_cookies #Clear the session
+      it 'status code is 200' do
+        expect(last_response.status).to eq 200
       end
-
-      it 'status code is 200'
     end
   end
 
   describe 'GET /log_out' do
-    it 'user is redirected to start page'
-    it 'status code is 200'
+    before(:each) do
+      clear_cookies #Clear the session
+    end
+
+    it 'user is redirected to start page' do
+      follow_redirect!
+      expect(last_response.body).to include('Hello 🌱, Do you have an account?')
+      expect(last_request.path).to eq('/start')
+    end
+
+    it 'status code is 200' do
+      expect(last_response.status).to eq 200
+    end
   end
 
   describe 'GET /homepage' do
