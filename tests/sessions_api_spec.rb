@@ -10,10 +10,6 @@ RSpec.describe '[Sessions API]' do
     SessionsController
   end
 
-  # !!
-  # NOT SURE ABOUT 302 responses, is that okay?
-  # !!
-
   describe 'GET /log_in_form' do
     context 'when logged in' do
       before(:each) do
