@@ -8,11 +8,11 @@ class RecordsController < ApplicationController
       city_filter = params[:city]
 
       if city_filter && !city_filter.strip.empty?
-        @records = Records.where("city" => "#{city_filter}")
-        erb(:"../views/records/people_list")
+        @records = Records.where('city' => "#{city_filter}")
+        erb :"../views/records/people_list"
       else
         @records = Records.all
-        erb(:"../views/records/people_list")
+        erb :"../views/records/people_list"
       end
     else
       redirect to '/start'
@@ -54,7 +54,7 @@ class RecordsController < ApplicationController
 
     if record.valid?
       record.save
-      "Person is added to the records! Full name: #{first_name} #{second_name}, City: #{city}"
+      p "Person is added to the records! Full name: #{first_name} #{second_name}, City: #{city}"
       redirect('/people_list')
     else
       @error_messages = record.errors.full_messages
@@ -67,7 +67,7 @@ class RecordsController < ApplicationController
   get '/records/:id/edit' do
     if logged_in?
       @record = Records.find(params[:id])
-      erb(:"records/edit")
+      erb :"records/edit"
     else
       redirect to '/start'
     end
@@ -83,21 +83,21 @@ class RecordsController < ApplicationController
       city: params[:city],
       date_of_birth: params[:date_of_birth]
     )
-    puts "Record is updated, but not validated yet"
+    puts 'Record is updated, but not validated yet'
 
     if @record.valid?
       @record.save
-      redirect "/people_list"
+      redirect '/people_list'
     else
       @error_messages = @record.errors.full_messages
-      erb(:"records/edit")
+      erb :"records/edit"
     end
   end
 
   get '/records/:id/delete' do
     if logged_in?
       @record = Records.find(params[:id])
-      erb(:"records/delete")
+      erb :"records/delete"
     else
       redirect to '/start'
     end
@@ -107,6 +107,6 @@ class RecordsController < ApplicationController
     @record = Records.find(params[:id])
     @record.delete
 
-    redirect "/people_list"
+    redirect '/people_list'
   end
 end
