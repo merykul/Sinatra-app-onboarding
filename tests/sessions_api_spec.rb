@@ -21,11 +21,13 @@ RSpec.describe '[Sessions API]' do
         log_in('TestUser', 'Test123456!')
 
         get '/log_in_form'
-        follow_redirect!
       end
 
       it 'redirects to homepage' do
-        expect(last_request.path).to eq('/homepage')
+        expect(last_response.body).to include('My Home Page')
+      end
+
+      it 'response code is 200 OK' do
         expect(last_response.status).to eq 200
       end
     end
@@ -226,20 +228,16 @@ RSpec.describe '[Sessions API]' do
     end
 
     it 'user is redirected to start page' do
-      follow_redirect!
       expect(last_response.body).to include('Hello 🌱, Do you have an account?')
-      expect(last_request.path).to eq('/start')
     end
 
-    it 'status code is 302 Found (Temporary redirect)' do
-      expect(last_response.status).to eq 302
+    it 'status code is 200 OK' do
+      expect(last_response.status).to eq 200
     end
 
-    it 'user can not access /homepage anymore' do
+    it 'user can not access /homepage anymore and is redirected to start page' do
       get '/homepage'
-      follow_redirect!
       expect(last_response.body).to include('Hello 🌱, Do you have an account?')
-      expect(last_request.path).to eq('/start')
     end
   end
 
@@ -253,7 +251,6 @@ RSpec.describe '[Sessions API]' do
         clear_cookies #Clear the session
 
         get '/homepage'
-        follow_redirect!
         p last_response_log_message
         p last_response
         p end_log_line
@@ -261,7 +258,6 @@ RSpec.describe '[Sessions API]' do
 
       it 'user is redirected to start page' do
         expect(last_response.body).to include('Hello 🌱, Do you have an account?')
-        expect(last_request.path).to eq('/start')
       end
 
       it 'status code is 200' do
