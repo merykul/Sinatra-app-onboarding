@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
   # user's login page
   get '/log_in_form' do
     if logged_in?
-      redirect to '/homepage'
+      erb :homepage
     else
       erb(:"/user/login_page")
     end
@@ -32,13 +32,13 @@ class SessionsController < ApplicationController
 
   get '/log_out' do
     session.clear
-    redirect to '/start'
+    erb(:"/user/start_page")
   end
 
   # sign up user:
   get '/sign_up_form' do
     if logged_in?
-      redirect to '/homepage'
+      erb :homepage
     else
       erb(:"user/sign_up_page")
     end
@@ -61,7 +61,7 @@ class SessionsController < ApplicationController
     if @user.valid?
       @user.save
       session[:user_id] = @user.id
-      redirect '/homepage'
+      redirect to '/homepage'
     else
       @error_messages = @user.errors.full_messages
       erb(:"user/sign_up_page")
@@ -72,7 +72,7 @@ class SessionsController < ApplicationController
     if logged_in?
       erb :homepage
     else
-      redirect to '/start'
+      erb :'user/start_page'
     end
   end
 end

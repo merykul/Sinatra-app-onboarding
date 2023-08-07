@@ -15,7 +15,7 @@ class RecordsController < ApplicationController
         erb(:"../views/records/people_list")
       end
     else
-      redirect to '/start'
+      erb :'user/start_page'
     end
   end
 
@@ -25,7 +25,7 @@ class RecordsController < ApplicationController
       @statistics = City.all
       erb(:"cities/statistics")
     else
-      redirect to '/start'
+      erb :'user/start_page'
     end
   end
 
@@ -34,7 +34,7 @@ class RecordsController < ApplicationController
     if logged_in?
       erb :create_person_form
     else
-      redirect to '/start'
+      erb :'user/start_page'
     end
   end
 
@@ -55,7 +55,7 @@ class RecordsController < ApplicationController
     if record.valid?
       record.save
       "Person is added to the records! Full name: #{first_name} #{second_name}, City: #{city}"
-      redirect('/people_list')
+      redirect to '/people_list'
     else
       @error_messages = record.errors.full_messages
       erb :create_person_form
@@ -84,13 +84,13 @@ class RecordsController < ApplicationController
 
       if @record.valid?
         @record.save
-        redirect "/people_list"
+        redirect to "/people_list"
       else
         @error_messages = @record.errors.full_messages
         erb(:"records/edit")
       end
     else
-      redirect to '/start'
+      erb :'user/start_page'
     end
   end
 
@@ -103,9 +103,9 @@ class RecordsController < ApplicationController
     if logged_in?
       @record = Records.find(params[:id])
       @record.delete
-      redirect "/people_list"
+      redirect to "/people_list"
     else
-      redirect to '/start'
+      erb :'user/start_page'
     end
   end
 end
