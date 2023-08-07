@@ -10,7 +10,7 @@ class DownloadController < ApplicationController
 
     Axlsx::Package.new do |p|
       p.workbook.add_worksheet(name: 'Records') do |sheet|
-        sheet.add_row ['Ім`я', 'Прізвище', 'Місто/село/смт', 'Дата народження']
+        sheet.add_row ['Ім`я', 'Прізвище', 'Місто/село', 'Дата народження']
 
         @records.each do |record|
           sheet.add_row [record.first_name, record.second_name, record.city, record.date_of_birth]
