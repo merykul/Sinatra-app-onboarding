@@ -1,4 +1,4 @@
-require_relative './application_controller'
+require_relative 'application_controller'
 
 class RecordsController < ApplicationController
 
@@ -31,34 +31,34 @@ class RecordsController < ApplicationController
 
   # to create record:
   get '/added_person_form' do
-    if logged_in?
       erb :create_person_form
-    else
-      erb :'user/start_page'
-    end
   end
 
   # create_person_form
   post '/create_person' do
-    first_name = params[:first_name]
-    second_name = params[:second_name]
-    city = params[:city]
-    date_of_birth = params[:date_of_birth]
+    if logged_in?
+      first_name = params[:first_name]
+      second_name = params[:second_name]
+      city = params[:city]
+      date_of_birth = params[:date_of_birth]
 
-    record = Records.new(
-      first_name: first_name,
-      second_name: second_name,
-      city: city,
-      date_of_birth: date_of_birth
-    )
+      record = Records.new(
+        first_name: first_name,
+        second_name: second_name,
+        city: city,
+        date_of_birth: date_of_birth
+      )
 
-    if record.valid?
-      record.save
-      "Person is added to the records! Full name: #{first_name} #{second_name}, City: #{city}"
-      redirect to '/people_list'
+      if record.valid?
+        record.save
+        p "Person is added to the records! Full name: #{first_name} #{second_name}, City: #{city}"
+        redirect to '/people_list'
+      else
+        @error_messages = record.errors.full_messages
+        erb :create_person_form
+      end
     else
-      @error_messages = record.errors.full_messages
-      erb :create_person_form
+      erb :'user/start_page'
     end
   end
 
