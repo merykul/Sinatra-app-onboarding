@@ -10,6 +10,10 @@ RSpec.describe '[Sessions API]' do
     SessionsController
   end
 
+  # !!
+  # NOT SURE ABOUT 302 responses, is that okay?
+  # !!
+
   describe 'GET /log_in_form' do
     context 'when logged in' do
       before(:each) do
@@ -232,7 +236,10 @@ RSpec.describe '[Sessions API]' do
     end
 
     it 'user can not access /homepage anymore' do
-
+      get '/homepage'
+      follow_redirect!
+      expect(last_response.body).to include('Hello 🌱, Do you have an account?')
+      expect(last_request.path).to eq('/start')
     end
   end
 
