@@ -65,48 +65,47 @@ class RecordsController < ApplicationController
   # edit
 
   get '/records/:id/edit' do
-    if logged_in?
-      @record = Records.find(params[:id])
-      erb(:"records/edit")
-    else
-      redirect to '/start'
-    end
+    @record = Records.find(params[:id])
+    erb(:"records/edit")
   end
 
   patch '/records/:id/edit' do
-    @record = Records.find(params[:id])
-    puts "Record id is retrieved: #{params[:id]}"
+    if logged_in?
+      @record = Records.find(params[:id])
+      puts "Record id is retrieved: #{params[:id]}"
 
-    @record.update(
-      first_name: params[:first_name],
-      second_name: params[:second_name],
-      city: params[:city],
-      date_of_birth: params[:date_of_birth]
-    )
-    puts "Record is updated, but not validated yet"
+      @record.update(
+        first_name: params[:first_name],
+        second_name: params[:second_name],
+        city: params[:city],
+        date_of_birth: params[:date_of_birth]
+      )
+      puts "Record is updated, but not validated yet"
 
-    if @record.valid?
-      @record.save
-      redirect "/people_list"
+      if @record.valid?
+        @record.save
+        redirect "/people_list"
+      else
+        @error_messages = @record.errors.full_messages
+        erb(:"records/edit")
+      end
     else
-      @error_messages = @record.errors.full_messages
-      erb(:"records/edit")
+      redirect to '/start'
     end
   end
 
   get '/records/:id/delete' do
-    if logged_in?
-      @record = Records.find(params[:id])
-      erb(:"records/delete")
-    else
-      redirect to '/start'
-    end
+    @record = Records.find(params[:id])
+    erb(:"records/delete")
   end
 
   delete '/records/:id/delete' do
-    @record = Records.find(params[:id])
-    @record.delete
-
-    redirect "/people_list"
+    if logged_in?
+      @record = Records.find(params[:id])
+      @record.delete
+      redirect "/people_list"
+    else
+      redirect to '/start'
+    end
   end
 end
