@@ -1,7 +1,9 @@
 require_relative 'helpers/spec_helper'
+require_relative '../app/controllers/sessions_controller'
 require_relative '../app/controllers/records_controller'
+require 'faker'
 
-RSpec.describe 'Records API' do
+RSpec.describe '[Records API]' do
   include AuthHelper
 
   def app
@@ -9,10 +11,47 @@ RSpec.describe 'Records API' do
   end
 
   describe 'POST /create_person' do
+
+    let(:random_name) { Faker::Name.first_name }
+    let(:random_last_name) { Faker::Name.last_name }
+    let(:city) { 'Fake City' }
+    let(:random_dfb) { Faker::Date.birthday }
+    let(:last_response_log_message) { '------------------------------------------------------ Last response ------------------------------------------------------------' }
+    let(:end_log_line) { '-----------------------------------------------------------------------------------------------------------------------------------------------' }
+
     context 'when logged in, and with valid data' do
-      it 'saves new record to records table'
-      it 'redirects to /people_list page after successful record save'
-      it 'response code is 200 OK'
+      before(:each) do
+        clear_cookies
+        p "------------------------------------------------------ New record: #{random_name}, #{random_last_name}, #{city}, #{random_dfb}!! ------------------------------------------------------"
+
+        log_in('TestUser', 'Test123456!')
+        puts "Last request path: #{last_request.path_info}"
+        p last_response_log_message
+        p last_response.body
+        p end_log_line
+
+        post '/create_person',
+             first_name: random_name,
+             second_name: random_last_name,
+             city: city,
+             date_of_birth: random_dfb
+      end
+
+      it 'saves new record to records table' do
+        expect(Records.all).to include Records.find_by(:first_name => random_name,
+                                                      :second_name => random_last_name,
+                                                      :city => city,
+                                                      :date_of_birth => random_dfb)
+      end
+
+      it 'redirects to /people_list page after successful record save' do
+        follow_redirect!
+        expect(last_response.body).to include('Records List')
+      end
+
+      it 'response code is 302 Found (Temporary Redirect)' do
+        expect(last_response.status).to eq 302
+      end
     end
 
     context 'when logged in, with empty values' do
@@ -26,8 +65,44 @@ RSpec.describe 'Records API' do
   end
 
   describe 'GET /people_list' do
-    context 'when not authorised'
-    context 'when logged in'
+
+    let(:last_response_log_message) { '------------------------------------------------------ Last response ------------------------------------------------------------' }
+    let(:end_log_line) { '-----------------------------------------------------------------------------------------------------------------------------------------------' }
+
+    context 'when not authorised' do
+      before(:each) do
+        clear_cookies
+
+        get '/people_list'
+      end
+
+      it 'redirects to start page' do
+        expect(last_response.body).to include('Hello 🌱, Do you have an account?')
+      end
+
+      it 'response status is 200 OK' do
+        expect(last_response.status).to eq 200
+      end
+    end
+
+    context 'when logged in' do
+      before(:each) do
+        clear_cookies
+        log_in('TestUser', 'Test123456!')
+
+        get '/people_list'
+      end
+
+      it 'the list of all records is displayed' do
+        expect(last_response.body).to include('Records List')
+        expect(last_response.body).to include Records.all
+      end
+
+      it 'response status is 200 OK' do
+        expect(last_response.status).to eq 200
+      end
+    end
+
     context 'when city is defined'
   end
 
