@@ -9,9 +9,9 @@ class SessionsController < ApplicationController
   # user's login page
   get '/log_in_form' do
     if logged_in?
-      erb :homepage
+      redirect to '/homepage'
     else
-      erb(:"/user/login_page")
+      erb :'/user/login_page'
     end
   end
 
@@ -22,25 +22,25 @@ class SessionsController < ApplicationController
     user = User.find_by(:username => username)
     if user && user.authenticate(password)
       session[:user_id] = user.id
-      puts "Successful logged in!"
+      puts 'Successful logged in!'
       redirect to '/homepage'
     else
       @error_messages = ["Invalid #{username} username or #{password} password!"]
-      erb(:"user/login_page")
+      erb :'user/login_page'
     end
   end
 
   get '/log_out' do
     session.clear
-    erb(:"/user/start_page")
+    redirect to '/start'
   end
 
   # sign up user:
   get '/sign_up_form' do
     if logged_in?
-      erb :homepage
+      redirect to '/homepage'
     else
-      erb(:"user/sign_up_page")
+      erb :'user/sign_up_page'
     end
   end
 
@@ -61,10 +61,10 @@ class SessionsController < ApplicationController
     if @user.valid?
       @user.save
       session[:user_id] = @user.id
-      redirect to '/homepage'
+      redirect '/homepage'
     else
       @error_messages = @user.errors.full_messages
-      erb(:"user/sign_up_page")
+      erb :'user/sign_up_page'
     end
   end
 
@@ -72,7 +72,7 @@ class SessionsController < ApplicationController
     if logged_in?
       erb :homepage
     else
-      erb :'user/start_page'
+      erb :'user/login_page'
     end
   end
 end
