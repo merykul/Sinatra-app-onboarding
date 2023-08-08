@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   has_secure_password
+  has_many :records, foreign_key: :user_id
   enum role: { user: 0, admin: 1 }
   validates :username, presence: true, uniqueness: true, length: { within: 4..20, message: 'username length should be 4-20 symbols' }
   validates :first_name, presence: true
