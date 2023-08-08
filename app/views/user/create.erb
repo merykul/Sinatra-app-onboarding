@@ -2,10 +2,38 @@
 <html>
 <head>
   <title>Create User</title>
-  <link rel="stylesheet" type="text/css" href="/create_user.css">
+  <link rel="stylesheet" type="text/css" href="/user.css">
 </head>
 <body>
 <h1>Create User</h1>
+<% if @error_messages %>
+  <div class="error-message">
+    <% @error_messages.each do |error| %>
+      <%= error %><br>
+    <% end %>
+  </div>
+<% end %>
+<form action="/create_user_form" method="post">
+  <label for="first_name">First Name:</label>
+  <input type="text" name="first_name">
+  <br>
+  <label for="second_name">Second Name:</label>
+  <input type="text" name="second_name">
+  <br>
+  <label for="city">Username:</label>
+  <input type="text" name="username">
+  <br>
+  <label for="password">Temporary Password:</label>
+  <input type="text" name="password">
+  <br>
+  <label for="password_confirmation">Temporary Password Confirmation:</label>
+  <input type="text" name="password_confirmation">
+  <br>
+    <div class="container">
+      <input type="submit" value="Create User">
+      <a href="/homepage" class="button">Go to homepage</a>
+    </div>
 
+</form>
 </body>
 </html>

@@ -11,7 +11,32 @@ class UsersController < ApplicationController
   end
 
   post '/create_user_form' do
+    if logged_in?
+      first_name = params[:first_name]
+      second_name = params[:second_name]
+      username = params[:username]
+      password = params[:password]
+      password_confirmation = params[:password_confirmation]
 
+      user = User.create(
+        first_name: first_name,
+        second_name: second_name,
+        username: username,
+        password: password,
+        password_confirmation: password_confirmation
+      )
+
+      if user.valid?
+        user.save
+        p "User is create successfully! Full name: #{first_name} #{second_name}, username: #{username}, temporary password: #{password}"
+        redirect to '/manage_users'
+      else
+        @error_messages = user.errors.full_messages
+        erb :'user/create'
+      end
+    else
+      redirect to '/start'
+    end
   end
 
   get '/user/:id/edit' do
