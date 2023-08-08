@@ -57,7 +57,35 @@ class UsersController < ApplicationController
   end
 
   patch '/user/:id/edit' do
+    if logged_in?
+      @user = User.find_by(:id => params[:id])
 
+      first_name = params[:first_name]
+      second_name = params[:second_name]
+      username = params[:username]
+      #TODO: Manage editing without password validation
+      password = nil
+
+      @user.update(
+        first_name: first_name,
+        second_name: second_name,
+        username: username,
+        password: password,
+        password_confirmation: password
+      )
+
+      p 'User is updated, but not validated yet'
+
+      if @user.valid?
+        @user.save
+        p 'User is updated successfully!'
+      else
+        @error_messages = @user.errors.full_messages
+        erb :'user/edit'
+      end
+    else
+      redirect to '/start'
+    end
   end
 
   get '/user/:id/delete' do
