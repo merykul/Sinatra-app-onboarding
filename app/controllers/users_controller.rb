@@ -49,6 +49,9 @@ class UsersController < ApplicationController
   end
 
   get '/user/:id/edit' do
+    @user = User.find(params[:id])
+    p "Retrieved user id: #{params[:id]}"
+
     if current_user.role == 'admin'
       erb :'user/edit'
     else
