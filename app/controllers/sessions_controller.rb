@@ -23,6 +23,8 @@ class SessionsController < ApplicationController
     if user && user.authenticate(password)
       session[:user_id] = user.id
       puts 'Successful logged in!'
+      puts "User role: #{current_user.role}"
+      puts "User id: #{current_user.id}"
       redirect to '/homepage'
     else
       @error_messages = ["Invalid #{username} username or #{password} password!"]

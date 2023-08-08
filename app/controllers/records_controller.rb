@@ -6,12 +6,18 @@ class RecordsController < ApplicationController
   get '/people_list' do
     if logged_in?
       city_filter = params[:city]
+      user_id = current_user.id
+      if current_user.role == 'admin'
+        @records = Records.all
+      else
+        @records = Records.where(:user_id => user_id)
+      end
 
       if city_filter && !city_filter.strip.empty?
-        @records = Records.where('city' => "#{city_filter}")
+        @output = @records.where(:city => "#{city_filter}")
         erb :"../views/records/people_list"
       else
-        @records = Records.all
+        @output = @records
         erb :"../views/records/people_list"
       end
     else
