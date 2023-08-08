@@ -77,7 +77,7 @@ class RecordsController < ApplicationController
     p "Record is retrieved: id = #{params[:id]}"
     p "User id for requested record: #{current_user.id}"
 
-    if @record.user_id == current_user.id
+    if @record.user_id == current_user.id || current_user.role == 'admin'
       erb :"records/edit"
     else
       @error_messages = ['Record is not accessible for current user']
@@ -115,7 +115,7 @@ class RecordsController < ApplicationController
     p "Record is retrieved: id = #{params[:id]}"
     p "User id for requested record: #{current_user.id}"
 
-    if @record.user_id == current_user.id
+    if @record.user_id == current_user.id || current_user.role == 'admin'
       erb :"records/delete"
     else
       @error_messages = ['Record is not accessible for current user']
