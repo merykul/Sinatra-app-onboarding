@@ -72,50 +72,65 @@ class RecordsController < ApplicationController
   end
 
   # edit
-
   get '/records/:id/edit' do
-    if logged_in?
-      @record = Records.find(params[:id])
+    @record = Records.find(params[:id])
+    p "Record is retrieved: id = #{params[:id]}"
+    p "User id for requested record: #{current_user.id}"
+
+    if @record.user_id == current_user.id
       erb :"records/edit"
     else
-      redirect to '/start'
+      @error_messages = ['Record is not accessible for current user']
+      erb :'errors/record_access_error'
     end
   end
 
   patch '/records/:id/edit' do
-    @record = Records.find(params[:id])
-    puts "Record id is retrieved: #{params[:id]}"
-
-    @record.update(
-      first_name: params[:first_name],
-      second_name: params[:second_name],
-      city: params[:city],
-      date_of_birth: params[:date_of_birth]
-    )
-    puts 'Record is updated, but not validated yet'
-
-    if @record.valid?
-      @record.save
-      redirect '/people_list'
-    else
-      @error_messages = @record.errors.full_messages
-      erb :"records/edit"
-    end
-  end
-
-  get '/records/:id/delete' do
     if logged_in?
       @record = Records.find(params[:id])
-      erb :"records/delete"
+
+      @record.update(
+        first_name: params[:first_name],
+        second_name: params[:second_name],
+        city: params[:city],
+        date_of_birth: params[:date_of_birth]
+      )
+      p 'Record is updated, but not validated yet'
+
+      if @record.valid?
+        @record.save
+        redirect '/people_list'
+      else
+        @error_messages = @record.errors.full_messages
+        erb :"records/edit"
+      end
     else
       redirect to '/start'
     end
   end
 
-  delete '/records/:id/delete' do
+  # delete
+  get '/records/:id/delete' do
     @record = Records.find(params[:id])
-    @record.delete
+    p "Record is retrieved: id = #{params[:id]}"
+    p "User id for requested record: #{current_user.id}"
 
-    redirect '/people_list'
+    if @record.user_id == current_user.id
+      erb :"records/delete"
+    else
+      @error_messages = ['Record is not accessible for current user']
+      erb :'errors/record_access_error'
+    end
+  end
+
+  delete '/records/:id/delete' do
+    if logged_in?
+      @record = Records.find(params[:id])
+      @record.delete
+
+      redirect to '/people_list'
+    else
+      redirect to '/start'
+    end
   end
 end
