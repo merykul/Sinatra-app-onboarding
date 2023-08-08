@@ -89,6 +89,10 @@ class UsersController < ApplicationController
   end
 
   get '/user/:id/delete' do
+    @user = User.find(params[:id])
+    @user_records = Records.where(:user_id => params[:id])
+    p "Retrieved user id: #{params[:id]}"
+
     if current_user.role == 'admin'
       erb :'user/delete'
     else
@@ -97,6 +101,13 @@ class UsersController < ApplicationController
   end
 
   delete '/user/:id/delete' do
+    if logged_in?
+      @user = User.find(params[:id])
 
+      p 'User is deleted!'
+      redirect to '/manage_users'
+    else
+      redirect to '/start'
+    end
   end
 end
