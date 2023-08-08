@@ -19,11 +19,8 @@
 </div>
 
 <% if current_user.role == 'admin' %>
-  <h2 class="greeting">Manage users</h2>
   <div class="buttons">
-    <a href="/create_user" class="btn">Create User</a>
-    <a href="/edit_user" class="btn">Edit User</a>
-    <a href="/delete_user" class="btn">Delete User</a>
+    <a href="/manage_users" class="btn">Manage users</a>
   </div>
 <% end %>
 

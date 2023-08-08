@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Manage Users</title>
+  <link rel="stylesheet" type="text/css" href="/manage_users.css">
+</head>
+<body>
+<div class="greeting">
+  <h1>Hello, welcome to users management!</h1>
+</div>
+
+<table>
+  <tr>
+    <th>ID</th>
+    <th>First Name</th>
+    <th>Second Name</th>
+    <th>Username</th>
+    <th>Edit</th>
+    <th>Delete</th>
+  </tr>
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.id %></td>
+      <td><%= user.first_name %></td>
+      <td><%= user.second_name %></td>
+      <td><%= user.username %></td>
+      <td><a href="/user/<%= user.id %>/edit">Edit</a></td>
+      <td><a href="/user/<%= user.id %>/delete" data-confirm="Are you sure you want to delete this record?">Delete</a></td>
+    </tr>
+  <% end %>
+</table>
+<a href="/homepage" class="button">Go to home page</a>
+<a href="/create_user" class="button">Create user</a>
+</body>
+</html>

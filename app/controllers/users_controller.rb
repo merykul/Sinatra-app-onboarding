@@ -2,6 +2,15 @@ require_relative './application_controller'
 
 class UsersController < ApplicationController
 
+  get '/manage_users' do
+    if current_user.role == 'admin'
+      @users = User.where(:role => 'user')
+      erb :'user/manage'
+    else
+      erb :'errors/users_profiles_access_error'
+    end
+  end
+
   get '/create_user' do
     if current_user.role == 'admin'
       erb :'user/create'
