@@ -44,17 +44,20 @@ class RecordsController < ApplicationController
     second_name = params[:second_name]
     city = params[:city]
     date_of_birth = params[:date_of_birth]
+    user_id = current_user.id
 
     record = Records.new(
       first_name: first_name,
       second_name: second_name,
       city: city,
-      date_of_birth: date_of_birth
+      date_of_birth: date_of_birth,
+      user_id: user_id
     )
 
     if record.valid?
       record.save
       p "Person is added to the records! Full name: #{first_name} #{second_name}, City: #{city}"
+      p "Current user id: #{current_user.id}"
       redirect('/people_list')
     else
       @error_messages = record.errors.full_messages
