@@ -110,6 +110,7 @@ class UsersController < ApplicationController
       if @user.valid?
         @user.save
         p 'User is updated successfully!'
+        redirect to '/manage_users'
       else
         @error_messages = @user.errors.full_messages
         p 'ERROR'
