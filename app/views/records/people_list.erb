@@ -19,6 +19,7 @@
     <th>Second Name</th>
     <th>City</th>
     <th>Date of Birth</th>
+    <th>User ID</th>
     <th>Edit</th>
     <th>Delete</th>
   </tr>
@@ -28,6 +29,7 @@
       <td><%= record.second_name %></td>
       <td><%= record.city %></td>
       <td><%= record.date_of_birth %></td>
+      <td><%= record.user_id %></td>
       <td><a href="/records/<%= record.id %>/edit">Edit</a></td>
       <td><a href="/records/<%= record.id %>/delete" data-confirm="Are you sure you want to delete this record?">Delete</a></td>
     </tr>
