@@ -13,8 +13,7 @@
     <% end %>
   </div>
 <% end %>
-<form action="/user/<%= @user.id %>/delete" method="post">
-  <input type="hidden" name="_method" value="delete">
+<form>
   <label for="first_name">First Name:</label>
   <input type="text" name="first_name" value="<%= @user.first_name %>" disabled>
   <br>
@@ -47,9 +46,9 @@
   <% end %>
 </table>
 <div class="buttons">
-  <a href="/" class="btn">Delete with records</a>
-  <a href="/" class="btn">Transfer records and delete user</a>
-  <a href="/" class="btn">Create new user and transfer records, then delete user</a>
+  <a href="/user/<%= @user.id %>/delete/with_records" class="btn">Delete with records</a>
+  <a href="/user/<%= @user.id %>/delete/with_records_transfer" class="btn">Transfer records and delete user</a>
+  <a href="/user/<%= @user.id %>/delete/with_records_transfer_to_new_user" class="btn">Create new user and transfer records, then delete user</a>
   <a href="/manage_users" class="btn">Cancel</a>
 </div>
 </body>
