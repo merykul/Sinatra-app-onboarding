@@ -56,6 +56,7 @@ class SessionsController < ApplicationController
     first_name = params[:first_name]
     second_name = params[:second_name]
     password_confirmation = params[:password_confirmation]
+    password_status = 'permanent'
 
     @error_messages = ["Password confirmation doesn't match password"] unless password_confirmation == password
     @user = User.new(
@@ -63,7 +64,8 @@ class SessionsController < ApplicationController
       password: password,
       first_name: first_name,
       second_name: second_name,
-      password_confirmation: password_confirmation
+      password_confirmation: password_confirmation,
+      password_status: password_status
     )
 
     if @user.valid?
