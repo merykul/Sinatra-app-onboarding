@@ -133,11 +133,15 @@ class UsersController < ApplicationController
     end
   end
 
-  delete '/user/:id/delete' do
+  get '/user/:id/delete/with_records' do
     if logged_in?
       @user = User.find(params[:id])
+      @records = Records.where(:user_id => params[:id])
+      username = @user.username
 
-      p 'User is deleted!'
+      @user.delete_with_records(@user, @records)
+
+      p "#{username} user is deleted with records!"
       redirect to '/manage_users'
     else
       redirect to '/start'
