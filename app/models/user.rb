@@ -12,4 +12,18 @@ class User < ActiveRecord::Base
   def temporary_password?
     password_status == 'temporary'
   end
+
+  def delete_with_records(user, records)
+    ActiveRecord::Base.transaction do
+      records.destroy_all
+      user.delete
+    end
+  end
+
+  def delete_with_records_transfer(user, records, user_to_accept)
+    ActiveRecord::Base.transaction do
+      records.update(user_id: user_to_accept)
+      user.destroy
+    end
+  end
 end
