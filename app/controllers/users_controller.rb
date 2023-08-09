@@ -147,4 +147,38 @@ class UsersController < ApplicationController
       redirect to '/start'
     end
   end
+
+  get '/user/:id/delete/with_records_transfer' do
+    if logged_in?
+      @user = User.find(params[:id])
+      @records = Records.where(:user_id => params[:id])
+      @users = User.where(:role => 'user').where.not(:id => params[:id])
+
+      erb :'user/delete_with_records_transfer'
+    else
+      redirect to '/start'
+    end
+  end
+
+  post '/user/:id/delete/with_records_transfer' do
+    @user = User.find(params[:id])
+    @records = Records.where(:user_id => params[:id])
+    username = @user.username
+    selected_user_id = params[:selected_user_id]
+    p "Selected user ID: #{selected_user_id}"
+
+    @user.delete_with_records_transfer(@user, @records, selected_user_id)
+
+    p "#{username} is deleted and records are transferred to user with id: #{selected_user_id}!"
+    redirect to '/manage_users'
+  end
+
+  get '/user/:id/delete/with_records_transfer_to_new_user' do
+    if logged_in?
+      # to do
+      redirect to '/manage_users'
+    else
+      redirect to '/start'
+    end
+  end
 end
