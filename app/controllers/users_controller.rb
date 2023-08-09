@@ -98,13 +98,8 @@ class UsersController < ApplicationController
       first_name = params[:first_name]
       second_name = params[:second_name]
       username = params[:username]
-      # TODO: Manage editing without password validation
-      if params[:password].blank? && params[:password_confirmation].blank?
-        params.delete('password')
-        params.delete('password_confirmation')
-      end
 
-      @user.update(
+      @user.update_columns(
         first_name: first_name,
         second_name: second_name,
         username: username
@@ -117,6 +112,7 @@ class UsersController < ApplicationController
         p 'User is updated successfully!'
       else
         @error_messages = @user.errors.full_messages
+        p 'ERROR'
         erb :'user/edit'
       end
     else

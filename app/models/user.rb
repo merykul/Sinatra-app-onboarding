@@ -6,8 +6,8 @@ class User < ActiveRecord::Base
   validates :username, presence: true, uniqueness: true, length: { within: 4..20, message: 'username length should be 4-20 symbols' }, on: :create
   validates :first_name, presence: true
   validates :second_name, presence: true
-  validates :password, presence: true, length: { within: 6..15, message: 'password must have length from 6 to 15 sym.' }
-  validates :password_confirmation, presence: true
+  validates :password, presence: true, length: { within: 6..15, message: 'password must have length from 6 to 15 sym.' }, allow_nil: true
+  validates :password_confirmation, presence: true, allow_nil: true
 
   def temporary_password?
     password_status == 'temporary'
