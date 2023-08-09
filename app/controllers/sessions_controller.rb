@@ -22,10 +22,14 @@ class SessionsController < ApplicationController
     user = User.find_by(:username => username)
     if user && user.authenticate(password)
       session[:user_id] = user.id
-      puts 'Successful logged in!'
-      puts "User role: #{current_user.role}"
-      puts "User id: #{current_user.id}"
-      redirect to '/homepage'
+      if user.temporary_password?
+        redirect to '/set_password'
+      else
+        puts 'Successful logged in!'
+        puts "User role: #{current_user.role}"
+        puts "User id: #{current_user.id}"
+        redirect to '/homepage'
+      end
     else
       @error_messages = ["Invalid #{username} username or #{password} password!"]
       erb :'user/login_page'

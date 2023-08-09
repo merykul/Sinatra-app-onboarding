@@ -26,13 +26,15 @@ class UsersController < ApplicationController
       username = params[:username]
       password = params[:password]
       password_confirmation = params[:password_confirmation]
+      password_status = 'temporary'
 
       user = User.create(
         first_name: first_name,
         second_name: second_name,
         username: username,
         password: password,
-        password_confirmation: password_confirmation
+        password_confirmation: password_confirmation,
+        password_status: password_status
       )
 
       if user.valid?
@@ -45,6 +47,36 @@ class UsersController < ApplicationController
       end
     else
       redirect to '/start'
+    end
+  end
+
+  get '/set_password' do
+    @user = User.find(session[:user_id])
+    @password_status = @user.password_status
+    p "User id: #{@user.id}"
+    p "Password status: #{@password_status}"
+    erb :'user/set_password'
+  end
+
+  patch '/set_password' do
+    username = params[:new_username]
+    new_password = params[:new_password]
+    password_confirmation = params[:confirm_password]
+    @user = User.find(session[:user_id])
+
+    p "New username: #{username}"
+
+    @user.update(password: new_password, password_confirmation: password_confirmation, username: username, password_status: 'permanent')
+
+    if @user.temporary_password?
+      p 'Error while updating user'
+      erb :'user/set_password'
+    else
+      @user.save
+      p 'New password and username is set successfully!'
+      p "Password status: #{@user.password_status}"
+      p "New username: #{@user.username}"
+      redirect to '/homepage'
     end
   end
 
@@ -66,15 +98,16 @@ class UsersController < ApplicationController
       first_name = params[:first_name]
       second_name = params[:second_name]
       username = params[:username]
-      #TODO: Manage editing without password validation
-      password = nil
+      # TODO: Manage editing without password validation
+      if params[:password].blank? && params[:password_confirmation].blank?
+        params.delete('password')
+        params.delete('password_confirmation')
+      end
 
       @user.update(
         first_name: first_name,
         second_name: second_name,
-        username: username,
-        password: password,
-        password_confirmation: password
+        username: username
       )
 
       p 'User is updated, but not validated yet'
