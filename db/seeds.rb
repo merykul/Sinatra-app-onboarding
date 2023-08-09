@@ -48,7 +48,7 @@ puts '🌱 Generating records with Ivano-Frankivsk as a city'
   second_name = Faker::Name.last_name
   city = 'Ivano-Frankivsk'
   date_of_birth = Faker::Date.birthday
-  user_id = 1
+  user_id = 3
   Records.create(first_name: first_name,
                  second_name: second_name,
                  city: city,
