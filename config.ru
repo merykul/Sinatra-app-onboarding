@@ -17,6 +17,9 @@ require_relative './app/controllers/sessions_controller'
 require_relative './app/controllers/download_controller'
 require_relative './app/controllers/users_controller'
 
+# Controller helper
+require_relative './app/controllers/controller_helper.rb'
+
 # Models
 require_relative 'app/models/records'
 require_relative 'app/models/city'

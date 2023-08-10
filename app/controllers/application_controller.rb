@@ -3,11 +3,13 @@ require 'sinatra/reloader' if development?
 require 'sinatra/activerecord'
 require 'dotenv/load'
 require 'axlsx'
+require_relative '../controllers/controller_helper'
 require_relative '../models/city'
 require_relative '../models/user'
 require_relative '../models/records'
 
 class ApplicationController < Sinatra::Base
+  include ControllerHelper
 
   # global settings
   configure do
