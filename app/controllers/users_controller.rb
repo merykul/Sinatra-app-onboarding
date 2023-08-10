@@ -59,7 +59,6 @@ class UsersController < ApplicationController
 
   get '/user/:id/edit' do
     @user = find_user(:id, params[:id])
-    p "Retrieved user id: #{params[:id]}"
 
     if_user_display_access_error
     erb :'user/edit'
