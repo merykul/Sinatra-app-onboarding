@@ -44,32 +44,17 @@ class UsersController < ApplicationController
 
   get '/set_password' do
     @user = User.find(session[:user_id])
-    @password_status = @user.password_status
-    p "User id: #{@user.id}"
-    p "Password status: #{@password_status}"
     erb :'user/set_password'
   end
 
   patch '/set_password' do
-    username = params[:new_username]
-    new_password = params[:new_password]
-    password_confirmation = params[:confirm_password]
+    p "New username: #{params[:new_username]}"
     @user = User.find(session[:user_id])
 
-    p "New username: #{username}"
-
-    @user.update(password: new_password, password_confirmation: password_confirmation, username: username, password_status: 'permanent')
-
-    if @user.temporary_password?
-      p 'Error while updating user'
-      erb :'user/set_password'
-    else
-      @user.save
-      p 'New password and username is set successfully!'
-      p "Password status: #{@user.password_status}"
-      p "New username: #{@user.username}"
-      redirect to '/homepage'
-    end
+    update_user(@user, :'user/set_password', { password: params[:new_password],
+                                               password_confirmation: params[:confirm_password],
+                                               username: params[:new_username],
+                                               password_status: 'permanent' }, '/homepage')
   end
 
   get '/user/:id/edit' do
@@ -110,7 +95,6 @@ class UsersController < ApplicationController
   get '/user/:id/delete' do
     @user = find_user(:id, params[:id])
     @user_records = Records.where(:user_id => params[:id])
-    p "Retrieved user id: #{params[:id]}"
 
     if_user_display_access_error
     erb :'user/delete'
