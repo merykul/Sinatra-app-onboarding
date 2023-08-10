@@ -19,7 +19,7 @@ class SessionsController < ApplicationController
     username = params[:username]
     password = params[:password]
 
-    user = User.find_by(:username => username)
+    user = find_user(:username, username)
     if user && user.authenticate(password)
       session[:user_id] = user.id
       if user.temporary_password?
@@ -79,10 +79,6 @@ class SessionsController < ApplicationController
   end
 
   get '/homepage' do
-    if logged_in?
-      erb :homepage
-    else
-      erb :'user/login_page'
-    end
+    redirect_if_not_logged_in
   end
 end
