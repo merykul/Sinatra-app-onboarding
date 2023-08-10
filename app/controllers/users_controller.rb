@@ -3,6 +3,7 @@ require_relative './application_controller'
 class UsersController < ApplicationController
 
   get '/manage_users' do
+    redirect_if_not_logged_in
     if current_user.role == 'admin'
       @users = User.where(:role => 'user')
       erb :'user/manage'
@@ -16,33 +17,30 @@ class UsersController < ApplicationController
   end
 
   post '/create_user_form' do
-    if logged_in?
-      first_name = params[:first_name]
-      second_name = params[:second_name]
-      username = params[:username]
-      password = params[:password]
-      password_confirmation = params[:password_confirmation]
-      password_status = 'temporary'
+    redirect_if_not_logged_in
+    first_name = params[:first_name]
+    second_name = params[:second_name]
+    username = params[:username]
+    password = params[:password]
+    password_confirmation = params[:password_confirmation]
+    password_status = 'temporary'
 
-      user = User.create(
-        first_name: first_name,
-        second_name: second_name,
-        username: username,
-        password: password,
-        password_confirmation: password_confirmation,
-        password_status: password_status
-      )
+    user = User.create(
+      first_name: first_name,
+      second_name: second_name,
+      username: username,
+      password: password,
+      password_confirmation: password_confirmation,
+      password_status: password_status
+    )
 
-      if user.valid?
-        user.save
-        p "User is create successfully! Full name: #{first_name} #{second_name}, username: #{username}, temporary password: #{password}"
-        redirect to '/manage_users'
-      else
-        @error_messages = user.errors.full_messages
-        erb :'user/create'
-      end
+    if user.valid?
+      user.save
+      p "User is create successfully! Full name: #{first_name} #{second_name}, username: #{username}, temporary password: #{password}"
+      redirect to '/manage_users'
     else
-      redirect to '/start'
+      @error_messages = user.errors.full_messages
+      erb :'user/create'
     end
   end
 
@@ -84,32 +82,29 @@ class UsersController < ApplicationController
   end
 
   patch '/user/:id/edit' do
-    if logged_in?
-      @user = User.find_by(:id => params[:id])
+    redirect_if_not_logged_in
+    @user = User.find_by(:id => params[:id])
 
-      first_name = params[:first_name]
-      second_name = params[:second_name]
-      username = params[:username]
+    first_name = params[:first_name]
+    second_name = params[:second_name]
+    username = params[:username]
 
-      @user.update_columns(
-        first_name: first_name,
-        second_name: second_name,
-        username: username
-      )
+    @user.update_columns(
+      first_name: first_name,
+      second_name: second_name,
+      username: username
+    )
 
-      p 'User is updated, but not validated yet'
+    p 'User is updated, but not validated yet'
 
-      if @user.valid?
-        @user.save
-        p 'User is updated successfully!'
-        redirect to '/manage_users'
-      else
-        @error_messages = @user.errors.full_messages
-        p 'ERROR'
-        erb :'user/edit'
-      end
+    if @user.valid?
+      @user.save
+      p 'User is updated successfully!'
+      redirect to '/manage_users'
     else
-      redirect to '/start'
+      @error_messages = @user.errors.full_messages
+      p 'ERROR'
+      erb :'user/edit'
     end
   end
 
@@ -122,30 +117,24 @@ class UsersController < ApplicationController
   end
 
   get '/user/:id/delete/with_records' do
-    if logged_in?
-      @user = User.find(params[:id])
-      @records = Records.where(:user_id => params[:id])
-      username = @user.username
+    redirect_if_not_logged_in
+    @user = User.find(params[:id])
+    @records = Records.where(:user_id => params[:id])
+    username = @user.username
 
-      @user.delete_with_records(@user, @records)
+    @user.delete_with_records(@user, @records)
 
-      p "#{username} user is deleted with records!"
-      redirect to '/manage_users'
-    else
-      redirect to '/start'
-    end
+    p "#{username} user is deleted with records!"
+    redirect to '/manage_users'
   end
 
   get '/user/:id/delete/with_records_transfer' do
-    if logged_in?
-      @user = User.find(params[:id])
-      @records = Records.where(:user_id => params[:id])
-      @users = User.where(:role => 'user').where.not(:id => params[:id])
+    redirect_if_not_logged_in
+    @user = User.find(params[:id])
+    @records = Records.where(:user_id => params[:id])
+    @users = User.where(:role => 'user').where.not(:id => params[:id])
 
-      erb :'user/delete_with_records_transfer'
-    else
-      redirect to '/start'
-    end
+    erb :'user/delete_with_records_transfer'
   end
 
   post '/user/:id/delete/with_records_transfer' do
