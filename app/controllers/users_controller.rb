@@ -4,16 +4,14 @@ class UsersController < ApplicationController
 
   get '/manage_users' do
     redirect_if_not_logged_in
-    if current_user.role == 'admin'
-      @users = User.where(:role => 'user')
-      erb :'user/manage'
-    else
-      erb :'errors/users_profiles_access_error'
-    end
+    if_user_display_access_error
+    @users = User.where(:role => 'user')
+    erb :'user/manage'
   end
 
   get '/create_user' do
-    erb(current_user.role == 'admin' ? :'user/create' : :'errors/users_profiles_access_error')
+    if_user_display_access_error
+    erb :'user/create'
   end
 
   post '/create_user_form' do
@@ -75,15 +73,16 @@ class UsersController < ApplicationController
   end
 
   get '/user/:id/edit' do
-    @user = User.find(params[:id])
+    @user = find_user(:id, params[:id])
     p "Retrieved user id: #{params[:id]}"
 
-    erb(current_user.role == 'admin' ? :'user/edit' : :'errors/users_profiles_access_error')
+    if_user_display_access_error
+    erb :'user/edit'
   end
 
   patch '/user/:id/edit' do
     redirect_if_not_logged_in
-    @user = User.find_by(:id => params[:id])
+    @user = find_user(:id, params[:id])
 
     first_name = params[:first_name]
     second_name = params[:second_name]
@@ -109,16 +108,17 @@ class UsersController < ApplicationController
   end
 
   get '/user/:id/delete' do
-    @user = User.find(params[:id])
+    @user = find_user(:id, params[:id])
     @user_records = Records.where(:user_id => params[:id])
     p "Retrieved user id: #{params[:id]}"
 
-    erb(current_user.role == 'admin' ? :'user/delete' : :'errors/users_profiles_access_error')
+    if_user_display_access_error
+    erb :'user/delete'
   end
 
   get '/user/:id/delete/with_records' do
     redirect_if_not_logged_in
-    @user = User.find(params[:id])
+    @user = find_user(:id, params[:id])
     @records = Records.where(:user_id => params[:id])
     username = @user.username
 
@@ -130,7 +130,7 @@ class UsersController < ApplicationController
 
   get '/user/:id/delete/with_records_transfer' do
     redirect_if_not_logged_in
-    @user = User.find(params[:id])
+    @user = find_user(:id, params[:id])
     @records = Records.where(:user_id => params[:id])
     @users = User.where(:role => 'user').where.not(:id => params[:id])
 
@@ -138,7 +138,7 @@ class UsersController < ApplicationController
   end
 
   post '/user/:id/delete/with_records_transfer' do
-    @user = User.find(params[:id])
+    @user = find_user(:id, params[:id])
     @records = Records.where(:user_id => params[:id])
     username = @user.username
     selected_user_id = params[:selected_user_id]
