@@ -25,6 +25,12 @@ class ApplicationController < Sinatra::Base
     use Rack::MethodOverride
   end
 
+  # Access errors routes
+
+  get '/users_management_access_error' do
+    erb :'errors/users_profiles_access_error'
+  end
+
   # Error handling pages
   error 404 do
     erb :'errors/error_404'
