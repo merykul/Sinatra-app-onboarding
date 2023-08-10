@@ -24,6 +24,7 @@ module ControllerHelper
   end
 
   def find_user(param, value)
-    User.find_by(param => value)
+    user = User.find_by(param => value)
+    p "Retrieved user id: #{user.id}, Full name: #{user.first_name}, #{user.second_name}"
   end
 end
