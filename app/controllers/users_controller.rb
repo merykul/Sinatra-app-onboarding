@@ -12,11 +12,7 @@ class UsersController < ApplicationController
   end
 
   get '/create_user' do
-    if current_user.role == 'admin'
-      erb :'user/create'
-    else
-      erb :'errors/users_profiles_access_error'
-    end
+    erb(current_user.role == 'admin' ? :'user/create' : :'errors/users_profiles_access_error')
   end
 
   post '/create_user_form' do
@@ -84,11 +80,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     p "Retrieved user id: #{params[:id]}"
 
-    if current_user.role == 'admin'
-      erb :'user/edit'
-    else
-      erb :'errors/users_profiles_access_error'
-    end
+    erb(current_user.role == 'admin' ? :'user/edit' : :'errors/users_profiles_access_error')
   end
 
   patch '/user/:id/edit' do
@@ -126,11 +118,7 @@ class UsersController < ApplicationController
     @user_records = Records.where(:user_id => params[:id])
     p "Retrieved user id: #{params[:id]}"
 
-    if current_user.role == 'admin'
-      erb :'user/delete'
-    else
-      erb :'errors/users_profiles_access_error'
-    end
+    erb(current_user.role == 'admin' ? :'user/delete' : :'errors/users_profiles_access_error')
   end
 
   get '/user/:id/delete/with_records' do
