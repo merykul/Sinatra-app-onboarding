@@ -4,40 +4,31 @@ class RecordsController < ApplicationController
 
   # index
   get '/people_list' do
-    if logged_in?
-      city_filter = params[:city]
-      user_id = current_user.id
-      @records = current_user.role == 'admin' ? Records.all : Records.where(:user_id => user_id)
+    redirect_if_not_logged_in
+    city_filter = params[:city]
+    user_id = current_user.id
+    @records = current_user.role == 'admin' ? Records.all : Records.where(:user_id => user_id)
 
-      if city_filter && !city_filter.strip.empty?
-        @output = @records.where(:city => "#{city_filter}")
-        erb :'../views/records/people_list'
-      else
-        @output = @records
-        erb :'../views/records/people_list'
-      end
+    if city_filter && !city_filter.strip.empty?
+      @output = @records.where(:city => "#{city_filter}")
+      erb :'../views/records/people_list'
     else
-      redirect to '/start'
+      @output = @records
+      erb :'../views/records/people_list'
     end
   end
 
   # statistics
   get '/cities_statistics' do
-    if logged_in?
-      @statistics = City.all
-      erb(:"cities/statistics")
-    else
-      redirect to '/start'
-    end
+    redirect_if_not_logged_in
+    @statistics = City.all
+    erb(:"cities/statistics")
   end
 
   # to create record:
   get '/added_person_form' do
-    if logged_in?
-      erb :create_person_form
-    else
-      redirect to '/start'
-    end
+    redirect_if_not_logged_in
+    erb :create_person_form
   end
 
   # create_person_form
@@ -82,26 +73,23 @@ class RecordsController < ApplicationController
   end
 
   patch '/records/:id/edit' do
-    if logged_in?
-      @record = Records.find(params[:id])
+    redirect_if_not_logged_in
+    @record = Records.find(params[:id])
 
-      @record.update(
-        first_name: params[:first_name],
-        second_name: params[:second_name],
-        city: params[:city],
-        date_of_birth: params[:date_of_birth]
-      )
-      p 'Record is updated, but not validated yet'
+    @record.update(
+      first_name: params[:first_name],
+      second_name: params[:second_name],
+      city: params[:city],
+      date_of_birth: params[:date_of_birth]
+    )
+    p 'Record is updated, but not validated yet'
 
-      if @record.valid?
-        @record.save
-        redirect '/people_list'
-      else
-        @error_messages = @record.errors.full_messages
-        erb :"records/edit"
-      end
+    if @record.valid?
+      @record.save
+      redirect '/people_list'
     else
-      redirect to '/start'
+      @error_messages = @record.errors.full_messages
+      erb :"records/edit"
     end
   end
 
@@ -120,13 +108,9 @@ class RecordsController < ApplicationController
   end
 
   delete '/records/:id/delete' do
-    if logged_in?
-      @record = Records.find(params[:id])
-      @record.delete
-
-      redirect to '/people_list'
-    else
-      redirect to '/start'
-    end
+    redirect_if_not_logged_in
+    @record = Records.find(params[:id])
+    @record.delete
+    redirect to '/people_list'
   end
 end
