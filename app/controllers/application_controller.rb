@@ -23,16 +23,6 @@ class ApplicationController < Sinatra::Base
     use Rack::MethodOverride
   end
 
-  # main route
-  get '/' do
-    if logged_in?
-      @user = current_user
-      erb :homepage
-    else
-      redirect to '/log_in_form'
-    end
-  end
-
   # Error handling pages
   error 404 do
     erb :'errors/error_404'
@@ -64,7 +54,7 @@ class ApplicationController < Sinatra::Base
     end
 
     def redirect_if_not_logged_in
-      redirect to '/login' unless logged_in?
+      redirect to '/start' unless logged_in?
     end
   end
 end
