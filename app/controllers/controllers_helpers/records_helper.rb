@@ -31,9 +31,9 @@ module RecordsHelper
 
   private
 
-  def check_access_to_records(record)
+  def check_access_to_records(record, success_route)
     if record.user_id == current_user.id || if_admin?
-      erb :"records/delete"
+      erb success_route
     else
       @error_messages = ['Record is not accessible for current user']
       erb :'errors/record_access_error'

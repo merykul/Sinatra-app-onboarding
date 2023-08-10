@@ -9,7 +9,7 @@ class RecordsController < ApplicationController
     redirect_if_not_logged_in
     city_filter = params[:city]
     user_id = current_user.id
-    @records = if_admin? ? Records.all : Records.where(:user_id => user_id)
+    @records = current_user.role == 'admin' ? Records.all : Records.where(:user_id => user_id)
 
     @output = if city_filter && !city_filter.strip.empty?
                 @records.where(:city => "#{city_filter}")
@@ -48,7 +48,7 @@ class RecordsController < ApplicationController
     p "Record is retrieved: id = #{params[:id]}"
     p "User id for requested record: #{current_user.id}"
 
-    check_access_to_records(@record)
+    check_access_to_records(@record, :'records/edit')
   end
 
   patch '/records/:id/edit' do
@@ -67,7 +67,7 @@ class RecordsController < ApplicationController
     p "Record is retrieved: id = #{params[:id]}"
     p "User id for requested record: #{current_user.id}"
 
-    check_access_to_records(@record)
+    check_access_to_records(@record, :'records/delete')
   end
 
   delete '/records/:id/delete' do
