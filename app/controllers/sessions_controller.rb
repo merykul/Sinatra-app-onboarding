@@ -1,6 +1,7 @@
 require_relative 'application_controller'
 
 class SessionsController < ApplicationController
+  include UserHelper
 
   get '/start' do
     erb :'user/start_page'
@@ -51,31 +52,17 @@ class SessionsController < ApplicationController
   end
 
   post '/sign_up' do
-    username = params[:username]
-    password = params[:password]
-    first_name = params[:first_name]
-    second_name = params[:second_name]
     password_confirmation = params[:password_confirmation]
-    password_status = 'permanent'
+    password = params[:password]
 
     @error_messages = ["Password confirmation doesn't match password"] unless password_confirmation == password
-    @user = User.new(
-      username: username,
-      password: password,
-      first_name: first_name,
-      second_name: second_name,
-      password_confirmation: password_confirmation,
-      password_status: password_status
-    )
 
-    if @user.valid?
-      @user.save
-      session[:user_id] = @user.id
-      redirect '/homepage'
-    else
-      @error_messages = @user.errors.full_messages
-      erb :'user/sign_up_page'
-    end
+    create_user('/homepage', { username: params[:username],
+                               password: params[:password],
+                               first_name: params[:first_name],
+                               second_name: params[:second_name],
+                               password_confirmation: params[:password_confirmation],
+                               password_status: 'permanent' }, :'user/sign_up_page')
   end
 
   get '/homepage' do

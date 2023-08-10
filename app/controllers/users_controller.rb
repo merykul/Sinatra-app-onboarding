@@ -16,30 +16,12 @@ class UsersController < ApplicationController
 
   post '/create_user_form' do
     redirect_if_not_logged_in
-    first_name = params[:first_name]
-    second_name = params[:second_name]
-    username = params[:username]
-    password = params[:password]
-    password_confirmation = params[:password_confirmation]
-    password_status = 'temporary'
-
-    user = User.create(
-      first_name: first_name,
-      second_name: second_name,
-      username: username,
-      password: password,
-      password_confirmation: password_confirmation,
-      password_status: password_status
-    )
-
-    if user.valid?
-      user.save
-      p "User is create successfully! Full name: #{first_name} #{second_name}, username: #{username}, temporary password: #{password}"
-      redirect to '/manage_users'
-    else
-      @error_messages = user.errors.full_messages
-      erb :'user/create'
-    end
+    create_user('/manage_users', { first_name: params[:first_name],
+                                   second_name: params[:second_name],
+                                   username: params[:username],
+                                   password: params[:password],
+                                   password_confirmation: params[:password_confirmation],
+                                   password_status: 'temporary' }, :'user/create')
   end
 
   get '/set_password' do
@@ -59,7 +41,6 @@ class UsersController < ApplicationController
 
   get '/user/:id/edit' do
     @user = find_user(:id, params[:id])
-
     if_user_display_access_error
     erb :'user/edit'
   end
@@ -67,28 +48,9 @@ class UsersController < ApplicationController
   patch '/user/:id/edit' do
     redirect_if_not_logged_in
     @user = find_user(:id, params[:id])
-
-    first_name = params[:first_name]
-    second_name = params[:second_name]
-    username = params[:username]
-
-    @user.update_columns(
-      first_name: first_name,
-      second_name: second_name,
-      username: username
-    )
-
-    p 'User is updated, but not validated yet'
-
-    if @user.valid?
-      @user.save
-      p 'User is updated successfully!'
-      redirect to '/manage_users'
-    else
-      @error_messages = @user.errors.full_messages
-      p 'ERROR'
-      erb :'user/edit'
-    end
+    update_user(@user, :'user/edit', { first_name: params[:first_name],
+                                       second_name: params[:second_name],
+                                       username: params[:username] }, '/manage_users')
   end
 
   get '/user/:id/delete' do
