@@ -16,12 +16,14 @@ class UsersController < ApplicationController
 
   post '/create_user_form' do
     redirect_if_not_logged_in
-    create_user('/manage_users', { first_name: params[:first_name],
-                                   second_name: params[:second_name],
-                                   username: params[:username],
-                                   password: params[:password],
-                                   password_confirmation: params[:password_confirmation],
-                                   password_status: 'temporary' }, :'user/create')
+    opts = { first_name: params[:first_name],
+             second_name: params[:second_name],
+             username: params[:username],
+             password: params[:password],
+             password_confirmation: params[:password_confirmation],
+             password_status: 'temporary' }
+
+    create_user('/manage_users', opts, :'user/create')
   end
 
   get '/set_password' do
@@ -32,11 +34,12 @@ class UsersController < ApplicationController
   patch '/set_password' do
     p "New username: #{params[:new_username]}"
     @user = User.find(session[:user_id])
+    opts = { password: params[:new_password],
+             password_confirmation: params[:confirm_password],
+             username: params[:new_username],
+             password_status: 'permanent' }
 
-    update_user(@user, :'user/set_password', { password: params[:new_password],
-                                               password_confirmation: params[:confirm_password],
-                                               username: params[:new_username],
-                                               password_status: 'permanent' }, '/homepage')
+    update_user(@user, :'user/set_password', opts, '/homepage')
   end
 
   get '/user/:id/edit' do
@@ -48,9 +51,11 @@ class UsersController < ApplicationController
   patch '/user/:id/edit' do
     redirect_if_not_logged_in
     @user = find_user(:id, params[:id])
-    update_user(@user, :'user/edit', { first_name: params[:first_name],
-                                       second_name: params[:second_name],
-                                       username: params[:username] }, '/manage_users')
+    opts = { first_name: params[:first_name],
+             second_name: params[:second_name],
+             username: params[:username] }
+
+    update_user(@user, :'user/edit', opts, '/manage_users')
   end
 
   get '/user/:id/delete' do

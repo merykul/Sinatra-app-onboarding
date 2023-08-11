@@ -54,15 +54,16 @@ class SessionsController < ApplicationController
   post '/sign_up' do
     password_confirmation = params[:password_confirmation]
     password = params[:password]
+    opts = { username: params[:username],
+             password: params[:password],
+             first_name: params[:first_name],
+             second_name: params[:second_name],
+             password_confirmation: params[:password_confirmation],
+             password_status: 'permanent' }
 
     @error_messages = ["Password confirmation doesn't match password"] unless password_confirmation == password
 
-    create_user('/homepage', { username: params[:username],
-                               password: params[:password],
-                               first_name: params[:first_name],
-                               second_name: params[:second_name],
-                               password_confirmation: params[:password_confirmation],
-                               password_status: 'permanent' }, :'user/sign_up_page')
+    create_user('/homepage', opts, :'user/sign_up_page')
   end
 
   get '/homepage' do

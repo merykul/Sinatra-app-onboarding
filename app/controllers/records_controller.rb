@@ -11,11 +11,7 @@ class RecordsController < ApplicationController
     user_id = current_user.id
     @records = current_user.role == 'admin' ? Records.all : Records.where(:user_id => user_id)
 
-    @output = if city_filter && !city_filter.strip.empty?
-                @records.where(:city => "#{city_filter}")
-              else
-                @records
-              end
+    @output = city_filter && !city_filter.strip.empty? ? @records.where(:city => "#{city_filter}") : @records
     erb :'../views/records/people_list'
   end
 
@@ -35,11 +31,13 @@ class RecordsController < ApplicationController
   # create_person_form
   post '/create_person' do
     redirect_if_not_logged_in
-    create_record('/people_list', { first_name: params[:first_name],
-                                    second_name: params[:second_name],
-                                    city: params[:city],
-                                    date_of_birth: params[:date_of_birth],
-                                    user_id: current_user.id }, :create_person_form)
+    opts = { first_name: params[:first_name],
+             second_name: params[:second_name],
+             city: params[:city],
+             date_of_birth: params[:date_of_birth],
+             user_id: current_user.id }
+
+    create_record('/people_list', opts, :create_person_form)
   end
 
   # edit
@@ -54,11 +52,12 @@ class RecordsController < ApplicationController
   patch '/records/:id/edit' do
     redirect_if_not_logged_in
     @record = Records.find(params[:id])
+    opts = { first_name: params[:first_name],
+             second_name: params[:second_name],
+             city: params[:city],
+             date_of_birth: params[:date_of_birth] }
 
-    update_record(@record, '/people_list', { first_name: params[:first_name],
-                                             second_name: params[:second_name],
-                                             city: params[:city],
-                                             date_of_birth: params[:date_of_birth] }, :'records/edit')
+    update_record(@record, '/people_list', opts, :'records/edit')
   end
 
   # delete
