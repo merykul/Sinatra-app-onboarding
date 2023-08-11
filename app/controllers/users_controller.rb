@@ -23,7 +23,7 @@ class UsersController < ApplicationController
              password_confirmation: params[:password_confirmation],
              password_status: 'temporary' }
 
-    create_user('/manage_users', opts, :'user/create')
+    create_user(opts, '/manage_users', :'user/create')
   end
 
   get '/set_password' do

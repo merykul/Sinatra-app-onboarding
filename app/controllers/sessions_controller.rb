@@ -63,7 +63,7 @@ class SessionsController < ApplicationController
 
     @error_messages = ["Password confirmation doesn't match password"] unless password_confirmation == password
 
-    create_user('/homepage', opts, :'user/sign_up_page')
+    create_user(opts, '/homepage', :'user/sign_up_page')
   end
 
   get '/homepage' do

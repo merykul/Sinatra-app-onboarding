@@ -17,7 +17,7 @@ module UserHelper
     end
   end
 
-  def create_user(if_success_route, parameters, if_error_erb)
+  def create_user(parameters, if_success_route = nil, if_error_erb = nil)
     user = User.create(parameters)
 
     if user.valid?
