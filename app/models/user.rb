@@ -1,4 +1,8 @@
+require_relative '../controllers/controllers_helpers/user_helper'
+require_relative '../controllers/application_controller'
+
 class User < ActiveRecord::Base
+
   has_secure_password
   has_many :records, foreign_key: :user_id
   enum role: { user: 0, admin: 1 }
@@ -24,6 +28,19 @@ class User < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       records.update(user_id: user_to_accept)
       user.destroy
+    end
+  end
+
+  def delete_with_records_transfer_to_new(user, records, new_user_opts)
+    ActiveRecord::Base.transaction do
+      new_user = User.create(new_user_opts)
+      if new_user.valid?
+        new_user.save
+        records.update(user_id: new_user.id)
+        user.destroy
+      else
+        raise ActiveRecord::Rollback, "Error while user creation, check provided values"
+      end
     end
   end
 end

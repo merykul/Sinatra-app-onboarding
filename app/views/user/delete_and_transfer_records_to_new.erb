@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create User</title>
+  <link rel="stylesheet" type="text/css" href="/user.css">
+</head>
+<body>
+<h1>Create User for records transfer</h1>
+<% if @error_messages %>
+  <div class="error-message">
+    <% @error_messages.each do |error| %>
+      <%= error %><br>
+    <% end %>
+  </div>
+<% end %>
+<form action="/user/<%= @user.id %>/delete/with_records_transfer_to_new_user" method="post">
+  <label for="first_name">First Name:</label>
+  <input type="text" name="first_name">
+  <br>
+  <label for="second_name">Second Name:</label>
+  <input type="text" name="second_name">
+  <br>
+  <label for="city">Username:</label>
+  <input type="text" name="username">
+  <br>
+  <label for="password">Temporary Password:</label>
+  <input type="text" name="password">
+  <br>
+  <label for="password_confirmation">Temporary Password Confirmation:</label>
+  <input type="text" name="password_confirmation">
+  <br>
+  <div class="container">
+    <input type="submit" value="Create, delete and transfer">
+    <a href="/manage_users" class="button">Cancel</a>
+  </div>
+</form>
+
+<!--<form action="/user/<%# @id %>/delete/with_records_transfer_to_new_user" method="post">-->
+<!--  <input type="hidden" name="_method" value="delete">-->
+<!--  <div class="container">-->
+<!--    <input type="submit" value="Delete User and transfer data" <%# if session[:user_created] %> <%# end %>disabled>-->
+<!--  </div>-->
+<!--</form>-->
+
+<!--<script>-->
+<!--    const createForm = document.getElementById('create-user-form');-->
+<!--    const deleteButton = document.getElementById('delete-button');-->
+<!--    const errorPlaceholder = document.getElementById('error-placeholder');-->
+
+<!--    createForm.addEventListener('submit', async (event) => {-->
+<!--        event.preventDefault(); // Prevent the default form submission-->
+
+<!--        // Perform the form submission using fetch or AJAX if needed-->
+<!--        const formData = new FormData(createForm);-->
+<!--        const response = await fetch('/user_for_transfer', {-->
+<!--            method: 'POST',-->
+<!--            body: formData-->
+<!--        });-->
+
+<!--        if (response.ok) {-->
+<!--            // Enable the delete button after successful form submission-->
+<!--            deleteButton.removeAttribute('disabled');-->
+<!--        } else {-->
+<!--            errorPlaceholder.textContent = 'User is not created.';-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+
+</body>
+</html>

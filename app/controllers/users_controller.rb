@@ -101,11 +101,25 @@ class UsersController < ApplicationController
   end
 
   get '/user/:id/delete/with_records_transfer_to_new_user' do
-    if logged_in?
-      # to do
-      redirect to '/manage_users'
-    else
-      redirect to '/start'
-    end
+    @user = find_user(:id, params[:id])
+    @records = Records.where(:user_id => params[:id])
+    erb :'user/delete_and_transfer_records_to_new'
+  end
+
+  post '/user/:id/delete/with_records_transfer_to_new_user' do
+    p "User check id: #{params[:id]}"
+    @user = find_user(:id, params[:id])
+
+    redirect_if_not_logged_in
+    @records = Records.where(:user_id => params[:id])
+    opts = { first_name: params[:first_name],
+             second_name: params[:second_name],
+             username: params[:username],
+             password: params[:password],
+             password_confirmation: params[:password_confirmation],
+             password_status: 'temporary' }
+
+    @user.delete_with_records_transfer_to_new(@user, @records ,opts)
+    redirect to '/manage_users'
   end
 end
