@@ -37,10 +37,6 @@ module UserHelper
     redirect to '/users_management_access_error' unless current_user.role == 'admin'
   end
 
-  def if_admin?
-    !!current_user.role == 'admin'
-  end
-
   def find_user(param, value)
     User.find_by(param => value)
   end
