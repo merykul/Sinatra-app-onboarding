@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Sing up</title>
-  <link rel="stylesheet" type="text/css" href="/sign_up.css">
+  <title>Create User</title>
+  <link rel="stylesheet" type="text/css" href="/user.css">
 </head>
 <body>
-<h1>Registration form</h1>
+<h1>Create User</h1>
 <% if @error_messages %>
   <div class="error-message">
     <% @error_messages.each do |error| %>
@@ -13,26 +13,27 @@
     <% end %>
   </div>
 <% end %>
-<form action="/sign_up" method="post">
+<form action="/create_user_form" method="post">
   <label for="first_name">First Name:</label>
   <input type="text" name="first_name">
   <br>
   <label for="second_name">Second Name:</label>
   <input type="text" name="second_name">
   <br>
-  <label for="username">Username:</label>
+  <label for="city">Username:</label>
   <input type="text" name="username">
   <br>
-  <label for="password">Password:</label>
+  <label for="password">Temporary Password:</label>
   <input type="text" name="password">
   <br>
-  <label for="password_confirmation">Password Confirmation:</label>
+  <label for="password_confirmation">Temporary Password Confirmation:</label>
   <input type="text" name="password_confirmation">
   <br>
-  <div class="container">
-    <input type="submit" value="Submit">
-    <a href="/start" class="button">Back</a>
-  </div>
+    <div class="container">
+      <input type="submit" value="Create User">
+      <a href="/homepage" class="button">Go to homepage</a>
+    </div>
+
 </form>
 </body>
 </html>

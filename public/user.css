@@ -1,0 +1,101 @@
+/* style.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    margin: 20px;
+}
+
+/* Add some basic styles for the error message */
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.error-message::before {
+    content: "⚠ "; /* Add a warning icon before the error message */
+    font-size: 14px;
+}
+
+h1 {
+    color: #444;
+    text-align: center; /* Center the heading */
+    margin-bottom: 20px; /* Add some space below the heading */
+}
+
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+input[type="text"],
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+input[type="submit"] {
+    background-color: #006400;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #006400;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+a.button {
+    display: block; /* Make the button a block-level element */
+    width: 120px; /* Set the width of the button */
+    margin: 20px auto; /* Center the button horizontally with some margin */
+    padding: 10px 20px;
+    background-color: #008000;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+a.button:hover {
+    background-color: #006400;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between; /* Align items with space between them */
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+input[type="submit"],
+a.button {
+    flex: 1; /* Set both buttons to grow equally to fill the container */
+    width: 100%; /* Set the width of both buttons to 100% of the container */
+    margin: 5px; /* Add some spacing between buttons */
+}

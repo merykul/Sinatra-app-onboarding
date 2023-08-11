@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Delete User</title>
+  <link rel="stylesheet" type="text/css" href="/delete_user.css">
+</head>
+<body>
+<h1>Delete User</h1>
+<% if @error_messages %>
+  <div class="error-message-edit">
+    <% @error_messages.each do |error| %>
+      <%= error %><br>
+    <% end %>
+  </div>
+<% end %>
+<form>
+  <label for="first_name">First Name:</label>
+  <input type="text" name="first_name" value="<%= @user.first_name %>" disabled>
+  <br>
+  <label for="first_name">Second Name:</label>
+  <input type="text" name="first_name" value="<%= @user.second_name %>" disabled>
+  <br>
+  <label for="first_name">Username:</label>
+  <input type="text" name="first_name" value="<%= @user.username %>" disabled>
+  <br>
+</form>
+<h2>User's records</h2>
+<table>
+  <tr>
+    <th>First Name</th>
+    <th>Second Name</th>
+    <th>City</th>
+    <th>Date of Birth</th>
+    <th>Edit</th>
+    <th>Delete</th>
+  </tr>
+  <% @user_records.each do |record| %>
+    <tr>
+      <td><%= record.first_name %></td>
+      <td><%= record.second_name %></td>
+      <td><%= record.city %></td>
+      <td><%= record.date_of_birth %></td>
+      <td><a href="/records/<%= record.id %>/edit">Edit</a></td>
+      <td><a href="/records/<%= record.id %>/delete" data-confirm="Are you sure you want to delete this record?">Delete</a></td>
+    </tr>
+  <% end %>
+</table>
+<div class="buttons">
+  <a href="/user/<%= @user.id %>/delete/with_records" class="btn">Delete with records</a>
+  <a href="/user/<%= @user.id %>/delete/with_records_transfer" class="btn">Transfer records and delete user</a>
+  <a href="/user/<%= @user.id %>/delete/with_records_transfer_to_new_user" class="btn">Create new user and transfer records, then delete user</a>
+  <a href="/manage_users" class="btn">Cancel</a>
+</div>
+</body>
+</html>

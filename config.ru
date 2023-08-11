@@ -15,6 +15,11 @@ require_relative './app/controllers/application_controller'
 require_relative './app/controllers/records_controller'
 require_relative './app/controllers/sessions_controller'
 require_relative './app/controllers/download_controller'
+require_relative './app/controllers/users_controller'
+
+# Controller helpers
+require_relative './app/controllers/controllers_helpers/records_helper'
+require_relative './app/controllers/controllers_helpers/user_helper'
 
 # Models
 require_relative 'app/models/records'
@@ -25,3 +30,4 @@ run ApplicationController
 use RecordsController
 use SessionsController
 use DownloadController
+use UsersController

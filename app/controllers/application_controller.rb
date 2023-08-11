@@ -1,13 +1,19 @@
+# frozen_string_literal: true
+
 require 'sinatra'
 require 'sinatra/reloader' if development?
 require 'sinatra/activerecord'
 require 'dotenv/load'
 require 'axlsx'
+require_relative '../controllers/controllers_helpers/user_helper'
+require_relative '../controllers/controllers_helpers/records_helper'
 require_relative '../models/city'
 require_relative '../models/user'
 require_relative '../models/records'
 
 class ApplicationController < Sinatra::Base
+  include UserHelper
+  include RecordsHelper
 
   # global settings
   configure do
@@ -23,14 +29,10 @@ class ApplicationController < Sinatra::Base
     use Rack::MethodOverride
   end
 
-  # main route
-  get '/' do
-    if logged_in?
-      @user = current_user
-      erb :homepage
-    else
-      redirect to '/log_in_form'
-    end
+  # Access errors routes
+
+  get '/users_management_access_error' do
+    erb :'errors/users_profiles_access_error'
   end
 
   # Error handling pages
@@ -64,7 +66,7 @@ class ApplicationController < Sinatra::Base
     end
 
     def redirect_if_not_logged_in
-      redirect to '/login' unless logged_in?
+      redirect to '/start' unless logged_in?
     end
   end
 end

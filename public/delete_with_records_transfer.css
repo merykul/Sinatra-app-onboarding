@@ -1,0 +1,95 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+h1, h2 {
+    color: #008000;
+    text-align: center;
+    margin-top: 20px;
+}
+
+table {
+    width: 80%;
+    margin: auto;
+    border-collapse: collapse;
+    margin-top: 30px;
+    border: 1px solid #ccc;
+}
+
+/* Button Styles */
+a.button {
+    display: block;
+    width: 220px;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #008000;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+a.button:hover {
+    background-color: #006400;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #008000;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #d0e0d0;
+}
+
+/* Search Form Styles */
+form {
+    text-align: center;
+    margin-top: 30px;
+}
+
+label {
+    display: block;
+    font-size: 16px;
+    color: #008000;
+    margin-bottom: 5px;
+}
+
+input[type="text"] {
+    width: 300px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #008000;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #008000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #006400;
+}
+
+.buttons {
+    text-align: center;
+    padding: 20px;
+}

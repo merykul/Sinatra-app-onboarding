@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit User</title>
+  <link rel="stylesheet" type="text/css" href="/user.css">
+</head>
+<body>
+<h1>Edit User</h1>
+<% if @error_messages %>
+  <div class="error-message">
+    <% @error_messages.each do |error| %>
+      <%= error %><br>
+    <% end %>
+  </div>
+<% end %>
+<form action="/user/<%= @user.id %>/edit" method="post">
+  <input type="hidden" name="_method" value="patch">
+  <label for="first_name">First Name:</label>
+  <input type="text" name="first_name" value="<%= @user.first_name %>">
+  <br>
+  <label for="second_name">Second Name:</label>
+  <input type="text" name="second_name" value="<%= @user.second_name %>">
+  <br>
+  <label for="city">Username:</label>
+  <input type="text" name="username" value="<%= @user.username %>">
+  <br>
+  <div class="container">
+    <input type="submit" value="Edit User">
+    <a href="/manage_users" class="button">Cancel</a>
+  </div>
+</form>
+</body>
+</html>
