@@ -22,7 +22,7 @@ module UserHelper
 
     if user.valid?
       user.save
-      session[:user_id] = user.id
+      session[:user_id] = user.id unless current_user.role == 'admin'
       p 'User is create successfully!'
       redirect to if_success_route
     else
