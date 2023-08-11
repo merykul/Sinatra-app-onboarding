@@ -17,15 +17,17 @@ module UserHelper
     end
   end
 
-  def create_user(parameters, if_success_route = nil, if_error_erb = nil)
+  def create_user(admin_creates, parameters,  if_success_route = nil, if_error_erb = nil)
     user = User.create(parameters)
 
     if user.valid?
       user.save
-      session[:user_id] = user.id unless current_user.role == 'admin'
+      p 'Passed user validation'
+      session[:user_id] = user.id unless admin_creates
       p 'User is create successfully!'
       redirect to if_success_route
     else
+      p 'Error while user validation'
       @error_messages = user.errors.full_messages
       erb if_error_erb
     end

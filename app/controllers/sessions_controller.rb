@@ -52,6 +52,8 @@ class SessionsController < ApplicationController
   end
 
   post '/sign_up' do
+    p "User parameters: #{params[:username]}, #{params[:first_name]}, #{params[:second_name]}"
+    admin_creates = false
     password_confirmation = params[:password_confirmation]
     password = params[:password]
     opts = { username: params[:username],
@@ -63,7 +65,7 @@ class SessionsController < ApplicationController
 
     @error_messages = ["Password confirmation doesn't match password"] unless password_confirmation == password
 
-    create_user(opts, '/homepage', :'user/sign_up_page')
+    create_user(admin_creates, opts, '/homepage', :'user/sign_up_page')
   end
 
   get '/homepage' do

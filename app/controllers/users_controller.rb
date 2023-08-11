@@ -15,6 +15,7 @@ class UsersController < ApplicationController
   end
 
   post '/create_user_form' do
+    admin_creates = true
     redirect_if_not_logged_in
     opts = { first_name: params[:first_name],
              second_name: params[:second_name],
@@ -23,7 +24,7 @@ class UsersController < ApplicationController
              password_confirmation: params[:password_confirmation],
              password_status: 'temporary' }
 
-    create_user(opts, '/manage_users', :'user/create')
+    create_user(admin_creates, opts, '/manage_users', :'user/create')
   end
 
   get '/set_password' do
