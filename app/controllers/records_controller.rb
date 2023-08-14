@@ -6,7 +6,7 @@ class RecordsController < ApplicationController
 
   # index
   get '/people_list' do
-    redirect_if_not_logged_in
+    error_if_not_logged_in
     city_filter = params[:city]
     user_id = current_user.id
     @records = current_user.role == 'admin' ? Records.all : Records.where(:user_id => user_id)
@@ -17,20 +17,20 @@ class RecordsController < ApplicationController
 
   # statistics
   get '/cities_statistics' do
-    redirect_if_not_logged_in
+    error_if_not_logged_in
     @statistics = City.all
     erb(:"cities/statistics")
   end
 
   # to create record:
   get '/added_person_form' do
-    redirect_if_not_logged_in
+    error_if_not_logged_in
     erb :create_person_form
   end
 
   # create_person_form
   post '/create_person' do
-    redirect_if_not_logged_in
+    error_if_not_logged_in
     opts = { first_name: params[:first_name],
              second_name: params[:second_name],
              city: params[:city],
@@ -50,7 +50,7 @@ class RecordsController < ApplicationController
   end
 
   patch '/records/:id/edit' do
-    redirect_if_not_logged_in
+    error_if_not_logged_in
     @record = Records.find(params[:id])
     opts = { first_name: params[:first_name],
              second_name: params[:second_name],
@@ -70,7 +70,7 @@ class RecordsController < ApplicationController
   end
 
   delete '/records/:id/delete' do
-    redirect_if_not_logged_in
+    error_if_not_logged_in
     @record = Records.find(params[:id])
     @record.delete
     redirect to '/people_list'

@@ -3,7 +3,7 @@ require_relative './application_controller'
 class UsersController < ApplicationController
 
   get '/manage_users' do
-    redirect_if_not_logged_in
+    error_if_not_logged_in
     if_user_display_access_error
     @users = User.where(:role => 'user')
     erb :'user/manage'
@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 
   post '/create_user_form' do
     admin_creates = true
-    redirect_if_not_logged_in
+    error_if_not_logged_in
     opts = { first_name: params[:first_name],
              second_name: params[:second_name],
              username: params[:username],
@@ -50,7 +50,7 @@ class UsersController < ApplicationController
   end
 
   patch '/user/:id/edit' do
-    redirect_if_not_logged_in
+    error_if_not_logged_in
     @user = find_user(:id, params[:id])
     opts = { first_name: params[:first_name],
              second_name: params[:second_name],
@@ -68,7 +68,7 @@ class UsersController < ApplicationController
   end
 
   get '/user/:id/delete/with_records' do
-    redirect_if_not_logged_in
+    error_if_not_logged_in
     @user = find_user(:id, params[:id])
     @records = Records.where(:user_id => params[:id])
     username = @user.username
@@ -80,7 +80,7 @@ class UsersController < ApplicationController
   end
 
   get '/user/:id/delete/with_records_transfer' do
-    redirect_if_not_logged_in
+    error_if_not_logged_in
     @user = find_user(:id, params[:id])
     @records = Records.where(:user_id => params[:id])
     @users = User.where(:role => 'user').where.not(:id => params[:id])
@@ -111,7 +111,7 @@ class UsersController < ApplicationController
     p "User check id: #{params[:id]}"
     @user = find_user(:id, params[:id])
 
-    redirect_if_not_logged_in
+    error_if_not_logged_in
     @records = Records.where(:user_id => params[:id])
     opts = { first_name: params[:first_name],
              second_name: params[:second_name],

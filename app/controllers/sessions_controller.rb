@@ -69,7 +69,7 @@ class SessionsController < ApplicationController
   end
 
   get '/homepage' do
-    redirect_if_not_logged_in
+    error_if_not_logged_in
     erb :homepage
   end
 end

@@ -65,8 +65,8 @@ class ApplicationController < Sinatra::Base
       User.find_by(id: session[:user_id])
     end
 
-    def redirect_if_not_logged_in
-      redirect to '/start' unless logged_in?
+    def error_if_not_logged_in
+      halt 401, MultiJson.dump({message: "You are not authorized to access this resource"}) unless logged_in?
     end
   end
 end
