@@ -25,7 +25,10 @@ module UserHelper
       p 'Passed user validation'
       session[:user_id] = user.id unless admin_creates
       p 'User is create successfully!'
-      redirect to if_success_route
+
+      response.status = 201
+      headers['Location'] = if_success_route
+      erb :'success_templates/template'
     else
       p 'Error while user validation'
       @error_messages = user.errors.full_messages
