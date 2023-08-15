@@ -33,13 +33,15 @@ class SessionsController < ApplicationController
       end
     else
       @error_messages = ["Invalid #{username} username or #{password} password!"]
+      response.status = 400
       erb :'user/login_page'
     end
   end
 
   get '/log_out' do
     session.clear
-    redirect to '/start'
+    response.status = 200
+    erb :'user/start_page'
   end
 
   # sign up user:

@@ -10,7 +10,10 @@ module UserHelper
       p 'User is updated successfully!'
       p "Password status: #{user.password_status}"
       p "Username: #{user.username}"
-      redirect to if_success_route
+
+      response.status = 200
+      headers['Location'] = if_success_route
+      erb :'success_templates/updated_user'
     else
       @error_messages = @user.errors.full_messages
       erb if_error_erb
@@ -32,6 +35,7 @@ module UserHelper
     else
       p 'Error while user validation'
       @error_messages = user.errors.full_messages
+      response.status = 400
       erb if_error_erb
     end
   end
