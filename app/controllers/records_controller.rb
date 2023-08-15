@@ -52,6 +52,7 @@ class RecordsController < ApplicationController
   patch '/records/:id/edit' do
     error_if_not_logged_in
     @record = Records.find(params[:id])
+
     opts = { first_name: params[:first_name],
              second_name: params[:second_name],
              city: params[:city],
@@ -63,6 +64,7 @@ class RecordsController < ApplicationController
   # delete
   get '/records/:id/delete' do
     @record = Records.find(params[:id])
+    if_prohibited_display_error(@record)
     p "Record is retrieved: id = #{params[:id]}"
     p "User id for requested record: #{current_user.id}"
 
@@ -72,6 +74,7 @@ class RecordsController < ApplicationController
   delete '/records/:id/delete' do
     error_if_not_logged_in
     @record = Records.find(params[:id])
+    if_prohibited_display_error(@record)
     @record.delete
     redirect to '/people_list'
   end
