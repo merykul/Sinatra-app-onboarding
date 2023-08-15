@@ -8,7 +8,9 @@ module RecordsHelper
       record.save
       p 'Record is updated successfully!!'
 
-      redirect to if_success_route
+      response.status = 200
+      headers['Location'] = if_success_route
+      erb :'success_templates/updated_record'
     else
       @error_messages = record.errors.full_messages
       erb if_error_erb
@@ -22,7 +24,10 @@ module RecordsHelper
       record.save
       p 'Person is added to the records!'
       p "Current user id: #{current_user.id}"
-      redirect to if_success_route
+
+      response.status = 201
+      headers['Location'] = if_success_route
+      erb :'success_templates/created_record'
     else
       @error_messages = record.errors.full_messages
       erb if_error_erb
@@ -35,8 +40,13 @@ module RecordsHelper
     if record.user_id == current_user.id || current_user.role == 'admin'
       erb success_route
     else
+      response.status = 403
       @error_messages = ['Record is not accessible for current user']
       erb :'errors/record_access_error'
     end
+  end
+
+  def if_prohibited_display_error(record)
+    halt 403, MultiJson.dump({message: "You aren't allowed to access this record"}) unless current_user.id == record.user_id
   end
 end
