@@ -82,6 +82,7 @@ class UsersController < ApplicationController
 
   get '/user/:id/delete/with_records_transfer' do
     error_if_not_logged_in
+    if_user_display_access_error
     @user = find_user(:id, params[:id])
     @records = Records.where(:user_id => params[:id])
     @users = User.where(:role => 'user').where.not(:id => params[:id])
@@ -103,6 +104,7 @@ class UsersController < ApplicationController
   end
 
   get '/user/:id/delete/with_records_transfer_to_new_user' do
+    if_user_display_access_error
     @user = find_user(:id, params[:id])
     @records = Records.where(:user_id => params[:id])
     erb :'user/delete_and_transfer_records_to_new'
