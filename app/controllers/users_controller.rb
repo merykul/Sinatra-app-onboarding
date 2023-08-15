@@ -27,12 +27,13 @@ class UsersController < ApplicationController
     create_user(admin_creates, opts, '/manage_users', :'user/create')
   end
 
-  get '/set_password' do
+  get '/user/:id/set_password' do
     @user = User.find(session[:user_id])
+    p "User id check: #{@user.id}"
     erb :'user/set_password'
   end
 
-  patch '/set_password' do
+  patch '/user/:id/set_password' do
     p "New username: #{params[:new_username]}"
     @user = User.find(session[:user_id])
     opts = { password: params[:new_password],

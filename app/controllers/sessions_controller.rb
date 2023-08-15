@@ -24,7 +24,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(password)
       session[:user_id] = user.id
       if user.temporary_password?
-        redirect to '/set_password'
+        redirect to "/user/#{user.id}/set_password"
       else
         puts 'Successful logged in!'
         puts "User role: #{current_user.role}"
