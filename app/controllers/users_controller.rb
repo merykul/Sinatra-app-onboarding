@@ -17,6 +17,7 @@ class UsersController < ApplicationController
   post '/create_user_form' do
     admin_creates = true
     error_if_not_logged_in
+    if_user_display_access_error
     opts = { first_name: params[:first_name],
              second_name: params[:second_name],
              username: params[:username],
