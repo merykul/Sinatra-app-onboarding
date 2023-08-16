@@ -50,6 +50,7 @@ class RecordsController < ApplicationController
     id = params[:id]
     error_if_not_logged_in
     @record = find_record(id)
+    erb :'/records/edit'
   end
 
   patch '/records/:id/edit' do
@@ -70,6 +71,7 @@ class RecordsController < ApplicationController
     id = params[:id]
     error_if_not_logged_in
     @record = find_record(id)
+    erb :'records/delete'
   end
 
   delete '/records/:id/delete' do
