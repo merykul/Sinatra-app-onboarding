@@ -78,14 +78,14 @@ class RecordsController < ApplicationController
     id = params[:id]
     error_if_not_logged_in
     @record = find_record(id)
-    if @record.valid?
+    if @record.nil?
+      response.status = 404
+      erb :'errors/error_404'
+    else
       @record.delete
       response.status = 200
       headers['Location'] = '/people_list'
       erb :'success_templates/deleted_record'
-    else
-      response.status = 404
-      erb :'errors/error_404'
     end
   end
 end
