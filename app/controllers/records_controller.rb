@@ -10,8 +10,13 @@ class RecordsController < ApplicationController
     city_filter = params[:city]
     user_id = current_user.id
     @records = current_user.role == 'admin' ? Records.all : Records.where(:user_id => user_id)
-
     @output = city_filter && !city_filter.strip.empty? ? @records.where(:city => "#{city_filter}") : @records
+
+    if city_filter && @output.empty?
+      @error_message = "There is no records with this city"
+      response.status = 400
+    end
+
     erb :'../views/records/people_list'
   end
 
