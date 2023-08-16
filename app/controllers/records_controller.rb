@@ -75,7 +75,14 @@ class RecordsController < ApplicationController
     error_if_not_logged_in
     @record = Records.find(params[:id])
     if_prohibited_display_error(@record)
-    @record.delete
-    redirect to '/people_list'
+    if @record.valid?
+      @record.delete
+      response.status = 200
+      headers['Location'] = '/people_list'
+      erb :'success_templates/deleted_record'
+    else
+      response.status = 404
+      erb :'errors/error_404'
+    end
   end
 end
