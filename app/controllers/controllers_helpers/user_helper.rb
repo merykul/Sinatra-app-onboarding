@@ -15,6 +15,7 @@ module UserHelper
       headers['Location'] = if_success_route
       erb :'success_templates/updated_user'
     else
+      response.status = 400
       @error_messages = @user.errors.full_messages
       erb if_error_erb
     end

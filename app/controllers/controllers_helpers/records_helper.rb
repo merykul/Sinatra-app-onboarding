@@ -12,6 +12,7 @@ module RecordsHelper
       headers['Location'] = if_success_route
       erb :'success_templates/updated_record'
     else
+      response.status = 400
       @error_messages = record.errors.full_messages
       erb if_error_erb
     end
@@ -29,6 +30,7 @@ module RecordsHelper
       headers['Location'] = if_success_route
       erb :'success_templates/created_record'
     else
+      response.status = 400
       @error_messages = record.errors.full_messages
       erb if_error_erb
     end
