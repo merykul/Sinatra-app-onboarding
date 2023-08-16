@@ -36,7 +36,7 @@ label {
     color: #555;
 }
 
-input[type="text"] {
+input[type="text"], input[type="submit"] {
     width: 100%;
     padding: 10px;
     font-size: 16px;
@@ -47,22 +47,22 @@ input[type="text"] {
     background-color: #f8f8f8; /* Add a light background color for disabled input */
 }
 
-input[type="submit"] {
-    background-color: #006400;
-    color: #fff;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    display: block;
-    width: 100%;
-    margin-top: 20px;
-}
+/*input[type="submit"] {*/
+/*    background-color: #006400;*/
+/*    color: #fff;*/
+/*    padding: 12px 20px;*/
+/*    border: none;*/
+/*    border-radius: 5px;*/
+/*    font-size: 16px;*/
+/*    cursor: pointer;*/
+/*    display: block;*/
+/*    width: 100%;*/
+/*    margin-top: 20px;*/
+/*}*/
 
-input[type="submit"]:hover {
-    background-color: #006400;
-}
+/*input[type="submit"]:hover {*/
+/*    background-color: #006400;*/
+/*}*/
 
 table {
     width: 100%;
