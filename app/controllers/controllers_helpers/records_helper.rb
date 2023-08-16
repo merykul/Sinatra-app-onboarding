@@ -40,8 +40,8 @@ module RecordsHelper
 
   def find_record(id)
     begin
-      @record = Records.find(id)
-      check_access_to_records(@record, :'records/edit')
+      record = Records.find(id)
+      if_prohibited_display_error(record)
     rescue ActiveRecord::RecordNotFound
       response.status = 404
       erb :'errors/error_404'
