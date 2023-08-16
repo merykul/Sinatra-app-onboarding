@@ -49,6 +49,7 @@ module RecordsHelper
     end
   end
 
+  # maybe will be removed soon
   def check_access_to_records(record, success_route)
     if record && (record.user_id == current_user.id || current_user.role == 'admin')
       erb success_route
@@ -59,8 +60,9 @@ module RecordsHelper
     end
   end
 
-  # maybe will be removed soon
   def if_prohibited_display_error(record)
-    halt 403, MultiJson.dump({message: "You aren't allowed to access this record"}) unless current_user.id == record.user_id
+    unless record.nil? || (record.user_id == current_user.id || current_user.role == 'admin')
+      halt 403, MultiJson.dump({message: "You aren't allowed to access this record"})
+    end
   end
 end
