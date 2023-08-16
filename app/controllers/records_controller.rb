@@ -47,17 +47,15 @@ class RecordsController < ApplicationController
 
   # edit
   get '/records/:id/edit' do
-    @record = Records.find(params[:id])
-    p "Record is retrieved: id = #{params[:id]}"
-    p "User id for requested record: #{current_user.id}"
-
-    check_access_to_records(@record, :'records/edit')
+    id = params[:id]
+    error_if_not_logged_in
+    @record = find_record(id)
   end
 
   patch '/records/:id/edit' do
+    id = params[:id]
     error_if_not_logged_in
-    @record = Records.find(params[:id])
-    if_prohibited_display_error(@record)
+    @record = find_record(id)
 
     opts = { first_name: params[:first_name],
              second_name: params[:second_name],
@@ -69,18 +67,15 @@ class RecordsController < ApplicationController
 
   # delete
   get '/records/:id/delete' do
-    @record = Records.find(params[:id])
-    if_prohibited_display_error(@record)
-    p "Record is retrieved: id = #{params[:id]}"
-    p "User id for requested record: #{current_user.id}"
-
-    check_access_to_records(@record, :'records/delete')
+    id = params[:id]
+    error_if_not_logged_in
+    @record = find_record(id)
   end
 
   delete '/records/:id/delete' do
+    id = params[:id]
     error_if_not_logged_in
-    @record = Records.find(params[:id])
-    if_prohibited_display_error(@record)
+    @record = find_record(id)
     if @record.valid?
       @record.delete
       response.status = 200
