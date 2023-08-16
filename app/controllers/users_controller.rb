@@ -53,6 +53,7 @@ class UsersController < ApplicationController
 
   patch '/user/:id/edit' do
     error_if_not_logged_in
+    if_user_display_access_error
     @user = find_user(:id, params[:id])
     opts = { first_name: params[:first_name],
              second_name: params[:second_name],
