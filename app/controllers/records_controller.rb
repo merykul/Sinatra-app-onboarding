@@ -57,6 +57,7 @@ class RecordsController < ApplicationController
   patch '/records/:id/edit' do
     error_if_not_logged_in
     @record = Records.find(params[:id])
+    if_prohibited_display_error(@record)
 
     opts = { first_name: params[:first_name],
              second_name: params[:second_name],

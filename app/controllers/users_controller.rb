@@ -94,6 +94,7 @@ class UsersController < ApplicationController
 
   post '/user/:id/delete/with_records_transfer' do
     @user = find_user(:id, params[:id])
+    error_if_not_logged_in
     @records = Records.where(:user_id => params[:id])
     username = @user.username
     selected_user_id = params[:selected_user_id]
