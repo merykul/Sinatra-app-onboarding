@@ -1,10 +1,12 @@
 require_relative 'helpers/spec_helper'
+require_relative 'helpers/logs_helper'
 require_relative '../app/controllers/sessions_controller'
 require_relative '../app/controllers/records_controller'
 require 'faker'
 
 RSpec.describe '[Records API]' do
   include AuthHelper
+  include LoggerHelper
 
   def app
     RecordsController
@@ -15,20 +17,16 @@ RSpec.describe '[Records API]' do
     let(:random_name) { Faker::Name.first_name }
     let(:random_last_name) { Faker::Name.last_name }
     let(:city) { 'Fake City' }
-    let(:random_dfb) { Faker::Date.birthday }
-    let(:last_response_log_message) { '------------------------------------------------------ Last response ------------------------------------------------------------' }
-    let(:end_log_line) { '-----------------------------------------------------------------------------------------------------------------------------------------------' }
+    let(:random_dob) { Faker::Date.birthday }
 
     context 'when logged in, and with valid data' do
       before(:each) do
         clear_cookies
-        p "------------------------------------------------------ New record: #{random_name}, #{random_last_name}, #{city}, #{random_dfb}!! ------------------------------------------------------"
+        log_new_record_info(random_name, random_last_name, city, random_dob)
 
         log_in('TestUser', 'Test123456!')
-        puts "Last request path: #{last_request.path_info}"
-        p last_response_log_message
-        p last_response.body
-        p end_log_line
+        last_request_log
+        last_response_body_log
 
         post '/create_person',
              first_name: random_name,
@@ -65,10 +63,6 @@ RSpec.describe '[Records API]' do
   end
 
   describe 'GET /people_list' do
-
-    let(:last_response_log_message) { '------------------------------------------------------ Last response ------------------------------------------------------------' }
-    let(:end_log_line) { '-----------------------------------------------------------------------------------------------------------------------------------------------' }
-
     context 'when not authorised' do
       before(:each) do
         clear_cookies

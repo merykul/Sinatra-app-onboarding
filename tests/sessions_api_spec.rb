@@ -5,6 +5,7 @@ require 'faker'
 
 RSpec.describe '[Sessions API]' do
   include AuthHelper
+  include LoggerHelper
 
   def app
     SessionsController
@@ -49,20 +50,16 @@ RSpec.describe '[Sessions API]' do
       clear_cookies #Clear the session
     end
 
-    let(:last_response_log_message) { '------------------------------------------------------ Last response after sing up ------------------------------------------------------------' }
-    let(:end_log_line) { '-----------------------------------------------------------------------------------------------------------------------------------------------' }
     let(:random_password) { Faker::Alphanumeric.alphanumeric(number: 10) }
 
     context 'when request with valid parameters values' do
       before(:each) do
         @username = Faker::Internet.unique.username
-        p "------------------------------------------------------ User creds: #{@username}, #{random_password} ------------------------------------------------------"
+        user_creds_log(@username, random_password)
 
         post '/sign_up', username: @username, password: random_password, first_name: 'Test', second_name: 'User'
 
-        p last_response_log_message
-        p last_response
-        p end_log_line
+        last_response_log
       end
 
       it 'user is created' do
@@ -83,13 +80,10 @@ RSpec.describe '[Sessions API]' do
     context 'when username already exists' do
       before(:each) do
         @username = 'TestUser'
-        p "------------------------------------------------------ User creds: #{@username}, #{random_password} ------------------------------------------------------"
-
+        user_creds_log(@username, random_password)
         post '/sign_up', username: @username, password: random_password, first_name: 'Test', second_name: 'User'
 
-        p last_response_log_message
-        p last_response
-        p end_log_line
+        last_response_log
       end
 
       it 'displays "Username has already been taken" error message' do
@@ -109,13 +103,11 @@ RSpec.describe '[Sessions API]' do
       before(:each) do
         @username = nil
         @password = nil
-        p "------------------------------------------------------ User creds: nil, nil ------------------------------------------------------"
+        user_creds_log('nil', 'nil')
 
         post '/sign_up', username: @username, password: @password, first_name: nil, second_name: nil
 
-        p last_response_log_message
-        p last_response
-        p end_log_line
+        last_response_log
       end
 
       it 'fields validation error messages are displayed' do
@@ -212,10 +204,6 @@ RSpec.describe '[Sessions API]' do
   end
 
   describe '[GET /log_out]' do
-
-    let(:last_response_log_message) { '------------------------------------------------------ Last response ------------------------------------------------------------' }
-    let(:end_log_line) { '-----------------------------------------------------------------------------------------------------------------------------------------------' }
-
     before(:each) do
       clear_cookies #Clear the session
       log_in('TestUser', 'Test123456!')
@@ -238,18 +226,12 @@ RSpec.describe '[Sessions API]' do
   end
 
   describe '[GET /homepage]' do
-
-    let(:last_response_log_message) { '------------------------------------------------------ Last response ------------------------------------------------------------' }
-    let(:end_log_line) { '-----------------------------------------------------------------------------------------------------------------------------------------------' }
-
     context 'when not authorised' do
       before(:each) do
         clear_cookies #Clear the session
 
         get '/homepage'
-        p last_response_log_message
-        p last_response
-        p end_log_line
+        last_response_log
       end
 
       it 'user is redirected to start page' do
@@ -267,9 +249,7 @@ RSpec.describe '[Sessions API]' do
         log_in('TestUser', 'Test123456!')
 
         get '/homepage'
-        p last_response_log_message
-        p last_response
-        p end_log_line
+        last_response_log
       end
 
       it 'response code is 200 OK' do
