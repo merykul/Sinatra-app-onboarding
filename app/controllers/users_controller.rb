@@ -129,17 +129,24 @@ class UsersController < ApplicationController
   post '/user/:id/delete/with_records_transfer_to_new_user' do
     p "User check id: #{params[:id]}"
     @user = find_user(:id, params[:id])
-
     error_if_not_logged_in
-    @records = Records.where(:user_id => params[:id])
-    opts = { first_name: params[:first_name],
-             second_name: params[:second_name],
-             username: params[:username],
-             password: params[:password],
-             password_confirmation: params[:password_confirmation],
-             password_status: 'temporary' }
 
-    @user.delete_with_records_transfer_to_new(@user, @records ,opts)
-    redirect to '/manage_users'
+    if @user.nil?
+      response.status = 404
+      erb :'errors/error_404'
+    else
+      @records = Records.where(:user_id => params[:id])
+      opts = { first_name: params[:first_name],
+               second_name: params[:second_name],
+               username: params[:username],
+               password: params[:password],
+               password_confirmation: params[:password_confirmation],
+               password_status: 'temporary' }
+
+      @user.delete_with_records_transfer_to_new(@user, @records ,opts)
+      response.status = 200
+      headers['Location'] = '/manage_users'
+      erb :'success_templates/delete_with_transfer_to_new'
+    end
   end
 end
