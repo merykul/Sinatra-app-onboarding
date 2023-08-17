@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Success</title>
+  <link rel="stylesheet" type="text/css" href="/success_template.css">
+</head>
+<body>
+<h1>User deleted successfully and records are transferred</h1>
+<p>Redirecting...</p>
+<script>
+    setTimeout(function() {
+        window.location.href = '<%= headers["Location"] %>';
+    }, 3000);  // Redirect after 3 seconds
+</script>
+</body>
+</html>

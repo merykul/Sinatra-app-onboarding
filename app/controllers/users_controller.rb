@@ -55,11 +55,15 @@ class UsersController < ApplicationController
     error_if_not_logged_in
     if_user_display_access_error
     @user = find_user(:id, params[:id])
-    opts = { first_name: params[:first_name],
-             second_name: params[:second_name],
-             username: params[:username] }
+    if @user == nil
+      halt 404
+    else
+      opts = { first_name: params[:first_name],
+               second_name: params[:second_name],
+               username: params[:username] }
 
-    update_user(@user, :'user/edit', opts, '/manage_users')
+      update_user(@user, :'user/edit', opts, '/manage_users')
+    end
   end
 
   get '/user/:id/delete' do
@@ -102,15 +106,24 @@ class UsersController < ApplicationController
   post '/user/:id/delete/with_records_transfer' do
     @user = find_user(:id, params[:id])
     error_if_not_logged_in
-    @records = Records.where(:user_id => params[:id])
-    username = @user.username
     selected_user_id = params[:selected_user_id]
     p "Selected user ID: #{selected_user_id}"
+    selected_user = find_user(:id, selected_user_id)
 
-    @user.delete_with_records_transfer(@user, @records, selected_user_id)
+    if @user.nil?
+      response.status = 404
+      erb :'errors/error_404'
+    elsif selected_user.nil?
+      response.status = 400
+      erb :'errors/error_400'
+    else
+      @records = Records.where(:user_id => params[:id])
 
-    p "#{username} is deleted and records are transferred to user with id: #{selected_user_id}!"
-    redirect to '/manage_users'
+      @user.delete_with_records_transfer(@user, @records, selected_user_id)
+      response.status = 200
+      headers['Location'] = '/manage_users'
+      erb :'success_templates/user_deletion_with_records_transfer'
+    end
   end
 
   get '/user/:id/delete/with_records_transfer_to_new_user' do
