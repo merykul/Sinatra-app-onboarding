@@ -69,7 +69,6 @@ class UsersController < ApplicationController
   get '/user/:id/delete' do
     @user = find_user(:id, params[:id])
     @user_records = Records.where(:user_id => params[:id])
-
     if_user_display_access_error
     erb :'user/delete'
   end
@@ -77,13 +76,17 @@ class UsersController < ApplicationController
   delete '/user/:id/delete/with_records' do
     error_if_not_logged_in
     @user = find_user(:id, params[:id])
-    @records = Records.where(:user_id => params[:id])
-    username = @user.username
 
-    @user.delete_with_records(@user, @records)
-
-    p "#{username} user is deleted with records!"
-    redirect to '/manage_users'
+    if @user.nil?
+      response.status = 404
+      erb :'errors/error_404'
+    else
+      @records = Records.where(:user_id => params[:id])
+      @user.delete_with_records(@user, @records)
+      response.status = 200
+      headers['Location'] = '/manage_users'
+      erb :'success_templates/user_deleted_with_records'
+    end
   end
 
   get '/user/:id/delete/with_records_transfer' do
@@ -92,7 +95,6 @@ class UsersController < ApplicationController
     @user = find_user(:id, params[:id])
     @records = Records.where(:user_id => params[:id])
     @users = User.where(:role => 'user').where.not(:id => params[:id])
-
     erb :'user/delete_with_records_transfer'
   end
 
@@ -111,7 +113,6 @@ class UsersController < ApplicationController
       erb :'errors/error_400'
     else
       @records = Records.where(:user_id => params[:id])
-
       @user.delete_with_records_transfer(@user, @records, selected_user_id)
       response.status = 200
       headers['Location'] = '/manage_users'
