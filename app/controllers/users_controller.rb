@@ -74,13 +74,6 @@ class UsersController < ApplicationController
     erb :'user/delete'
   end
 
-  get '/user/:id/delete/with_records' do
-    error_if_not_logged_in
-    @user = find_user(:id, params[:id])
-    @records = Records.where(:user_id => params[:id])
-    erb :'user/delete'
-  end
-
   delete '/user/:id/delete/with_records' do
     error_if_not_logged_in
     @user = find_user(:id, params[:id])
