@@ -13,7 +13,7 @@ class RecordsController < ApplicationController
     @output = city_filter && !city_filter.strip.empty? ? @records.where(:city => "#{city_filter}") : @records
 
     if city_filter && @output.empty?
-      @error_message = "There is no records with this city"
+      @error_message = 'There is no records with this city'
       response.status = 400
     end
 
@@ -54,9 +54,8 @@ class RecordsController < ApplicationController
   end
 
   patch '/records/:id/edit' do
-    id = params[:id]
     error_if_not_logged_in
-    @record = find_record(id)
+    @record = find_record(params[:id])
 
     opts = { first_name: params[:first_name],
              second_name: params[:second_name],

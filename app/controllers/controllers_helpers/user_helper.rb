@@ -44,7 +44,7 @@ module UserHelper
   private
 
   def if_user_display_access_error
-    halt 403, MultiJson.dump({message: "You are not allowed to access this resource"}) unless current_user.role == 'admin'
+    halt 403, MultiJson.dump({ message: 'You are not allowed to access this resource' }) unless current_user.role == 'admin'
   end
 
   def find_user(param, value)

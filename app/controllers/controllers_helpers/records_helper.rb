@@ -62,7 +62,7 @@ module RecordsHelper
 
   def if_prohibited_display_error(record)
     unless record.nil? || (record.user_id == current_user.id || current_user.role == 'admin')
-      halt 403, MultiJson.dump({message: "You aren't allowed to access this record"})
+      halt 403, MultiJson.dump({ message: "You aren't allowed to access this record" })
     end
   end
 end

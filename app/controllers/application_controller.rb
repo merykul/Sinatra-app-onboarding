@@ -66,7 +66,7 @@ class ApplicationController < Sinatra::Base
     end
 
     def error_if_not_logged_in
-      halt 401, MultiJson.dump({message: "You are not authorized to access this resource"}) unless logged_in?
+      halt 401, MultiJson.dump({message: 'You are not authorized to access this resource'}) unless logged_in?
     end
   end
 end
