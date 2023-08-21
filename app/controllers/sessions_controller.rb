@@ -1,6 +1,7 @@
 require_relative 'application_controller'
 
 class SessionsController < ApplicationController
+  include UserHelper
 
   get '/start' do
     erb :'user/start_page'
@@ -19,11 +20,17 @@ class SessionsController < ApplicationController
     username = params[:username]
     password = params[:password]
 
-    user = User.find_by(:username => username)
+    user = find_user(:username, username)
     if user && user.authenticate(password)
       session[:user_id] = user.id
-      puts 'Successful logged in!'
-      redirect to '/homepage'
+      if user.temporary_password?
+        redirect to '/set_password'
+      else
+        puts 'Successful logged in!'
+        puts "User role: #{current_user.role}"
+        puts "User id: #{current_user.id}"
+        redirect to '/homepage'
+      end
     else
       @error_messages = ["Invalid #{username} username or #{password} password!"]
       erb :'user/login_page'
@@ -45,34 +52,24 @@ class SessionsController < ApplicationController
   end
 
   post '/sign_up' do
-    username = params[:username]
+    p "User parameters: #{params[:username]}, #{params[:first_name]}, #{params[:second_name]}"
+    admin_creates = false
+    password_confirmation = params[:password_confirmation]
     password = params[:password]
-    first_name = params[:first_name]
-    second_name = params[:second_name]
+    opts = { username: params[:username],
+             password: params[:password],
+             first_name: params[:first_name],
+             second_name: params[:second_name],
+             password_confirmation: params[:password_confirmation],
+             password_status: 'permanent' }
 
-    @user = User.new(
-      username: username,
-      password: password,
-      first_name: first_name,
-      second_name: second_name,
-      password_confirmation: params[:password_confirmation]
-    )
+    @error_messages = ["Password confirmation doesn't match password"] unless password_confirmation == password
 
-    if @user.valid?
-      @user.save
-      session[:user_id] = @user.id
-      redirect '/homepage'
-    else
-      @error_messages = @user.errors.full_messages
-      erb :'user/sign_up_page'
-    end
+    create_user(admin_creates, opts, '/homepage', :'user/sign_up_page')
   end
 
   get '/homepage' do
-    if logged_in?
-      erb :homepage
-    else
-      erb :'user/login_page'
-    end
+    redirect_if_not_logged_in
+    erb :homepage
   end
 end

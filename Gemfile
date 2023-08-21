@@ -17,6 +17,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'axlsx', '~> 2.0', '>= 2.0.1'
 gem 'nokogiri', '~> 1.15', '>= 1.15.3'
 gem 'rubocop'
+gem 'pony' # for email
 
 group :development || test do
   gem 'mysql2' # development database adapter gem

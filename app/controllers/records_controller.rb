@@ -1,112 +1,78 @@
+# frozen_string_literal: true
+
 require_relative './application_controller'
 
 class RecordsController < ApplicationController
 
   # index
   get '/people_list' do
-    if logged_in?
-      city_filter = params[:city]
+    redirect_if_not_logged_in
+    city_filter = params[:city]
+    user_id = current_user.id
+    @records = current_user.role == 'admin' ? Records.all : Records.where(:user_id => user_id)
 
-      if city_filter && !city_filter.strip.empty?
-        @records = Records.where('city' => "#{city_filter}")
-        erb :"../views/records/people_list"
-      else
-        @records = Records.all
-        erb :"../views/records/people_list"
-      end
-    else
-      redirect to '/start'
-    end
+    @output = city_filter && !city_filter.strip.empty? ? @records.where(:city => "#{city_filter}") : @records
+    erb :'../views/records/people_list'
   end
 
   # statistics
   get '/cities_statistics' do
-    if logged_in?
-      @statistics = City.all
-      erb(:"cities/statistics")
-    else
-      redirect to '/start'
-    end
+    redirect_if_not_logged_in
+    @statistics = City.all
+    erb(:"cities/statistics")
   end
 
   # to create record:
   get '/added_person_form' do
-    if logged_in?
-      erb :create_person_form
-    else
-      redirect to '/start'
-    end
+    redirect_if_not_logged_in
+    erb :create_person_form
   end
 
   # create_person_form
   post '/create_person' do
-    first_name = params[:first_name]
-    second_name = params[:second_name]
-    city = params[:city]
-    date_of_birth = params[:date_of_birth]
+    redirect_if_not_logged_in
+    opts = { first_name: params[:first_name],
+             second_name: params[:second_name],
+             city: params[:city],
+             date_of_birth: params[:date_of_birth],
+             user_id: current_user.id }
 
-    record = Records.new(
-      first_name: first_name,
-      second_name: second_name,
-      city: city,
-      date_of_birth: date_of_birth
-    )
-
-    if record.valid?
-      record.save
-      p "Person is added to the records! Full name: #{first_name} #{second_name}, City: #{city}"
-      redirect('/people_list')
-    else
-      @error_messages = record.errors.full_messages
-      erb :create_person_form
-    end
+    create_record('/people_list', opts, :create_person_form)
   end
 
   # edit
-
   get '/records/:id/edit' do
-    if logged_in?
-      @record = Records.find(params[:id])
-      erb :"records/edit"
-    else
-      redirect to '/start'
-    end
+    @record = Records.find(params[:id])
+    p "Record is retrieved: id = #{params[:id]}"
+    p "User id for requested record: #{current_user.id}"
+
+    check_access_to_records(@record, :'records/edit')
   end
 
   patch '/records/:id/edit' do
+    redirect_if_not_logged_in
     @record = Records.find(params[:id])
-    puts "Record id is retrieved: #{params[:id]}"
+    opts = { first_name: params[:first_name],
+             second_name: params[:second_name],
+             city: params[:city],
+             date_of_birth: params[:date_of_birth] }
 
-    @record.update(
-      first_name: params[:first_name],
-      second_name: params[:second_name],
-      city: params[:city],
-      date_of_birth: params[:date_of_birth]
-    )
-    puts 'Record is updated, but not validated yet'
-
-    if @record.valid?
-      @record.save
-      redirect '/people_list'
-    else
-      @error_messages = @record.errors.full_messages
-      erb :"records/edit"
-    end
+    update_record(@record, '/people_list', opts, :'records/edit')
   end
 
+  # delete
   get '/records/:id/delete' do
-    if logged_in?
-      @record = Records.find(params[:id])
-      erb :"records/delete"
-    else
-      redirect to '/start'
-    end
+    @record = Records.find(params[:id])
+    p "Record is retrieved: id = #{params[:id]}"
+    p "User id for requested record: #{current_user.id}"
+
+    check_access_to_records(@record, :'records/delete')
   end
 
   delete '/records/:id/delete' do
+    redirect_if_not_logged_in
     @record = Records.find(params[:id])
     @record.delete
-
-    redirect '/people_list'
+    redirect to '/people_list'
   end
 end

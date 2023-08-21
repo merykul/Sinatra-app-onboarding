@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Delete Item with Records Transfer</title>
+  <link rel="stylesheet" type="text/css" href="/delete_with_records_transfer.css">
+</head>
+<body>
+<h1>Delete with Records Transfer</h1>
+
+<% if @users.any? %>
+  <h2>Choose user for records transfer:</h2>
+  <form id="delete-transfer-form" method="post" action="/user/<%= @user.id %>/delete/with_records_transfer">
+    <table>
+      <tr>
+        <th>First Name</th>
+        <th>Second Name</th>
+        <th>Username</th>
+        <th>Choose</th>
+      </tr>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.first_name %></td>
+          <td><%= user.second_name %></td>
+          <td><%= user.username %></td>
+          <td>
+            <input type="radio" name="selected_user_id" value="<%= user.id %>" />
+          </td>
+        </tr>
+      <% end %>
+    </table>
+    <div class="buttons">
+      <input type="submit" id="delete-transfer-button" value="Delete and transfer" disabled>
+      <a href="/manage_users" class="button">Back to users management</a>
+    </div>
+  </form>
+<% else %>
+  <p>No users available for records transfer.</p>
+<% end %>
+
+<script>
+    const radioButtons = document.querySelectorAll('input[type="radio"]');
+    const deleteTransferButton = document.getElementById('delete-transfer-button');
+
+    radioButtons.forEach(radioButton => {
+        radioButton.addEventListener('change', () => {
+            deleteTransferButton.removeAttribute('disabled');
+        });
+    });
+</script>
+
+</body>
+</html>

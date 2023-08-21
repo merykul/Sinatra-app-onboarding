@@ -17,5 +17,12 @@
   <a href="/log_out" class="btn">Log out</a>
   <a href="/cat" class="btn">Want to see a cute cat?</a>
 </div>
+
+<% if current_user.role == 'admin' %>
+  <div class="buttons">
+    <a href="/manage_users" class="btn">Manage users</a>
+  </div>
+<% end %>
+
 </body>
 </html>
