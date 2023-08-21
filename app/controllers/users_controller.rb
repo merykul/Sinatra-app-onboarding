@@ -35,6 +35,7 @@ class UsersController < ApplicationController
   end
 
   patch '/user/:id/set_password' do
+    error_if_not_logged_in
     p "New username: #{params[:new_username]}"
     @user = User.find(session[:user_id])
     opts = { password: params[:new_password],
@@ -46,16 +47,20 @@ class UsersController < ApplicationController
   end
 
   get '/user/:id/edit' do
-    @user = find_user(:id, params[:id])
     if_user_display_access_error
-    erb :'user/edit'
+    @user = find_user(:id, params[:id])
+    if @user.nil?
+      halt 404
+    else
+      erb :'user/edit'
+    end
   end
 
   patch '/user/:id/edit' do
     error_if_not_logged_in
     if_user_display_access_error
     @user = find_user(:id, params[:id])
-    if @user == nil
+    if @user.nil?
       halt 404
     else
       opts = { first_name: params[:first_name],
@@ -68,9 +73,13 @@ class UsersController < ApplicationController
 
   get '/user/:id/delete' do
     @user = find_user(:id, params[:id])
-    @user_records = Records.where(user_id: params[:id])
     if_user_display_access_error
-    erb :'user/delete'
+    if @user.nil?
+      halt 404
+    else
+      @user_records = Records.where(user_id: params[:id])
+      erb :'user/delete'
+    end
   end
 
   delete '/user/:id/delete/with_records' do
@@ -93,9 +102,13 @@ class UsersController < ApplicationController
     error_if_not_logged_in
     if_user_display_access_error
     @user = find_user(:id, params[:id])
-    @records = Records.where(user_id: params[:id])
-    @users = User.where(role: 'user').where.not(id: params[:id])
-    erb :'user/delete_with_records_transfer'
+    if @user.nil?
+      halt 404
+    else
+      @records = Records.where(user_id: params[:id])
+      @users = User.where(role: 'user').where.not(id: params[:id])
+      erb :'user/delete_with_records_transfer'
+    end
   end
 
   post '/user/:id/delete/with_records_transfer' do
@@ -123,8 +136,12 @@ class UsersController < ApplicationController
   get '/user/:id/delete/with_records_transfer_to_new_user' do
     if_user_display_access_error
     @user = find_user(:id, params[:id])
-    @records = Records.where(user_id: params[:id])
-    erb :'user/delete_and_transfer_records_to_new'
+    if @user.nil?
+      halt 404
+    else
+      @user_records = Records.where(user_id: params[:id])
+      erb :'user/delete_and_transfer_records_to_new'
+    end
   end
 
   post '/user/:id/delete/with_records_transfer_to_new_user' do
