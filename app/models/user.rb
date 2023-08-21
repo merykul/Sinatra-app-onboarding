@@ -32,6 +32,8 @@ class User < ActiveRecord::Base
   end
 
   def delete_with_records_transfer_to_new(user, records, new_user_opts)
+    error_messages = []
+
     ActiveRecord::Base.transaction do
       new_user = User.create(new_user_opts)
       if new_user.valid?
@@ -39,8 +41,12 @@ class User < ActiveRecord::Base
         records.update(user_id: new_user.id)
         user.destroy
       else
-        raise ActiveRecord::Rollback, "Error while user creation, check provided values"
+        error_messages = new_user.errors.full_messages
+        p "Error messages: #{error_messages}"
+        raise ActiveRecord::Rollback, 'Error while user creation, check provided values'
       end
     end
+
+    error_messages
   end
 end

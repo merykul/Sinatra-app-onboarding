@@ -46,7 +46,10 @@
   <% end %>
 </table>
 <div class="buttons">
-  <a href="/user/<%= @user.id %>/delete/with_records" class="btn">Delete with records</a>
+  <form action="/user/<%= @user.id %>/delete/with_records" method="post">
+    <input type="hidden" name="_method" value="delete">
+    <button type="submit" class="btn">Delete with records</button>
+  </form>
   <a href="/user/<%= @user.id %>/delete/with_records_transfer" class="btn">Transfer records and delete user</a>
   <a href="/user/<%= @user.id %>/delete/with_records_transfer_to_new_user" class="btn">Create new user and transfer records, then delete user</a>
   <a href="/manage_users" class="btn">Cancel</a>

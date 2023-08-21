@@ -10,8 +10,12 @@ module UserHelper
       p 'User is updated successfully!'
       p "Password status: #{user.password_status}"
       p "Username: #{user.username}"
-      redirect to if_success_route
+
+      response.status = 200
+      headers['Location'] = if_success_route
+      erb :'success_templates/updated_user'
     else
+      response.status = 400
       @error_messages = @user.errors.full_messages
       erb if_error_erb
     end
@@ -25,10 +29,14 @@ module UserHelper
       p 'Passed user validation'
       session[:user_id] = user.id unless admin_creates
       p 'User is create successfully!'
-      redirect to if_success_route
+
+      response.status = 201
+      headers['Location'] = if_success_route
+      erb :'success_templates/template'
     else
       p 'Error while user validation'
       @error_messages = user.errors.full_messages
+      response.status = 400
       erb if_error_erb
     end
   end
@@ -36,7 +44,7 @@ module UserHelper
   private
 
   def if_user_display_access_error
-    redirect to '/users_management_access_error' unless current_user.role == 'admin'
+    halt 403, MultiJson.dump({ message: 'You are not allowed to access this resource' }) unless current_user.role == 'admin'
   end
 
   def find_user(param, value)
