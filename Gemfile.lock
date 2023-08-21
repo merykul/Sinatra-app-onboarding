@@ -48,6 +48,7 @@ GEM
       fiber-annotation
       fiber-local
     daemons (1.4.1)
+    diff-lcs (1.5.0)
     digest (3.1.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -133,6 +134,7 @@ GEM
       racc
     pony (1.13.1)
       mail (>= 2.0)
+    power_assert (2.0.1)
     process-metrics (0.2.1)
       console (~> 1.8)
       samovar (~> 2.1)
@@ -165,6 +167,22 @@ GEM
       rack (>= 1.0)
       rack-test (~> 0.6.2)
       ripl (>= 0.7.0)
+    rspec (3.12.0)
+      rspec-core (~> 3.12.0)
+      rspec-expectations (~> 3.12.0)
+      rspec-mocks (~> 3.12.0)
+    rspec-core (3.12.2)
+      rspec-support (~> 3.12.0)
+    rspec-expectations (3.12.3)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.12.0)
+    rspec-html-matchers (0.10.0)
+      nokogiri (~> 1)
+      rspec (>= 3.0.0.a)
+    rspec-mocks (3.12.6)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.12.0)
+    rspec-support (3.12.1)
     rubocop (1.55.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -202,6 +220,8 @@ GEM
     sinatra-flash (0.3.0)
       sinatra (>= 1.0.0)
     strscan (3.0.1)
+    test-unit (3.6.1)
+      power_assert
     thin (1.8.2)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
@@ -239,13 +259,16 @@ DEPENDENCIES
   mysql2
   nokogiri (~> 1.15, >= 1.15.3)
   pony
+  rack-test
   rake
+  rspec-html-matchers
   rubocop
   session_secret_generator
   sinatra
   sinatra-activerecord
   sinatra-contrib
   sinatra-flash
+  test-unit
   thin
   tux
   webrick

@@ -49,11 +49,7 @@ class UsersController < ApplicationController
   get '/user/:id/edit' do
     if_user_display_access_error
     @user = find_user(:id, params[:id])
-    if @user.nil?
-      halt 404
-    else
-      erb :'user/edit'
-    end
+    @user.nil? ? (halt 404) : (erb :'user/edit')
   end
 
   patch '/user/:id/edit' do
