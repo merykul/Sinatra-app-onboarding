@@ -6,31 +6,36 @@ class RecordsController < ApplicationController
 
   # index
   get '/people_list' do
-    redirect_if_not_logged_in
+    error_if_not_logged_in
     city_filter = params[:city]
     user_id = current_user.id
     @records = current_user.role == 'admin' ? Records.all : Records.where(:user_id => user_id)
-
     @output = city_filter && !city_filter.strip.empty? ? @records.where(:city => "#{city_filter}") : @records
+
+    if city_filter && @output.empty?
+      @error_message = 'There is no records with this city'
+      response.status = 400
+    end
+
     erb :'../views/records/people_list'
   end
 
   # statistics
   get '/cities_statistics' do
-    redirect_if_not_logged_in
+    error_if_not_logged_in
     @statistics = City.all
     erb(:"cities/statistics")
   end
 
   # to create record:
   get '/added_person_form' do
-    redirect_if_not_logged_in
+    error_if_not_logged_in
     erb :create_person_form
   end
 
   # create_person_form
   post '/create_person' do
-    redirect_if_not_logged_in
+    error_if_not_logged_in
     opts = { first_name: params[:first_name],
              second_name: params[:second_name],
              city: params[:city],
@@ -42,16 +47,16 @@ class RecordsController < ApplicationController
 
   # edit
   get '/records/:id/edit' do
-    @record = Records.find(params[:id])
-    p "Record is retrieved: id = #{params[:id]}"
-    p "User id for requested record: #{current_user.id}"
-
-    check_access_to_records(@record, :'records/edit')
+    id = params[:id]
+    error_if_not_logged_in
+    @record = find_record(id)
+    erb :'/records/edit'
   end
 
   patch '/records/:id/edit' do
-    redirect_if_not_logged_in
-    @record = Records.find(params[:id])
+    error_if_not_logged_in
+    @record = find_record(params[:id])
+
     opts = { first_name: params[:first_name],
              second_name: params[:second_name],
              city: params[:city],
@@ -62,17 +67,24 @@ class RecordsController < ApplicationController
 
   # delete
   get '/records/:id/delete' do
-    @record = Records.find(params[:id])
-    p "Record is retrieved: id = #{params[:id]}"
-    p "User id for requested record: #{current_user.id}"
-
-    check_access_to_records(@record, :'records/delete')
+    id = params[:id]
+    error_if_not_logged_in
+    @record = find_record(id)
+    erb :'records/delete'
   end
 
   delete '/records/:id/delete' do
-    redirect_if_not_logged_in
-    @record = Records.find(params[:id])
-    @record.delete
-    redirect to '/people_list'
+    id = params[:id]
+    error_if_not_logged_in
+    @record = find_record(id)
+    if @record.nil?
+      response.status = 404
+      erb :'errors/error_404'
+    else
+      @record.delete
+      response.status = 200
+      headers['Location'] = '/people_list'
+      erb :'success_templates/deleted_record'
+    end
   end
 end

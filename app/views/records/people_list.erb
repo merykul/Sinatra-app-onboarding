@@ -13,6 +13,10 @@
   <input type="submit" value="Search">
 </form>
 
+<% if @error_message %>
+  <p class="error-message"><%= @error_message %></p>
+<% end %>
+
 <table>
   <tr>
     <th>First Name</th>
