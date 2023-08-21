@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   get '/manage_users' do
     error_if_not_logged_in
     if_user_display_access_error
-    @users = User.where(:role => 'user')
+    @users = User.where(role: 'user')
     erb :'user/manage'
   end
 
@@ -68,7 +68,7 @@ class UsersController < ApplicationController
 
   get '/user/:id/delete' do
     @user = find_user(:id, params[:id])
-    @user_records = Records.where(:user_id => params[:id])
+    @user_records = Records.where(user_id: params[:id])
     if_user_display_access_error
     erb :'user/delete'
   end
@@ -81,7 +81,7 @@ class UsersController < ApplicationController
       response.status = 404
       erb :'errors/error_404'
     else
-      @records = Records.where(:user_id => params[:id])
+      @records = Records.where(user_id: params[:id])
       @user.delete_with_records(@user, @records)
       response.status = 200
       headers['Location'] = '/manage_users'
@@ -93,8 +93,8 @@ class UsersController < ApplicationController
     error_if_not_logged_in
     if_user_display_access_error
     @user = find_user(:id, params[:id])
-    @records = Records.where(:user_id => params[:id])
-    @users = User.where(:role => 'user').where.not(:id => params[:id])
+    @records = Records.where(user_id: params[:id])
+    @users = User.where(role: 'user').where.not(id: params[:id])
     erb :'user/delete_with_records_transfer'
   end
 
@@ -112,7 +112,7 @@ class UsersController < ApplicationController
       response.status = 400
       erb :'errors/error_400'
     else
-      @records = Records.where(:user_id => params[:id])
+      @records = Records.where(user_id: params[:id])
       @user.delete_with_records_transfer(@user, @records, selected_user_id)
       response.status = 200
       headers['Location'] = '/manage_users'
@@ -123,7 +123,7 @@ class UsersController < ApplicationController
   get '/user/:id/delete/with_records_transfer_to_new_user' do
     if_user_display_access_error
     @user = find_user(:id, params[:id])
-    @records = Records.where(:user_id => params[:id])
+    @records = Records.where(user_id: params[:id])
     erb :'user/delete_and_transfer_records_to_new'
   end
 
@@ -136,7 +136,7 @@ class UsersController < ApplicationController
       response.status = 404
       erb :'errors/error_404'
     else
-      @records = Records.where(:user_id => params[:id])
+      @records = Records.where(user_id: params[:id])
       opts = { first_name: params[:first_name],
                second_name: params[:second_name],
                username: params[:username],
@@ -144,10 +144,16 @@ class UsersController < ApplicationController
                password_confirmation: params[:password_confirmation],
                password_status: 'temporary' }
 
-      @user.delete_with_records_transfer_to_new(@user, @records ,opts)
-      response.status = 200
-      headers['Location'] = '/manage_users'
-      erb :'success_templates/delete_with_transfer_to_new'
+      @error_messages = @user.delete_with_records_transfer_to_new(@user, @records, opts)
+      if @error_messages.empty?
+        response.status = 200
+        headers['Location'] = '/manage_users'
+        erb :'success_templates/delete_with_transfer_to_new'
+      else
+        p 'Error while new user creation'
+        response.status = 400
+        erb :'user/delete_and_transfer_records_to_new'
+      end
     end
   end
 end
