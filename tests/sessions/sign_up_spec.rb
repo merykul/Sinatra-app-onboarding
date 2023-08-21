@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require_relative 'helpers/spec_helper'
+require_relative 'helpers/rs/spec_helper'
 require_relative '../app/controllers/sessions_controller'
 require_relative '../app/controllers/records_controller'
 
@@ -9,6 +9,11 @@ RSpec.describe '[Sessions API]' do
 
   def app
     SessionsController
+  end
+
+  describe 'GET /sign_up_form' do
+    context 'with valid new user parameters'
+    context 'with invalid new user parameters'
   end
 
   describe 'POST /sign_up' do

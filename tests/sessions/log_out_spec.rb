@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require_relative 'helpers/spec_helper'
+require_relative 'helpers/rs/spec_helper'
 require_relative '../app/controllers/sessions_controller'
 require_relative '../app/controllers/records_controller'
 

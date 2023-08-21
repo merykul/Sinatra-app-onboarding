@@ -1,4 +1,4 @@
-require_relative 'helpers/spec_helper'
+require_relative 'helpers/rs/spec_helper'
 require_relative 'helpers/logs_helper'
 require_relative '../app/controllers/sessions_controller'
 require_relative '../app/controllers/records_controller'
@@ -11,7 +11,10 @@ RSpec.describe '[Records API]' do
     RecordsController
   end
 
-  describe 'GET /added_person_form'
+  describe 'GET /added_person_form' do
+    context 'when authorised'
+    context 'when authorised'
+  end
 
   describe 'POST /create_person' do
 
