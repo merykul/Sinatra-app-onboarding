@@ -22,9 +22,7 @@ RSpec.describe '[Sessions API]' do
   end
 
   describe 'POST /sign_up' do
-    before(:each) do
-      clear_cookies
-    end
+    before(:each) { clear_cookies }
 
     let(:random_password) { Faker::Alphanumeric.alphanumeric(number: 10) }
     let(:homepage_header) { data['homepage-header'] }

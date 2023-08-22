@@ -39,10 +39,9 @@ RSpec.describe '[Log in API]' do
     end
 
     context 'when not logged in' do
-      before(:each) do
-        clear_cookies
-        get '/log_in_form'
-      end
+      before(:each) { clear_cookies }
+
+      get '/log_in_form'
 
       it 'redirects to login page' do
         expect(last_response.body).to include(log_in_page_header)
@@ -55,9 +54,7 @@ RSpec.describe '[Log in API]' do
   end
 
   describe 'POST /log_in' do
-    before(:all) do
-      clear_cookies
-    end
+    before(:all) { clear_cookies }
 
     let(:invalid_username) { 'Fake' }
     let(:invalid_password) { 'Fake123456!' }
@@ -68,9 +65,7 @@ RSpec.describe '[Log in API]' do
     let(:invalid_username_or_password_error) { data['invalid-username-or-password-error'] }
 
     context 'with valid users username and password' do
-      before(:each) do
-        log_in(valid_username, valid_password)
-      end
+      before(:each) { log_in(valid_username, valid_password) }
 
       it 'redirects user to homepage' do
         follow_redirect!
@@ -84,9 +79,7 @@ RSpec.describe '[Log in API]' do
     end
 
     context 'with invalid username and password' do
-      before(:each) do
-        log_in(invalid_username, invalid_password)
-      end
+      before(:each) { log_in(invalid_username, invalid_password) }
 
       it 'error message is displayed' do
         expect(last_response.body).to include(invalid_username_or_password_error)

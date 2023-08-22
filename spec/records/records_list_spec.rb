@@ -22,8 +22,7 @@ RSpec.describe '[Records API, records list]' do
     let(:records_list_page_header) { data['records-list-page-title'] }
 
     context 'when not authorised' do
-      before(:each) do
-        clear_cookies
+      before(:each) { clear_cookies }
 
         get '/people_list'
       end

@@ -17,13 +17,10 @@ RSpec.describe '[Sessions API]' do
   end
 
   describe '[GET /start]' do
-    before(:each) do
-      clear_cookies
-    end
+    before(:each) { clear_cookies }
 
     context 'when logged in' do
-      before(:each) do
-        log_in('TestUser', 'Test123456!')
+      before(:each) { log_in('TestUser', 'Test123456!') }
 
         get '/start'
       end
