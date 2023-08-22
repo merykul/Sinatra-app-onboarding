@@ -32,7 +32,7 @@ class SessionsController < ApplicationController
         redirect to '/homepage'
       end
     else
-      @error_messages = ["Invalid #{username} username or #{password} password!"]
+      @error_messages = ["Invalid username or password!"]
       response.status = 400
       erb :'user/login_page'
     end

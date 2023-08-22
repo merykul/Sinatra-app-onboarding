@@ -1,7 +1,12 @@
-require_relative 'helpers/rs/spec_helper'
-require_relative 'helpers/logs_helper'
-require_relative '../app/controllers/sessions_controller'
-require_relative '../app/controllers/records_controller'
+# frozen_string_literal: true
+require_relative '../helpers/spec_helper'
+require_relative '../helpers/auth_helper'
+require_relative '../helpers/logs_helper'
+require_relative '../../app/controllers/sessions_controller'
+require_relative '../../app/controllers/records_controller'
+require 'yaml'
+
+data = YAML.load_file('data.yml')
 
 RSpec.describe '[Records API]' do
   include AuthHelper
@@ -22,6 +27,7 @@ RSpec.describe '[Records API]' do
     let(:random_last_name) { Faker::Name.last_name }
     let(:city) { 'Fake City' }
     let(:random_dob) { Faker::Date.birthday }
+    let(:records_list_page_header) { data['records-list-page-title'] }
 
     context 'when logged in, and with valid data' do
       before(:each) do
@@ -48,7 +54,7 @@ RSpec.describe '[Records API]' do
 
       it 'redirects to /people_list page after successful record save' do
         follow_redirect!
-        expect(last_response.body).to include('Records List')
+        expect(last_response.body).to include(records_list_page_header)
       end
 
       it 'response code is 302 Found (Temporary Redirect)' do

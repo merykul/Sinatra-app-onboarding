@@ -1,0 +1,18 @@
+---
+homepage-header: 'My Home Page'
+registration_page_header: 'Registration form'
+start-page-header: 'Hello 🌱, Do you have an account?'
+records-list-page-title: 'Records List'
+log-in-page-header: 'Log in'
+
+not-authorised-error: "401 error - Not Authorised"
+
+invalid-username-or-password-error: 'Invalid username or password!'
+username-taken-error: 'Username has already been taken'
+blank-password-error: "Password can't be blank"
+blank-first-name-error: "First name can't be blank"
+blank-second-name-error: "Second name can't be blank"
+blank-username-error: "Username can't be blank"
+username-length-error: 'Username username length should be 4-20 symbols'
+password-length-error: 'Password password must have length from 6 to 15 sym.'
+blank-password-confirmation-error: "Password confirmation can't be blank"

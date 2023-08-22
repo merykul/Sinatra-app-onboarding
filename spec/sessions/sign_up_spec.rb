@@ -1,7 +1,12 @@
 # frozen_string_literal: true
-require_relative 'helpers/rs/spec_helper'
-require_relative '../app/controllers/sessions_controller'
-require_relative '../app/controllers/records_controller'
+require_relative '../helpers/spec_helper'
+require_relative '../helpers/auth_helper'
+require_relative '../helpers/logs_helper'
+require_relative '../../app/controllers/sessions_controller'
+require_relative '../../app/controllers/records_controller'
+require 'yaml'
+
+data = YAML.load_file('data.yml')
 
 RSpec.describe '[Sessions API]' do
   include AuthHelper
@@ -22,6 +27,18 @@ RSpec.describe '[Sessions API]' do
     end
 
     let(:random_password) { Faker::Alphanumeric.alphanumeric(number: 10) }
+    let(:homepage_header) { data['homepage-header'] }
+    let(:not_authorised_error) { data['not-authorised-error'] }
+    let(:username_taken_error) { data['username-taken-error'] }
+    let(:registration_page_header) { data['registration_page_header'] }
+    let(:invalid_username_and_password) { data['invalid-username-or-password-error'] }
+    let(:blank_password_error) { data['blank-password-error'] }
+    let(:blank_first_name_error) { data['blank-first-name-error'] }
+    let(:blank_second_name_error) { data['blank-second-name-error'] }
+    let(:blank_username_error) { data['blank-username-error'] }
+    let(:username_length_error) { data['username-length-error'] }
+    let(:password_length_error) { data['password-length-error'] }
+    let(:blank_password_confirmation_error) { data['blank-password-confirmation-error'] }
 
     context 'when request with valid parameters values' do
       before(:each) do
@@ -38,13 +55,12 @@ RSpec.describe '[Sessions API]' do
       end
 
       it 'user is redirected to homepage' do
-        follow_redirect!
-        expect(last_response.body).to include('My Home Page')
+        expect(last_response.body).to include(homepage_header)
         expect(last_request.path).to eq('/homepage')
       end
 
-      it 'response code is 302 Found (Temporary Redirect)' do
-        expect(last_response.status).to eq 302
+      it 'response code is 201 Created' do
+        expect(last_response.status).to eq 201
       end
     end
 
@@ -58,15 +74,15 @@ RSpec.describe '[Sessions API]' do
       end
 
       it 'displays "Username has already been taken" error message' do
-        expect(last_response.body).to include('Username has already been taken')
+        expect(last_response.body).to include(username_taken_error)
       end
 
       it 'duplicated user is not saved to users table' do
         expect(User.where(:username => @username).count).to eq(1)
       end
 
-      it 'response code is 200 OK' do
-        expect(last_response.status).to eq 200
+      it 'response code is 400' do
+        expect(last_response.status).to eq 400
       end
     end
 
@@ -82,21 +98,22 @@ RSpec.describe '[Sessions API]' do
       end
 
       it 'fields validation error messages are displayed' do
-        expect(last_response.body).to include("Password can't be blank")
-        expect(last_response.body).to include("Username can't be blank")
-        expect(last_response.body).to include('Username username length should be 4-20 symbols')
-        expect(last_response.body).to include("First name can't be blank")
-        expect(last_response.body).to include("Second name can't be blank")
-        expect(last_response.body).to include("Password can't be blank")
-        expect(last_response.body).to include('Password password must have length from 6 to 15 sym.')
+        expect(last_response.body).to include(blank_password_error)
+        expect(last_response.body).to include(blank_username_error)
+        expect(last_response.body).to include(username_length_error)
+        expect(last_response.body).to include(blank_first_name_error)
+        expect(last_response.body).to include(blank_second_name_error)
+        expect(last_response.body).to include(blank_password_error)
+        expect(last_response.body).to include(blank_password_confirmation_error)
+        expect(last_response.body).to include(password_length_error)
       end
 
-      it 'response code is 200 OK' do
-        expect(last_response.status).to eq 200
+      it 'response code is 400' do
+        expect(last_response.status).to eq 400
       end
 
       it 'user still on sign up page' do
-        expect(last_response.body).to include('Registration form')
+        expect(last_response.body).to include(registration_page_header)
       end
     end
   end

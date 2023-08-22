@@ -1,7 +1,12 @@
-require_relative 'helpers/rs/spec_helper'
-require_relative 'helpers/logs_helper'
-require_relative '../app/controllers/sessions_controller'
-require_relative '../app/controllers/records_controller'
+# frozen_string_literal: true
+require_relative '../helpers/spec_helper'
+require_relative '../helpers/auth_helper'
+require_relative '../helpers/logs_helper'
+require_relative '../../app/controllers/sessions_controller'
+require_relative '../../app/controllers/records_controller'
+require 'yaml'
+
+data = YAML.load_file('data.yml')
 
 RSpec.describe '[Records API, records list]' do
   include AuthHelper
@@ -12,6 +17,10 @@ RSpec.describe '[Records API, records list]' do
   end
 
   describe 'GET /people_list' do
+
+    let(:not_authorised_error) { data['not-authorised-error'] }
+    let(:records_list_page_header) { data['records-list-page-title'] }
+
     context 'when not authorised' do
       before(:each) do
         clear_cookies
@@ -19,12 +28,12 @@ RSpec.describe '[Records API, records list]' do
         get '/people_list'
       end
 
-      it 'redirects to start page' do
-        expect(last_response.body).to include('Hello 🌱, Do you have an account?')
+      it 'redirects to "Not authorised" error page' do
+        expect(last_response.body).to include(not_authorised_error)
       end
 
-      it 'response status is 200 OK' do
-        expect(last_response.status).to eq 200
+      it 'response status is 401 Not Authorised' do
+        expect(last_response.status).to eq 401
       end
     end
 
@@ -37,7 +46,7 @@ RSpec.describe '[Records API, records list]' do
       end
 
       it 'the list of all records is displayed' do
-        expect(last_response.body).to include('Records List')
+        expect(last_response.body).to include(records_list_page_header)
         expect(last_response.body).to include Records.all
       end
 
