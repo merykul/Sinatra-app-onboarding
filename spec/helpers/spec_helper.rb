@@ -7,10 +7,10 @@ require_relative 'auth_helper'
 Bundler.require(:default)                   # load all the default gems
 Bundler.require(Sinatra::Base.environment)         # load all the environment specific gems
 
-require "active_support/deprecation"
-require "active_support/all"
-require "rack/test"
-require "rspec-html-matchers"
+require 'active_support/deprecation'
+require 'active_support/all'
+require 'rack/test'
+require 'rspec-html-matchers'
 
 ENV['RACK_ENV'] = 'test'
 
