@@ -4,6 +4,7 @@ registration_page_header: Registration form
 start-page-header: Hello 🌱, Do you have an account?
 records-list-page-title: Records List
 log-in-page-header: Log in
+create-person-page-title: Create a Person
 
 not-authorised-error: 401 error - Not Authorised
 
@@ -16,3 +17,5 @@ blank-username-error: Username can't be blank
 username-length-error: Username username length should be 4-20 symbols
 password-length-error: Password password must have length from 6 to 15 sym.
 blank-password-confirmation-error: Password confirmation can't be blank
+blank-city-error: City can't be blank
+city-length-error: City length should be between 1 and 100 symbols
