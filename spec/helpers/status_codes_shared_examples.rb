@@ -2,15 +2,17 @@ require_relative '../helpers/spec_helper'
 require 'yaml'
 data = YAML.load_file('data.yml')
 
-RSpec.shared_examples 'not authorised' do
+RSpec.shared_examples 'not authorised get' do |endpoint|
 
   let(:not_authorised_error) { data['not-authorised-error'] }
 
   it 'verifies that response status code is 401' do
+    get endpoint
     expect(last_response.status).to eq 401
   end
 
   it 'user is on "Not authorised" error page' do
+    get endpoint
     expect(last_response.body).to include(not_authorised_error)
   end
 end

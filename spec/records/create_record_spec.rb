@@ -5,6 +5,7 @@ require_relative '../helpers/logs_helper'
 require_relative '../helpers/status_codes_shared_examples'
 require_relative '../../app/controllers/sessions_controller'
 require_relative '../../app/controllers/records_controller'
+require_relative '../../app/controllers/users_controller'
 require 'yaml'
 
 data = YAML.load_file('data.yml')
@@ -14,7 +15,12 @@ RSpec.describe '[Records API, record creation]' do
   include LoggerHelper
 
   def app
-    RecordsController
+    Rack::Builder.new do
+      run ApplicationController
+      use RecordsController
+      use SessionsController
+      use UsersController
+    end.to_app
   end
 
   describe '[GET /added_person_form]' do
@@ -37,8 +43,9 @@ RSpec.describe '[Records API, record creation]' do
       end
     end
 
-    context 'when not authorised'
-    # it_behaves_like 'not authorised'
+    context 'when not authorised' do
+      it_behaves_like 'not authorised get', '/added_person_form'
+    end
   end
 
   describe 'POST /create_person' do
