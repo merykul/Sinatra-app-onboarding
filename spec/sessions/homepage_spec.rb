@@ -22,17 +22,11 @@ RSpec.describe '[Session API]' do
     let(:not_authorised_error) { data['not-authorised-error'] }
 
     context 'when not authorised' do
-      before(:all) do
-        clear_cookies
-        get '/homepage'
-        last_response_log
-      end
+      before(:all) { clear_cookies }
 
       it 'user is redirected to "Not authorised" error page' do
+        get '/homepage'
         expect(last_response.body).to include(not_authorised_error)
-      end
-
-      it 'status code is 401 Not Authorised' do
         expect(last_response.status).to eq 401
       end
     end
@@ -41,15 +35,16 @@ RSpec.describe '[Session API]' do
       before(:all) do
         clear_cookies
         log_in('TestUser', 'Test123456!')
-        get '/homepage'
-        last_response_log
       end
 
       it 'response code is 200 OK' do
+        get '/homepage'
         expect(last_response.status).to eq 200
       end
 
       it 'user is redirected to homepage' do
+        get '/homepage'
+        last_response_log
         expect(last_response.body).to include(homepage_header)
         expect(last_request.path).to eq('/homepage')
       end

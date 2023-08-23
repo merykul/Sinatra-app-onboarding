@@ -25,6 +25,7 @@ RSpec.describe '[Log in API]' do
       before(:each) do
         clear_cookies
         log_in('TestUser', 'Test123456!')
+      end
 
         get '/log_in_form'
       end

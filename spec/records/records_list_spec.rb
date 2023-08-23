@@ -22,16 +22,11 @@ RSpec.describe '[Records API, records list]' do
     let(:records_list_page_header) { data['records-list-page-title'] }
 
     context 'when not authorised' do
-      before(:each) { clear_cookies }
-
-        get '/people_list'
-      end
+      before(:all) { clear_cookies }
 
       it 'redirects to "Not authorised" error page' do
+        get '/people_list'
         expect(last_response.body).to include(not_authorised_error)
-      end
-
-      it 'response status is 401 Not Authorised' do
         expect(last_response.status).to eq 401
       end
     end
@@ -40,16 +35,16 @@ RSpec.describe '[Records API, records list]' do
       before(:each) do
         clear_cookies
         log_in('TestUser', 'Test123456!')
-
-        get '/people_list'
       end
 
       it 'the list of all records is displayed' do
+        get '/people_list'
         expect(last_response.body).to include(records_list_page_header)
         expect(last_response.body).to include Records.all
       end
 
       it 'response status is 200 OK' do
+        get '/people_list'
         expect(last_response.status).to eq 200
       end
     end
