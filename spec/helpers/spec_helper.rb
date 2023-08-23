@@ -4,8 +4,8 @@ require_relative '../../app/controllers/records_controller'
 require_relative 'auth_helper'
 # require_relative '../../db/seeds'
 
-Bundler.require(:default)                   # load all the default gems
-Bundler.require(Sinatra::Base.environment)         # load all the environment specific gems
+Bundler.require(:default) # load all the default gems
+Bundler.require(Sinatra::Base.environment) # load all the environment specific gems
 
 require 'active_support/deprecation'
 require 'active_support/all'
@@ -18,4 +18,5 @@ RSpec.configure do |config|
   config.include AuthHelper
   config.include Rack::Test::Methods
   config.include RSpecHtmlMatchers
+  config.include RSpec::Core::SharedExampleGroup
 end
