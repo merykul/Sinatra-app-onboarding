@@ -29,10 +29,11 @@ class SessionsController < ApplicationController
         puts 'Successful logged in!'
         puts "User role: #{current_user.role}"
         puts "User id: #{current_user.id}"
-        redirect to '/homepage'
+        response.status = 200
+        erb :homepage
       end
     else
-      @error_messages = ["Invalid username or password!"]
+      @error_messages = ['Invalid username or password!']
       response.status = 400
       erb :'user/login_page'
     end
