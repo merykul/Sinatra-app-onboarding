@@ -17,9 +17,28 @@ RSpec.describe '[Records API, record creation]' do
     RecordsController
   end
 
-  describe 'GET /added_person_form' do
-    context 'when authorised'
-    context 'when authorised'
+  describe '[GET /added_person_form]' do
+
+    let(:create_person_page_title) { data['create-person-page-title'] }
+
+    context 'when authorised' do
+      before(:all) do
+        clear_cookies
+        log_in('TestUser', 'Test123456!')
+      end
+
+      it 'redirects user to record creation page' do
+        get '/added_person_form'
+        expect(last_response.body).to include(create_person_page_title)
+      end
+
+      it_behaves_like 'authorised get request', '/added_person_form' do
+        let(:title) { data['create-person-page-title'] }
+      end
+    end
+
+    context 'when not authorised'
+    # it_behaves_like 'not authorised'
   end
 
   describe 'POST /create_person' do
@@ -29,47 +48,86 @@ RSpec.describe '[Records API, record creation]' do
     let(:city) { 'Fake City' }
     let(:random_dob) { Faker::Date.birthday }
     let(:records_list_page_header) { data['records-list-page-title'] }
+    let(:blank_first_name_error) { data['blank-first-name-error'] }
+    let(:blank_second_name_error) { data['blank-second-name-error'] }
+    let(:city_length_error) { data['city-length-error'] }
+    let(:blank_city_error) { data['blank-city-error'] }
+    let(:not_authorised_page_header) { data['not-authorised-error'] }
 
-    context 'when logged in, and with valid data' do
+    context 'when authorised, and with valid data' do
       before(:each) do
         clear_cookies
-        log_new_record_info(random_name, random_last_name, city, random_dob)
-
         log_in('TestUser', 'Test123456!')
         last_request_log
         last_response_body_log
+        # log_new_record_info(random_name, random_last_name, city, random_dob)
+      end
 
+      it 'saves new record to records table' do
         post '/create_person',
              first_name: random_name,
              second_name: random_last_name,
              city: city,
-             date_of_birth: random_dfb
-      end
+             date_of_birth: random_dob
 
-      it 'saves new record to records table' do
         expect(Records.all).to include Records.find_by(:first_name => random_name,
                                                        :second_name => random_last_name,
                                                        :city => city,
-                                                       :date_of_birth => random_dfb)
+                                                       :date_of_birth => random_dob)
+        expect(last_response.status).to eq 201
       end
 
       it 'redirects to /people_list page after successful record save' do
-        follow_redirect!
-        expect(last_response.body).to include(records_list_page_header)
-      end
+        post '/create_person',
+             first_name: random_name,
+             second_name: random_last_name,
+             city: city,
+             date_of_birth: random_dob
 
-      it 'response code is 302 Found (Temporary Redirect)' do
-        expect(last_response.status).to eq 302
+        expect(last_response.body).to include(records_list_page_header)
+        expect(last_response.status).to eq 201
       end
     end
 
-    context 'when logged in, with empty values' do
-      it 'error messages are displayed'
+    context 'when authorised, with empty values' do
+      before(:all) do
+        clear_cookies
+        log_in('TestUser', 'Test123456!')
+        last_request_log
+        last_response_body_log
+      end
+
+      it 'error messages are displayed and response status code is 400' do
+        log_new_record_info(random_name, random_last_name, city, random_dob)
+        post '/create_person',
+             first_name: '',
+             second_name: '',
+             city: '',
+             date_of_birth: ''
+        expect(last_response.body).to include(blank_first_name_error)
+        expect(last_response.body).to include(blank_second_name_error)
+        expect(last_response.body).to include(blank_city_error)
+        expect(last_response.body).to include(city_length_error)
+        expect(last_response.status).to eq 400
+      end
     end
 
     context 'when not authorised, and with valid data' do
-      it 'record is not saved to records table'
-      it 'user is redirected to /start page'
+      before(:all) { clear_cookies }
+
+      it 'record is not saved to records table' do
+        post '/create_person',
+             first_name: random_name,
+             second_name: random_last_name,
+             city: city,
+             date_of_birth: random_dob
+        expect(Records.all).to_not include Records.find_by(:first_name => random_name,
+                                                           :second_name => random_last_name,
+                                                           :city => city,
+                                                           :date_of_birth => random_dob)
+      end
+
+      # it_behaves_like 'not authorised'
     end
   end
 end
