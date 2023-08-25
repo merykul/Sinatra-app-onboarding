@@ -13,7 +13,12 @@ RSpec.describe '[Log in API]' do
   include LoggerHelper
 
   def app
-    SessionsController
+    Rack::Builder.new do
+      run ApplicationController
+      use RecordsController
+      use SessionsController
+      use UsersController
+    end.to_app
   end
 
   describe 'GET /log_in_form' do
@@ -27,8 +32,7 @@ RSpec.describe '[Log in API]' do
         log_in('TestUser', 'Test123456!')
       end
 
-        get '/log_in_form'
-      end
+      get '/log_in_form'
 
       it 'redirects to homepage' do
         expect(last_response.body).to include(homepage_header)

@@ -13,7 +13,12 @@ RSpec.describe '[Sessions API]' do
   include LoggerHelper
 
   def app
-    SessionsController
+    Rack::Builder.new do
+      run ApplicationController
+      use RecordsController
+      use SessionsController
+      use UsersController
+    end.to_app
   end
 
   describe 'GET /sign_up_form' do

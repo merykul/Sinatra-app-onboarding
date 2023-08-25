@@ -13,7 +13,12 @@ RSpec.describe '[Sessions API]' do
   include LoggerHelper
 
   def app
-    SessionsController
+    Rack::Builder.new do
+      run ApplicationController
+      use RecordsController
+      use SessionsController
+      use UsersController
+    end.to_app
   end
 
   describe '[GET /log_out]' do
@@ -23,9 +28,9 @@ RSpec.describe '[Sessions API]' do
     before(:each) do
       clear_cookies
       log_in('TestUser', 'Test123456!')
-
-      get '/log_out'
     end
+
+    get '/log_out'
 
     it 'user is redirected to start page' do
       expect(last_response.body).to include(start_page_header)

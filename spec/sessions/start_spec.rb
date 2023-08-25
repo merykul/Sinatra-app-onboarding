@@ -13,7 +13,12 @@ RSpec.describe '[Sessions API]' do
   include LoggerHelper
 
   def app
-    SessionsController
+    Rack::Builder.new do
+      run ApplicationController
+      use RecordsController
+      use SessionsController
+      use UsersController
+    end.to_app
   end
 
   describe '[GET /start]' do
@@ -22,8 +27,7 @@ RSpec.describe '[Sessions API]' do
     context 'when logged in' do
       before(:each) { log_in('TestUser', 'Test123456!') }
 
-        get '/start'
-      end
+      get '/start'
 
       it 'status code is 200 OK' do
         expect(last_response.status).to eq 200
@@ -31,9 +35,8 @@ RSpec.describe '[Sessions API]' do
     end
 
     context 'when not authorised' do
-      before(:each) do
-        get '/start'
-      end
+
+      get '/start'
 
       it 'status code is 200' do
         expect(last_response.status).to eq 200

@@ -13,7 +13,12 @@ RSpec.describe '[Users API, manage users access]' do
   include LoggerHelper
 
   def app
-    UsersController
+    Rack::Builder.new do
+      run ApplicationController
+      use RecordsController
+      use SessionsController
+      use UsersController
+    end.to_app
   end
 
   describe 'GET /manage_users' do

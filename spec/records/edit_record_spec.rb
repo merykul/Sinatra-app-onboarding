@@ -13,7 +13,12 @@ RSpec.describe '[Records API]' do
   include LoggerHelper
 
   def app
-    RecordsController
+    Rack::Builder.new do
+      run ApplicationController
+      use RecordsController
+      use SessionsController
+      use UsersController
+    end.to_app
   end
 
   describe 'GET /records/:id/edit' do
