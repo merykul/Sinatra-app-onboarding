@@ -5,7 +5,10 @@ start-page-header: Hello 🌱, Do you have an account?
 records-list-page-title: Records List
 log-in-page-header: Log in
 create-person-page-title: Create a Person
+cities-statistics-page-title: Cities Statistics
+delete-person-record-page-title: Delete Person Record
 
+page-not-found-error: 404 - Page not found
 not-authorised-error: 401 error - Not Authorised
 
 invalid-username-or-password-error: Invalid username or password!
