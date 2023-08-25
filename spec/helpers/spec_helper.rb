@@ -2,6 +2,10 @@ require_relative '../../app/controllers/application_controller'
 require_relative '../../app/controllers/sessions_controller'
 require_relative '../../app/controllers/records_controller'
 require_relative 'auth_helper'
+require 'factory_bot'
+require_relative '../factories/users'
+require_relative '../factories/records'
+
 # require_relative '../../db/seeds'
 
 Bundler.require(:default) # load all the default gems
