@@ -29,3 +29,5 @@ group :development || test do
   gem 'rack-test'
   gem 'test-unit'
 end
+
+gem "factory_bot", "~> 6.2"

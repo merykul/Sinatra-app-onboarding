@@ -54,6 +54,8 @@ GEM
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.8.1)
     eventmachine (1.2.7)
+    factory_bot (6.2.1)
+      activesupport (>= 5.0.0)
     faker (3.2.0)
       i18n (>= 1.8.11, < 2)
     falcon (0.42.3)
@@ -251,6 +253,7 @@ DEPENDENCIES
   axlsx (~> 2.0, >= 2.0.1)
   bcrypt (~> 3.1.7)
   dotenv
+  factory_bot (~> 6.2)
   faker
   falcon
   faraday
