@@ -69,7 +69,7 @@ RSpec.describe '[Log in API]' do
     let(:log_in_page_header) { data['log-in-page-header'] }
     let(:invalid_username_or_password_error) { data['invalid-username-or-password-error'] }
 
-    context 'with valid users username and password' do
+    context 'with existing users username and password' do
       before(:each) { log_in(valid_username, valid_password) }
 
       it 'redirects user to homepage' do
@@ -83,7 +83,7 @@ RSpec.describe '[Log in API]' do
       end
     end
 
-    context 'with invalid username and password' do
+    context 'with not existing username and password' do
       before(:each) { log_in(invalid_username, invalid_password) }
 
       it 'error message is displayed' do
