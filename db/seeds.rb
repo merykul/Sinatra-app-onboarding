@@ -3,11 +3,17 @@ require_relative '../app/models/user'
 require_relative '../app/models/records'
 
 puts '🌱 Seeding data...'
-puts '🌱 Generating TestUser for you...'
+puts '🌱 Generating TestUser, TestAdmin, and TestUser2 for you...'
 
 User.create!(password: 'Test123456!', password_confirmation: 'Test123456!', username: 'TestUser',
              first_name: 'Mariia',
              second_name: 'Tester',
+             role: 0,
+             password_status: 1)
+
+User.create!(password: 'Test123456!', password_confirmation: 'Test123456!', username: 'TestUser2',
+             first_name: 'Mariia2',
+             second_name: 'Tester2',
              role: 0,
              password_status: 1)
 
