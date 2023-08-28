@@ -42,3 +42,40 @@ RSpec.shared_examples 'get request with invalid data in the request url' do |end
     expect(last_response.body).to include(page_not_found_error)
   end
 end
+
+# RSpec.shared_examples 'successful post request' do |endpoint|
+#
+#   # TODO
+#   it 'verifies that response code is 201' do
+#     post endpoint
+#     expect(last_response.status).to eq 201
+#   end
+# end
+
+RSpec.shared_examples 'not authorised delete' do |endpoint|
+
+  it 'verifies that response status code is 401' do
+    delete endpoint
+    expect(last_response.status).to eq 401
+  end
+
+  it 'user is on "Not authorised" error page' do
+    delete endpoint
+    expect(last_response.body).to include(not_authorised_error)
+  end
+end
+
+RSpec.shared_examples 'authorised delete' do |endpoint|
+
+  let(:successful_record_delete) { data['successful-record-delete'] }
+
+  it 'verifies that response status code is 200' do
+    delete endpoint
+    expect(last_response.status).to eq 200
+  end
+
+  it 'user is redirected to success page' do
+    delete endpoint
+    expect(last_response.body).to include(successful_record_delete)
+  end
+end
