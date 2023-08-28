@@ -10,6 +10,9 @@ delete-person-record-page-title: Delete Person Record
 
 page-not-found-error: 404 - Page not found
 not-authorised-error: 401 error - Not Authorised
+record-access-error: 403 error - Action is forbidden
+
+successful-record-delete: Record deleted successfully
 
 invalid-username-or-password-error: Invalid username or password!
 username-taken-error: Username has already been taken
