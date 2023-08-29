@@ -24,3 +24,12 @@ RSpec.configure do |config|
   config.include RSpecHtmlMatchers
   config.include RSpec::Core::SharedExampleGroup
 end
+
+def app
+  Rack::Builder.new do
+    run ApplicationController
+    use RecordsController
+    use SessionsController
+    use UsersController
+  end.to_app
+end

@@ -12,15 +12,6 @@ RSpec.describe '[Sessions API]' do
   include AuthHelper
   include LoggerHelper
 
-  def app
-    Rack::Builder.new do
-      run ApplicationController
-      use RecordsController
-      use SessionsController
-      use UsersController
-    end.to_app
-  end
-
   describe '[GET /log_out]' do
 
     let(:start_page_header) { data['start-page_header'] }

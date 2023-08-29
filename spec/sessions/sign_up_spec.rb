@@ -12,15 +12,6 @@ RSpec.describe '[Sessions API]' do
   include AuthHelper
   include LoggerHelper
 
-  def app
-    Rack::Builder.new do
-      run ApplicationController
-      use RecordsController
-      use SessionsController
-      use UsersController
-    end.to_app
-  end
-
   describe 'GET /sign_up_form' do
     context 'with valid new user parameters'
     context 'with invalid new user parameters'

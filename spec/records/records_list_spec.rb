@@ -12,15 +12,6 @@ RSpec.describe '[Records API, records list]' do
   include AuthHelper
   include LoggerHelper
 
-  def app
-    Rack::Builder.new do
-      run ApplicationController
-      use RecordsController
-      use SessionsController
-      use UsersController
-    end.to_app
-  end
-
   describe 'GET /people_list' do
 
     let(:not_authorised_error) { data['not_authorised_error'] }

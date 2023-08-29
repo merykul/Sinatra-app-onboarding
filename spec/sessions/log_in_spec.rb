@@ -12,15 +12,6 @@ RSpec.describe '[Log in API]' do
   include AuthHelper
   include LoggerHelper
 
-  def app
-    Rack::Builder.new do
-      run ApplicationController
-      use RecordsController
-      use SessionsController
-      use UsersController
-    end.to_app
-  end
-
   describe 'GET /log_in_form' do
 
     let(:homepage_header) { data['homepage_header'] }

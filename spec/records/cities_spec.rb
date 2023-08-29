@@ -16,15 +16,6 @@ RSpec.describe '[Records API, cities statistics]' do
   include AuthHelper
   include LoggerHelper
 
-  def app
-    Rack::Builder.new do
-      run ApplicationController
-      use RecordsController
-      use SessionsController
-      use UsersController
-    end.to_app
-  end
-
   describe 'GET /cities_statistics' do
     context 'when authorised' do
       before(:each) do

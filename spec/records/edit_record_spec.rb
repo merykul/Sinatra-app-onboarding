@@ -12,15 +12,6 @@ RSpec.describe '[Records API]' do
   include AuthHelper
   include LoggerHelper
 
-  def app
-    Rack::Builder.new do
-      run ApplicationController
-      use RecordsController
-      use SessionsController
-      use UsersController
-    end.to_app
-  end
-
   describe 'GET /records/:id/edit' do
     context 'when not authorised'
     context 'when authorised'

@@ -12,15 +12,6 @@ RSpec.describe '[Users API]' do
   include AuthHelper
   include LoggerHelper
 
-  def app
-    Rack::Builder.new do
-      run ApplicationController
-      use RecordsController
-      use SessionsController
-      use UsersController
-    end.to_app
-  end
-
   describe 'GET user/:id/delete/with_records_transfer' do
     context 'when not authorised'
     context 'when authorised, with invalid user id'

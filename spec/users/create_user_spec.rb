@@ -12,15 +12,6 @@ RSpec.describe '[Users API, user creation]' do
   include AuthHelper
   include LoggerHelper
 
-  def app
-    Rack::Builder.new do
-      run ApplicationController
-      use RecordsController
-      use SessionsController
-      use UsersController
-    end.to_app
-  end
-
   describe 'GET /create_user' do
     context 'when not authorised'
     context 'when authorised'

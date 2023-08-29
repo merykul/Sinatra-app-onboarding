@@ -14,15 +14,6 @@ RSpec.describe '[Records API, record creation]' do
   include AuthHelper
   include LoggerHelper
 
-  def app
-    Rack::Builder.new do
-      run ApplicationController
-      use RecordsController
-      use SessionsController
-      use UsersController
-    end.to_app
-  end
-
   describe '[GET /added_person_form]' do
 
     let(:create_person_page_title) { data['create_person_page_title'] }
