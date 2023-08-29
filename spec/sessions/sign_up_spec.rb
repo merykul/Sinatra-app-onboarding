@@ -12,12 +12,23 @@ RSpec.describe '[Sessions API]' do
   include AuthHelper
   include LoggerHelper
 
-  describe 'GET /sign_up_form' do
-    context 'with valid new user parameters'
-    context 'with invalid new user parameters'
+  context 'when GET /sign_up_form' do
+    context 'when authorised' do
+      before(:all) { log_in('TestUser', 'Test123456!') }
+
+      it_behaves_like 'authorised get request', '/homepage' do
+        let(:title) { data['homepage_header'] }
+      end
+    end
+
+    context 'when not authorised' do
+      it_behaves_like 'authorised get request', '/sign_up_form' do
+        let(:title) { data['registration_page_header'] }
+      end
+    end
   end
 
-  describe 'POST /sign_up' do
+  context 'when POST /sign_up' do
     before(:each) { clear_cookies }
 
     let(:random_password) { Faker::Alphanumeric.alphanumeric(number: 10) }
@@ -44,16 +55,16 @@ RSpec.describe '[Sessions API]' do
         last_response_log
       end
 
-      it 'user is created' do
+      it 'verifies that user is created' do
         expect(User.all).to include User.find_by(:username => @username)
       end
 
-      it 'user is redirected to homepage' do
+      it 'verifies that user is redirected to homepage' do
         expect(last_response.body).to include(homepage_header)
         expect(last_request.path).to eq('/homepage')
       end
 
-      it 'response code is 201 Created' do
+      it 'verifies that response code is 201 Created' do
         expect(last_response.status).to eq 201
       end
     end
@@ -67,15 +78,15 @@ RSpec.describe '[Sessions API]' do
         last_response_log
       end
 
-      it 'displays "Username has already been taken" error message' do
+      it 'verifies that "Username has already been taken" error message is displayed' do
         expect(last_response.body).to include(username_taken_error)
       end
 
-      it 'duplicated user is not saved to users table' do
+      it 'verifies that duplicated user is not saved to users table' do
         expect(User.where(:username => @username).count).to eq(1)
       end
 
-      it 'response code is 400' do
+      it 'verifies that response code is 400' do
         expect(last_response.status).to eq 400
       end
     end
@@ -91,7 +102,7 @@ RSpec.describe '[Sessions API]' do
         last_response_log
       end
 
-      it 'fields validation error messages are displayed' do
+      it 'verifies that fields validation error messages are displayed' do
         expect(last_response.body).to include(blank_password_error)
         expect(last_response.body).to include(blank_username_error)
         expect(last_response.body).to include(username_length_error)
@@ -102,11 +113,11 @@ RSpec.describe '[Sessions API]' do
         expect(last_response.body).to include(password_length_error)
       end
 
-      it 'response code is 400' do
+      it 'verifies that response code is 400' do
         expect(last_response.status).to eq 400
       end
 
-      it 'user still on sign up page' do
+      it 'verifies that user still on sign up page' do
         expect(last_response.body).to include(registration_page_header)
       end
     end
