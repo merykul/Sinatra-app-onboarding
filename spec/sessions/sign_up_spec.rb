@@ -30,18 +30,18 @@ RSpec.describe '[Sessions API]' do
     before(:each) { clear_cookies }
 
     let(:random_password) { Faker::Alphanumeric.alphanumeric(number: 10) }
-    let(:homepage_header) { data['homepage-header'] }
-    let(:not_authorised_error) { data['not-authorised-error'] }
-    let(:username_taken_error) { data['username-taken-error'] }
+    let(:homepage_header) { data['homepage_header'] }
+    let(:not_authorised_error) { data['not_authorised_error'] }
+    let(:username_taken_error) { data['username_taken_error'] }
     let(:registration_page_header) { data['registration_page_header'] }
-    let(:invalid_username_and_password) { data['invalid-username-or-password-error'] }
-    let(:blank_password_error) { data['blank-password-error'] }
-    let(:blank_first_name_error) { data['blank-first-name-error'] }
-    let(:blank_second_name_error) { data['blank-second-name-error'] }
-    let(:blank_username_error) { data['blank-username-error'] }
-    let(:username_length_error) { data['username-length-error'] }
-    let(:password_length_error) { data['password-length-error'] }
-    let(:blank_password_confirmation_error) { data['blank-password-confirmation-error'] }
+    let(:invalid_username_and_password) { data['invalid_username_or_password_error'] }
+    let(:blank_password_error) { data['blank_password_error'] }
+    let(:blank_first_name_error) { data['blank_first_name_error'] }
+    let(:blank_second_name_error) { data['blank_second_name_error'] }
+    let(:blank_username_error) { data['blank_username_error'] }
+    let(:username_length_error) { data['username_length_error'] }
+    let(:password_length_error) { data['password_length_error'] }
+    let(:blank_password_confirmation_error) { data['blank_password_confirmation_error'] }
 
     context 'when request with valid parameters values' do
       before(:each) do

@@ -12,7 +12,7 @@ require 'yaml'
 
 data = YAML.load_file('data.yml')
 
-RSpec.describe '[Records API]' do
+RSpec.describe '[Records API, delete record]' do
   include AuthHelper
   include LoggerHelper
 
@@ -29,6 +29,7 @@ RSpec.describe '[Records API]' do
 
     let(:random_fn) { Faker::Name.name }
     let(:random_sn) { Faker::Name.last_name }
+    let(:record_access_error) { data['record_access_error'] }
 
     context 'when not authorised, with valid record id' do
       record = FactoryBot.create(:records)
@@ -47,10 +48,10 @@ RSpec.describe '[Records API]' do
 
       record = FactoryBot.create(:records)
       it_behaves_like 'authorised get request', "/records/#{record.id}/delete" do
-        let(:title) { data['delete-person-record-page-title'] }
+        let(:title) { data['delete_person_record_page_title'] }
       end
 
-      xit 'user accessed record information' do
+      it 'user accessed record information' do
         record = FactoryBot.create(:records)
         get "/records/#{record.id}/delete"
         expect(last_response.body).to include(record.first_name)

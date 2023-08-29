@@ -23,8 +23,8 @@ RSpec.describe '[Records API, records list]' do
 
   describe 'GET /people_list' do
 
-    let(:not_authorised_error) { data['not-authorised-error'] }
-    let(:records_list_page_header) { data['records-list-page-title'] }
+    let(:not_authorised_error) { data['not_authorised_error'] }
+    let(:records_list_page_header) { data['records_list_page_title'] }
 
     context 'when not authorised' do
       before(:all) { clear_cookies }

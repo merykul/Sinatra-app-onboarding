@@ -1,27 +1,28 @@
 ---
-homepage-header: My Home Page
+homepage_header: My Home Page
 registration_page_header: Registration form
-start-page-header: Hello 🌱, Do you have an account?
-records-list-page-title: Records List
-log-in-page-header: Log in
-create-person-page-title: Create a Person
-cities-statistics-page-title: Cities Statistics
-delete-person-record-page-title: Delete Person Record
+start_page_header: Hello 🌱, Do you have an account?
+records_list_page_title: Records List
+log_in_page_header: Log in
+create_person_page_title: Create a Person
+cities_statistics_page_title: Cities Statistics
+delete_person_record_page_title: Delete Person Record
+edit_person_record_page_title: Edit Person
 
-page-not-found-error: 404 - Page not found
-not-authorised-error: 401 error - Not Authorised
-record-access-error: 403 error - Action is forbidden
+page_not_found_error: 404 - Page not found
+not_authorised_error: 401 error - Not Authorised
+record_access_error: 403 error - Action is forbidden
 
-successful-record-delete: Record deleted successfully
+successful_record_delete: Record deleted successfully
 
-invalid-username-or-password-error: Invalid username or password!
-username-taken-error: Username has already been taken
-blank-password-error: Password can't be blank
-blank-first-name-error: First name can't be blank
-blank-second-name-error: Second name can't be blank
-blank-username-error: Username can't be blank
-username-length-error: Username username length should be 4-20 symbols
-password-length-error: Password password must have length from 6 to 15 sym.
-blank-password-confirmation-error: Password confirmation can't be blank
-blank-city-error: City can't be blank
-city-length-error: City length should be between 1 and 100 symbols
+invalid_username_or_password_error: Invalid username or password!
+username_taken_error: Username has already been taken
+blank_password_error: Password can't be blank
+blank_first_name_error: First name can't be blank
+blank_second_name_error: Second name can't be blank
+blank_username_error: Username can't be blank
+username_length_error: Username username length should be 4-20 symbols
+password_length_error: Password password must have length from 6 to 15 sym.
+blank_password_confirmation_error: Password confirmation can't be blank
+blank_city_error: City can't be blank
+city_length_error: City length should be between 1 and 100 symbols

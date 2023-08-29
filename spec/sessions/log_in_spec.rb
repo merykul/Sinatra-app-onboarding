@@ -23,8 +23,8 @@ RSpec.describe '[Log in API]' do
 
   describe 'GET /log_in_form' do
 
-    let(:homepage_header) { data['homepage-header'] }
-    let(:log_in_page_header) { data['log-in-page-header'] }
+    let(:homepage_header) { data['homepage_header'] }
+    let(:log_in_page_header) { data['log_in_page_header'] }
 
     context 'when logged in' do
       before(:each) do
@@ -66,8 +66,8 @@ RSpec.describe '[Log in API]' do
     let(:valid_username) { 'TestUser' }
     let(:valid_password) { 'Test123456!' }
     let(:homepage_header) { data['homepage-header'] }
-    let(:log_in_page_header) { data['log-in-page-header'] }
-    let(:invalid_username_or_password_error) { data['invalid-username-or-password-error'] }
+    let(:log_in_page_header) { data['login_page_header'] }
+    let(:invalid_username_or_password_error) { data['invalid_username_or_password_error'] }
 
     context 'with existing users username and password' do
       before(:each) { log_in(valid_username, valid_password) }

@@ -25,7 +25,7 @@ RSpec.describe '[Records API, record creation]' do
 
   describe '[GET /added_person_form]' do
 
-    let(:create_person_page_title) { data['create-person-page-title'] }
+    let(:create_person_page_title) { data['create_person_page_title'] }
 
     context 'when authorised' do
       before(:all) do
@@ -39,7 +39,7 @@ RSpec.describe '[Records API, record creation]' do
       end
 
       it_behaves_like 'authorised get request', '/added_person_form' do
-        let(:title) { data['create-person-page-title'] }
+        let(:title) { data['create_person_page_title'] }
       end
     end
 

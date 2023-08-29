@@ -23,8 +23,8 @@ RSpec.describe '[Session API]' do
 
   describe '[GET /homepage]' do
 
-    let(:homepage_header) { data['homepage-header'] }
-    let(:not_authorised_error) { data['not-authorised-error'] }
+    let(:homepage_header) { data['homepage_header'] }
+    let(:not_authorised_error) { data['not_authorised_error'] }
 
     context 'when not authorised' do
       before(:all) { clear_cookies }

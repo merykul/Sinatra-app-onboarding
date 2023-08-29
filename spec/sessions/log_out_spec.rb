@@ -23,7 +23,7 @@ RSpec.describe '[Sessions API]' do
 
   describe '[GET /log_out]' do
 
-    let(:start_page_header) { data['start-page-header'] }
+    let(:start_page_header) { data['start-page_header'] }
 
     before(:each) do
       clear_cookies

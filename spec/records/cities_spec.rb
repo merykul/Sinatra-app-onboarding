@@ -35,7 +35,7 @@ RSpec.describe '[Records API, cities statistics]' do
     end
 
       it_behaves_like 'authorised get request', '/cities_statistics' do
-        let(:title) { data['cities-statistics-page-title'] }
+        let(:title) { data['cities_statistics_page_title'] }
       end
 
       it 'user accessed cities statistics page and data' do
