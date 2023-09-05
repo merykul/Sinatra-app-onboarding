@@ -4,6 +4,8 @@ require_relative '../helpers/auth_helper'
 require_relative '../helpers/logs_helper'
 require_relative '../../app/controllers/sessions_controller'
 require_relative '../../app/controllers/records_controller'
+require_relative '../../app/controllers/users_controller'
+require_relative '../../app/controllers/application_controller'
 require 'yaml'
 
 data = YAML.load_file('data.yml')
@@ -12,7 +14,7 @@ RSpec.describe '[Session API]' do
   include AuthHelper
   include LoggerHelper
 
-  describe '[GET /homepage]' do
+  context 'when GET /homepage' do
 
     let(:homepage_header) { data['homepage_header'] }
     let(:not_authorised_error) { data['not_authorised_error'] }

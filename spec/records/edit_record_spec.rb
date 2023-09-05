@@ -12,13 +12,27 @@ RSpec.describe '[Records API]' do
   include AuthHelper
   include LoggerHelper
 
-  describe 'GET /records/:id/edit' do
-    context 'when not authorised'
-    context 'when authorised'
-    context 'when logged in with invalid record id'
+  context 'when GET /records/:id/edit' do
+    context 'when not authorised' do
+      before(:all) { clear_cookies }
+      record = FactoryBot.create(:records)
+
+      it_behaves_like 'not authorised get', "/records/#{record.id}/edit"
+    end
+
+    context 'when authorised, with valid record id' do
+      before(:all) { clear_cookies }
+      record = FactoryBot.create(:records)
+
+      it_behaves_like 'authorised get', "/records/#{record.id}/edit" do
+        let(:title) { data['edit_person_record_page_title'] }
+      end
+    end
+
+    context 'when authorised, with invalid record id'
   end
 
-  describe 'PATCH /records/:id/edit' do
+  context 'when PATCH /records/:id/edit' do
     context 'when not authorised'
     context 'when logged in, with valid data'
     context 'when logged in, with empty parameters'

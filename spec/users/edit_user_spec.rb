@@ -13,14 +13,14 @@ RSpec.describe '[Users API, edit user]' do
   include AuthHelper
   include LoggerHelper
 
-  describe 'GET /user/:id/edit' do
+  context 'when GET /user/:id/edit' do
     context 'when not authorised'
     context 'when authorised, with invalid user id'
     context 'when authorised, with valid user id'
     context 'when user'
   end
 
-  describe 'PATCH /user/:id/edit' do
+  context 'when PATCH /user/:id/edit' do
     context 'when not authorised'
     context 'when authorised'
     context 'when authorised, with invalid user id, and valid users parameters'

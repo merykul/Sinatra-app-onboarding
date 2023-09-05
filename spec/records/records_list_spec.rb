@@ -12,8 +12,6 @@ RSpec.describe '[Records API, records list]' do
   include AuthHelper
   include LoggerHelper
 
-  describe 'GET /people_list' do
-
     let(:not_authorised_error) { data['not_authorised_error'] }
     let(:records_list_page_header) { data['records_list_page_title'] }
 
@@ -45,6 +43,25 @@ RSpec.describe '[Records API, records list]' do
       end
     end
 
-    context 'when city is defined'
-  end
+    context 'when city is defined' do
+      before(:each) { log_in('TestUser', 'Test123456!') }
+
+      let(:no_records_per_city_error) { data['no_records_per_city_error'] }
+
+      it 'verifies that returned records have defined city' do
+        get '/people_list', city: 'Ivano-Frankivsk'
+        expect(last_response.body).to include Records.where(city => 'Ivano-Frankivsk')
+      end
+
+      it 'verifies request with invalid city' do
+        get '/people_list', city: 'Invalid_fsdf39d'
+        expect(last_response.body).to_not include Records.all
+        expect(last_response.body).to include(no_records_per_city_error)
+      end
+
+      it 'verifies request with empty city parameter' do
+        get '/people_list', city: ''
+        expect(last_response.body).to include Records.all
+      end
+    end
 end

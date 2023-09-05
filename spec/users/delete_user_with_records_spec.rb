@@ -12,7 +12,7 @@ RSpec.describe '[Users API, deletion with records]' do
   include AuthHelper
   include LoggerHelper
 
-  describe 'DELETE user/:id/delete/with_records' do
+  context 'when DELETE user/:id/delete/with_records' do
     context 'when not authorised'
     context 'when authorised, with invalid user id'
     context 'when authorised, with valid user id'

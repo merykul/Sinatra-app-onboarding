@@ -12,12 +12,11 @@ require 'yaml'
 
 data = YAML.load_file('data.yml')
 
-RSpec.describe '[Records API, cities statistics]' do
+RSpec.describe '[Records API, cities_statistics]' do
   include AuthHelper
   include LoggerHelper
 
-  describe 'GET /cities_statistics' do
-    context 'when authorised' do
+    context 'when authorised get /cities_statistics' do
       before(:each) do
         clear_cookies
         log_in('TestUser', 'Test123456!')
@@ -37,10 +36,9 @@ RSpec.describe '[Records API, cities statistics]' do
       end
     end
 
-    context 'when not authorised' do
+    context 'when not authorised get /cities_statistics' do
       before(:all) { clear_cookies }
 
       it_behaves_like 'not authorised get', '/cities_statistics'
     end
-  end
 end

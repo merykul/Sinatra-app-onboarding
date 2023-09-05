@@ -8,11 +8,11 @@ require 'yaml'
 
 data = YAML.load_file('data.yml')
 
-RSpec.describe '[Users API]' do
+RSpec.describe '[Users API, user delete]' do
   include AuthHelper
   include LoggerHelper
 
-  describe 'GET /user/:id/delete'do
+  context 'when GET /user/:id/delete'do
     context 'when not authorised'
     context 'when authorised'
     context 'when user'

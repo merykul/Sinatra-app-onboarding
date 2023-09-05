@@ -9,11 +9,11 @@ require 'yaml'
 
 data = YAML.load_file('data.yml')
 
-RSpec.describe '[Sessions API]' do
+RSpec.describe '[Sessions API, start page]' do
   include AuthHelper
   include LoggerHelper
 
-  describe '[GET /start]' do
+  context 'when GET /start' do
     before(:each) { clear_cookies }
 
     context 'when authorised' do

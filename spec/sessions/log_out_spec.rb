@@ -12,7 +12,7 @@ RSpec.describe '[Sessions API]' do
   include AuthHelper
   include LoggerHelper
 
-  describe '[GET /log_out]' do
+  context 'when GET /log_out' do
 
     let(:start_page_header) { data['start-page_header'] }
 
@@ -23,15 +23,15 @@ RSpec.describe '[Sessions API]' do
 
     get '/log_out'
 
-    it 'user is redirected to start page' do
+    it 'verifies that user is redirected to start page' do
       expect(last_response.body).to include(start_page_header)
     end
 
-    it 'status code is 200 OK' do
+    it 'verifies that status code is 200 OK' do
       expect(last_response.status).to eq 200
     end
 
-    it 'user can not access /homepage anymore and is redirected to start page' do
+    it 'verifies that user can not access homepage anymore and is redirected to start page' do
       get '/homepage'
       expect(last_response.body).to include(start_page_header)
     end

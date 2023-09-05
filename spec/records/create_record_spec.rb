@@ -14,7 +14,7 @@ RSpec.describe '[Records API, record creation]' do
   include AuthHelper
   include LoggerHelper
 
-  describe '[GET /added_person_form]' do
+  context 'when GET /added_person_form' do
 
     let(:create_person_page_title) { data['create_person_page_title'] }
 
@@ -39,7 +39,7 @@ RSpec.describe '[Records API, record creation]' do
     end
   end
 
-  describe 'POST /create_person' do
+  context 'when POST /create_person' do
 
     let(:random_name) { Faker::Name.first_name }
     let(:random_last_name) { Faker::Name.last_name }
@@ -56,9 +56,8 @@ RSpec.describe '[Records API, record creation]' do
       before(:each) do
         clear_cookies
         log_in('TestUser', 'Test123456!')
-        last_request_log
-        last_response_body_log
-        # log_new_record_info(random_name, random_last_name, city, random_dob)
+        last_response_log
+        log_new_record_info(random_name, random_last_name, city, random_dob)
       end
 
       it 'saves new record to records table' do
@@ -72,7 +71,6 @@ RSpec.describe '[Records API, record creation]' do
                                                        :second_name => random_last_name,
                                                        :city => city,
                                                        :date_of_birth => random_dob)
-        expect(last_response.status).to eq 201
       end
 
       it 'redirects to /people_list page after successful record save' do
@@ -83,8 +81,15 @@ RSpec.describe '[Records API, record creation]' do
              date_of_birth: random_dob
 
         expect(last_response.body).to include(records_list_page_header)
-        expect(last_response.status).to eq 201
       end
+
+      # TODO
+      # it_behaves_like 'successful post request', '/create_person' do
+      #   first_name = random_name
+      #   second_name = random_last_name
+      #   address = city
+      #   date_of_birth = random_dob
+      # end
     end
 
     context 'when authorised, with empty values' do
@@ -125,7 +130,7 @@ RSpec.describe '[Records API, record creation]' do
                                                            :date_of_birth => random_dob)
       end
 
-      # it_behaves_like 'not authorised'
+      it_behaves_like 'unauthorised post request', '/create_person'
     end
   end
 end

@@ -12,6 +12,7 @@ edit_person_record_page_title: Edit Person
 page_not_found_error: 404 - Page not found
 not_authorised_error: 401 error - Not Authorised
 record_access_error: 403 error - Action is forbidden
+no_records_per_city_error:  There is no records with this city
 
 successful_record_delete: Record deleted successfully
 

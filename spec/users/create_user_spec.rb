@@ -12,13 +12,13 @@ RSpec.describe '[Users API, user creation]' do
   include AuthHelper
   include LoggerHelper
 
-  describe 'GET /create_user' do
+  context 'when GET /create_user' do
     context 'when not authorised'
     context 'when authorised'
     context 'when user'
   end
 
-  describe 'POST /create_user_form' do
+  context 'when POST /create_user_form' do
     context 'when not authorised'
     context 'when authorised, with invalid user parameters'
     context 'when authorised, with valid user parameters'

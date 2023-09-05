@@ -8,18 +8,18 @@ require 'yaml'
 
 data = YAML.load_file('data.yml')
 
-RSpec.describe '[Users API]' do
+RSpec.describe '[Users API, delete with records transfer to new user]' do
   include AuthHelper
   include LoggerHelper
 
-  describe 'GET user/:id/delete/with_records_transfer_to_new' do
+  context 'when GET user/:id/delete/with_records_transfer_to_new' do
     context 'when not authorised'
     context 'when authorised, with invalid user id'
     context 'when authorised, with valid user id'
     context 'when user'
   end
 
-  describe 'POST user/:id/delete/with_records_transfer_to_new' do
+  context 'when POST user/:id/delete/with_records_transfer_to_new' do
     context 'when not authorised'
     context 'when authorised, with invalid user id, and valid new user parameters'
     context 'when authorised, with valid user id, and invalid new user parameters'

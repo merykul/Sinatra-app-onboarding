@@ -12,7 +12,7 @@ RSpec.describe '[Log in API]' do
   include AuthHelper
   include LoggerHelper
 
-  describe 'GET /log_in_form' do
+  context 'when GET /log_in_form' do
 
     let(:homepage_header) { data['homepage_header'] }
     let(:log_in_page_header) { data['log_in_page_header'] }
@@ -49,7 +49,7 @@ RSpec.describe '[Log in API]' do
     end
   end
 
-  describe 'POST /log_in' do
+  context 'when POST /log_in' do
     before(:all) { clear_cookies }
 
     let(:invalid_username) { 'Fake' }
@@ -74,18 +74,18 @@ RSpec.describe '[Log in API]' do
       end
     end
 
-    context 'with not existing username and password' do
+    context 'when with not existing username and password' do
       before(:each) { log_in(invalid_username, invalid_password) }
 
-      it 'error message is displayed' do
+      it 'verifies that error message is displayed' do
         expect(last_response.body).to include(invalid_username_or_password_error)
       end
 
-      it 'response code is 400' do
+      it 'verifies that response code is 400' do
         expect(last_response.status).to eq 400
       end
 
-      it 'user still on log in page' do
+      it 'verifies that user still on log in page' do
         expect(last_response.body).to include(log_in_page_header)
       end
     end

@@ -6,6 +6,7 @@ require_relative '../../app/controllers/users_controller'
 
 # Helpers
 require_relative 'auth_helper'
+require_relative 'status_codes_shared_examples'
 
 require 'factory_bot'
 require_relative '../factories/users'

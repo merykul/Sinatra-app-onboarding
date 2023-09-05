@@ -12,7 +12,7 @@ RSpec.describe '[Users API, manage users access]' do
   include AuthHelper
   include LoggerHelper
 
-  describe 'GET /manage_users' do
+  context 'when GET /manage_users' do
     context 'when authorised'
     context 'when not authorised'
     context 'when user'
