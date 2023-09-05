@@ -92,6 +92,18 @@ RSpec.describe '[Sessions API]' do
     end
 
     context 'when parameters are empty' do
+
+      let(:errors) {  [
+        blank_password_error,
+        blank_username_error,
+        username_length_error,
+        blank_first_name_error,
+        blank_second_name_error,
+        blank_password_error,
+        blank_password_confirmation_error,
+        password_length_error
+      ] }
+
       before(:each) do
         @username = nil
         @password = nil
@@ -103,14 +115,9 @@ RSpec.describe '[Sessions API]' do
       end
 
       it 'verifies that fields validation error messages are displayed' do
-        expect(last_response.body).to include(blank_password_error)
-        expect(last_response.body).to include(blank_username_error)
-        expect(last_response.body).to include(username_length_error)
-        expect(last_response.body).to include(blank_first_name_error)
-        expect(last_response.body).to include(blank_second_name_error)
-        expect(last_response.body).to include(blank_password_error)
-        expect(last_response.body).to include(blank_password_confirmation_error)
-        expect(last_response.body).to include(password_length_error)
+        errors.each do |error|
+          expect(last_response.body).to include(error)
+        end
       end
 
       it 'verifies that response code is 400' do
