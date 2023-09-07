@@ -89,3 +89,18 @@ RSpec.shared_examples 'authorised delete' do |endpoint|
     expect(last_response.body).to include(successful_record_delete)
   end
 end
+
+RSpec.shared_examples 'GET request is prohibited for user' do |endpoint|
+
+  let(:error_message) { data['record_access_error'] }
+
+  it 'verifies that response status code is 403' do
+    get endpoint
+    expect(last_response.status).to eq 403
+  end
+
+  it 'verifies that error message is rendered' do
+    get endpoint
+    expect(last_response.body).to include(error_message)
+  end
+end
