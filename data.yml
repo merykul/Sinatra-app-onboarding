@@ -5,6 +5,7 @@ start_page_header: Hello 🌱, Do you have an account?
 records_list_page_title: Records List
 log_in_page_header: Log in
 create_person_page_title: Create a Person
+create_user_page_title: Create User
 cities_statistics_page_title: Cities Statistics
 delete_person_record_page_title: Delete Person Record
 edit_person_record_page_title: Edit Person
