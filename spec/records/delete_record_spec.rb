@@ -42,7 +42,7 @@ RSpec.describe '[Records API, delete record]' do
         let(:title) { data['delete_person_record_page_title'] }
       end
 
-      it 'user accessed record information' do
+      it 'verifies that user accessed record information' do
         record = FactoryBot.create(:records)
         get "/records/#{record.id}/delete"
         expect(last_response.body).to include(record.first_name)
@@ -54,7 +54,7 @@ RSpec.describe '[Records API, delete record]' do
     context 'when authorised, with valid record id, and not matching user_id and current users id' do
       before(:all) { clear_cookies }
 
-      it 'user can not access record' do
+      it 'verifies that user can not access record' do
         record = FactoryBot.factories(:records)
         log_in('TestUser2', 'Test123456!')
         get "/records/#{record.id}/delete"
@@ -84,7 +84,7 @@ RSpec.describe '[Records API, delete record]' do
       before(:all) { log_in('TestUser', 'Test123456!') }
       record = FactoryBot.factories(:records)
 
-      it 'Invalid request page is rendered' do
+      it 'verifies that invalid request page is rendered' do
         delete  "/records/19790/delete"
         expect(last_response.status).to eq 404
         expect(last_response.body).to include(page_not_found_error)
@@ -97,7 +97,7 @@ RSpec.describe '[Records API, delete record]' do
 
       it_behaves_like 'authorised delete', "records/#{record1.id}/delete"
 
-      it 'deleted record from the records table' do
+      it 'verifies that record is deleted from the records table' do
         record = FactoryBot.factories(:records)
         delete "records/#{record.id}/delete"
         expect(Records.all).to_not include(record)
@@ -107,14 +107,14 @@ RSpec.describe '[Records API, delete record]' do
     context 'authorised, with valid record id, and not matching user_id and current users id' do
       before(:all) { clear_cookies }
 
-      it 'record is not deleted from records table' do
+      it 'verifies that record is not deleted from records table' do
         record = FactoryBot.factories(:records)
         log_in('TestUser2', 'Test123456!')
         delete "/records/#{record.id}/delete"
         expect(Records.all).to include(record)
       end
 
-      it 'user can not access record' do
+      it 'verifies that user can not access record' do
         record = FactoryBot.factories(:records)
         log_in('TestUser2', 'Test123456!')
         delete "/records/#{record.id}/delete"

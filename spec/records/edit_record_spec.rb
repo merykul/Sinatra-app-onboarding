@@ -8,9 +8,11 @@ require 'yaml'
 
 data = YAML.load_file('data.yml')
 
-RSpec.describe '[Records API]' do
+RSpec.describe '[Records API, edit]' do
   include AuthHelper
   include LoggerHelper
+
+  let(:record_access_error) { data['record_access_error'] }
 
   context 'when GET /records/:id/edit' do
     context 'when not authorised' do
@@ -21,7 +23,10 @@ RSpec.describe '[Records API]' do
     end
 
     context 'when authorised, with valid record id' do
-      before(:all) { clear_cookies }
+      before(:each) do
+        clear_cookies
+        log_in('TestUser' ,'Test123456!')
+      end
       record = FactoryBot.create(:records)
 
       it_behaves_like 'authorised get', "/records/#{record.id}/edit" do
@@ -29,7 +34,30 @@ RSpec.describe '[Records API]' do
       end
     end
 
-    context 'when authorised, with invalid record id'
+    context 'when authorised, with invalid record id' do
+      before(:all) do
+        clear_cookies
+        log_in('TestUser' ,'Test123456!')
+      end
+      record = FactoryBot.create(:records)
+
+      it_behaves_like 'get request with invalid data in the request url', "/records/#{record.id}/edit"
+    end
+
+    context 'when authorised, with valid record id, and not matching user_id and current users id' do
+      before(:all) do
+        clear_cookies
+        log_in('TestUser' ,'Test123456!')
+      end
+
+      it 'verifies that user can not access record' do
+        record = FactoryBot.factories(:records)
+        log_in('TestUser2', 'Test123456!')
+        delete "/records/#{record.id}/delete"
+        expect(last_response.body).to include(record_access_error)
+        expect(last_response.status).to eq 403
+      end
+    end
   end
 
   context 'when PATCH /records/:id/edit' do

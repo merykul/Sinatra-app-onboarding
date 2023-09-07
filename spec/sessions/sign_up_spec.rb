@@ -46,25 +46,32 @@ RSpec.describe '[Sessions API]' do
     let(:blank_password_confirmation_error) { data['blank_password_confirmation_error'] }
 
     context 'when request with valid parameters values' do
+
+      let(:successful_user_creation) { data['successful_user_creation'] }
+      let(:random_password) { Faker::Alphanumeric.alphanumeric(number: 10) }
+
       before(:each) do
         @username = Faker::Internet.unique.username
         user_creds_log(@username, random_password)
-
-        post '/sign_up', username: @username, password: random_password, first_name: 'Test', second_name: 'User'
-
-        last_response_log
       end
 
+      # TODO implement fix shared example:
+      # it_behaves_like 'authorised POST request', '/sign_up', { username: Faker::Internet.unique.username, password: 'Test123456!', first_name: 'Test', second_name: 'User' } do
+      #   let(:success_message) { data['successful_user_creation'] }
+      # end
+
       it 'verifies that user is created' do
+        post '/sign_up', username: @username, password: random_password, first_name: 'Test', second_name: 'User'
         expect(User.all).to include User.find_by(:username => @username)
       end
 
       it 'verifies that user is redirected to homepage' do
-        expect(last_response.body).to include(homepage_header)
-        expect(last_request.path).to eq('/homepage')
+        post '/sign_up', username: @username, password: random_password, first_name: 'Test', second_name: 'User'
+        expect(last_response.body).to include(successful_user_creation)
       end
 
       it 'verifies that response code is 201 Created' do
+        post '/sign_up', username: @username, password: random_password, first_name: 'Test', second_name: 'User'
         expect(last_response.status).to eq 201
       end
     end
@@ -74,8 +81,6 @@ RSpec.describe '[Sessions API]' do
         @username = 'TestUser'
         user_creds_log(@username, random_password)
         post '/sign_up', username: @username, password: random_password, first_name: 'Test', second_name: 'User'
-
-        last_response_log
       end
 
       it 'verifies that "Username has already been taken" error message is displayed' do
@@ -110,8 +115,6 @@ RSpec.describe '[Sessions API]' do
         user_creds_log('nil', 'nil')
 
         post '/sign_up', username: @username, password: @password, first_name: nil, second_name: nil
-
-        last_response_log
       end
 
       it 'verifies that fields validation error messages are displayed' do

@@ -15,6 +15,7 @@ record_access_error: 403 error - Action is forbidden
 no_records_per_city_error:  There is no records with this city
 
 successful_record_delete: Record deleted successfully
+successful_user_creation: User created successfully
 
 invalid_username_or_password_error: Invalid username or password!
 username_taken_error: Username has already been taken

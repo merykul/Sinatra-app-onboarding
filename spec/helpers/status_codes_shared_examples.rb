@@ -26,6 +26,7 @@ RSpec.shared_examples 'authorised get request' do |endpoint|
   end
 
   it 'user is redirected to requested page' do
+    get endpoint
     expect(last_response.body).to include(title)
   end
 end
@@ -43,14 +44,23 @@ RSpec.shared_examples 'get request with invalid data in the request url' do |end
   end
 end
 
-# RSpec.shared_examples 'successful post request' do |endpoint|
-#
-#   # TODO
-#   it 'verifies that response code is 201' do
-#     post endpoint
-#     expect(last_response.status).to eq 201
-#   end
-# end
+RSpec.shared_examples 'authorised POST request' do |endpoint, params|
+  it 'verifies that response code is 201' do
+    puts "Params: #{params.inspect}"
+
+    post endpoint, params: params
+    last_response_body_log
+    expect(last_response.status).to eq 201
+  end
+
+  it 'verifies that success message is displayed' do
+    puts "Params: #{params.inspect}"
+
+    post endpoint, params: params
+    last_response_body_log
+    expect(last_response.body).to include(success_message)
+  end
+end
 
 RSpec.shared_examples 'not authorised delete' do |endpoint|
 
