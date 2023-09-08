@@ -42,9 +42,32 @@ RSpec.describe '[Users API, user creation]' do
   end
 
   context 'when POST /create_user_form' do
-    context 'when not authorised'
-    context 'when authorised, with invalid user parameters'
-    context 'when authorised, with valid user parameters'
-    context 'when user'
+    context 'when not authorised' do
+
+      it 'verifies that Not Authorised error is displayed'
+    end
+
+    context 'when authorised, with invalid user parameters' do
+
+      it 'verifies that response code is 400'
+
+      it 'verifies that user is not created'
+
+      it 'verifies that error messages are displayed'
+    end
+
+    context 'when authorised, with valid user parameters' do
+
+      it 'verifies that user is created successfully'
+
+      it 'verifies that success message is rendered'
+    end
+
+    context 'when user' do
+
+      it 'verifies that access for user is prohibited'
+
+      it 'verifies that user is not created'
+    end
   end
 end

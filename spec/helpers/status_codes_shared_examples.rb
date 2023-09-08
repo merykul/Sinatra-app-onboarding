@@ -5,7 +5,6 @@ data = YAML.load_file('data.yml')
 RSpec.shared_examples 'not authorised get' do |endpoint|
 
   let(:not_authorised_error) { data['not-authorised-error'] }
-  let(:page_not_found_error) { data['page-not-found-error'] }
 
   it 'verifies that response status code is 401' do
     get endpoint
