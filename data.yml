@@ -9,6 +9,9 @@ create_user_page_title: Create User
 cities_statistics_page_title: Cities Statistics
 delete_person_record_page_title: Delete Person Record
 edit_person_record_page_title: Edit Person
+delete_user_page_title: Delete User
+user_management_page_title: Hello, welcome to users management!
+set_password_page_title: Set permanent password and username
 
 page_not_found_error: 404 - Page not found
 not_authorised_error: 401 error - Not Authorised
