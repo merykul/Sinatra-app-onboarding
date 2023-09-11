@@ -43,6 +43,19 @@ RSpec.shared_examples 'get request with invalid data in the request url' do |end
   end
 end
 
+RSpec.shared_examples 'DELETE request with invalid data in the request url' do |endpoint|
+
+  it 'verifies that response code is 404' do
+    delete endpoint
+    expect(last_response.status).to eq 404
+  end
+
+  it 'user is on "Invalid parameters" error page' do
+    delete endpoint
+    expect(last_response.body).to include(page_not_found_error)
+  end
+end
+
 RSpec.shared_examples 'authorised POST request' do |endpoint, params|
   it 'verifies that response code is 201' do
     puts "Params: #{params.inspect}"
@@ -85,7 +98,7 @@ RSpec.shared_examples 'authorised delete' do |endpoint|
 
   it 'user is redirected to success page' do
     delete endpoint
-    expect(last_response.body).to include(successful_record_delete)
+    expect(last_response.body).to include(successful_delete_message)
   end
 end
 

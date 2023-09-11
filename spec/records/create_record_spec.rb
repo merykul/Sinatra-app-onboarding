@@ -35,6 +35,8 @@ RSpec.describe '[Records API, record creation]' do
     end
 
     context 'when not authorised' do
+      before(:all) { clear_cookies }
+
       it_behaves_like 'not authorised get', '/added_person_form'
     end
   end

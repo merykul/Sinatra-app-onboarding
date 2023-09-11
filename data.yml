@@ -20,6 +20,7 @@ no_records_per_city_error:  There is no records with this city
 
 successful_record_delete: Record deleted successfully
 successful_user_creation: User created successfully
+successful_user_deletion_with_records_message: User deleted successfully with records
 
 invalid_username_or_password_error: Invalid username or password!
 username_taken_error: Username has already been taken
