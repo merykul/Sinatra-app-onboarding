@@ -3,7 +3,6 @@ require 'yaml'
 data = YAML.load_file('data.yml')
 
 RSpec.shared_examples 'not authorised get' do |endpoint|
-
   let(:not_authorised_error) { data['not-authorised-error'] }
 
   it 'verifies that response status code is 401' do
@@ -31,6 +30,7 @@ RSpec.shared_examples 'authorised get request' do |endpoint|
 end
 
 RSpec.shared_examples 'get request with invalid data in the request url' do |endpoint|
+  let(:page_not_found_error) { data['page_not_found_error'] }
 
   it 'verifies that response code is 404' do
     get endpoint
@@ -75,6 +75,7 @@ RSpec.shared_examples 'authorised POST request' do |endpoint, params|
 end
 
 RSpec.shared_examples 'not authorised delete' do |endpoint|
+  let(:not_authorised_error) { data['not_authorised_error'] }
 
   it 'verifies that response status code is 401' do
     delete endpoint
@@ -89,8 +90,6 @@ end
 
 RSpec.shared_examples 'authorised delete' do |endpoint|
 
-  let(:successful_record_delete) { data['successful-record-delete'] }
-
   it 'verifies that response status code is 200' do
     delete endpoint
     expect(last_response.status).to eq 200
@@ -103,7 +102,6 @@ RSpec.shared_examples 'authorised delete' do |endpoint|
 end
 
 RSpec.shared_examples 'GET request is prohibited for user' do |endpoint|
-
   let(:error_message) { data['record_access_error'] }
 
   it 'verifies that response status code is 403' do
