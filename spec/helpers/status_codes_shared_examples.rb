@@ -56,19 +56,20 @@ RSpec.shared_examples 'DELETE request with invalid data in the request url' do |
   end
 end
 
-RSpec.shared_examples 'authorised POST request' do |endpoint, params|
-  it 'verifies that response code is 201' do
-    puts "Params: #{params.inspect}"
+RSpec.shared_examples 'authorised POST request' do |endpoint, params = {}|
 
-    post endpoint, params: params
+  it 'verifies that response code is 201' do
+    puts "Params inspect on the shared example level: #{params.inspect}"
+
+    post endpoint, params
     last_response_body_log
     expect(last_response.status).to eq 201
   end
 
   it 'verifies that success message is displayed' do
-    puts "Params: #{params.inspect}"
+    puts "Params inspect on the shared example level: #{params.inspect}"
 
-    post endpoint, params: params
+    post endpoint, params
     last_response_body_log
     expect(last_response.body).to include(success_message)
   end

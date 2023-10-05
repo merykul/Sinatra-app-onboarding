@@ -49,31 +49,22 @@ RSpec.describe '[Sessions API]' do
 
       let(:successful_user_creation) { data['successful_user_creation'] }
       let(:random_password) { Faker::Alphanumeric.alphanumeric(number: 10) }
-      let(:valid_user_data) { { username: Faker::Internet.unique.username, password: 'Test123456!', first_name: 'Test', second_name: 'User' }  }
+      user_params = {
+          first_name: "Testsdc",
+          second_name: "Usered",
+          username: Faker::Internet.unique.username,
+          password: "Test123456!",
+          password_confirmation: "Test123456!"
+      }
 
-      before(:each) do
-        @username = Faker::Internet.unique.username
-        user_creds_log(@username, random_password)
-      end
+      # before(:each) do
+      #   @username = Faker::Internet.unique.username
+      #   user_creds_log(@username, random_password)
+      # end
 
-      it_behaves_like 'authorised POST request', '/sign_up', valid_user_data do
+      it_behaves_like 'authorised POST request', '/sign_up', user_params do
         let(:success_message) { data['successful_user_creation'] }
       end
-
-      # it 'verifies that user is created' do
-      #   post '/sign_up', username: @username, password: random_password, first_name: 'Test', second_name: 'User'
-      #   expect(User.all).to include User.find_by(:username => @username)
-      # end
-      #
-      # it 'verifies that user is redirected to homepage' do
-      #   post '/sign_up', username: @username, password: random_password, first_name: 'Test', second_name: 'User'
-      #   expect(last_response.body).to include(successful_user_creation)
-      # end
-      #
-      # it 'verifies that response code is 201 Created' do
-      #   post '/sign_up', username: @username, password: random_password, first_name: 'Test', second_name: 'User'
-      #   expect(last_response.status).to eq 201
-      # end
     end
 
     xcontext 'when username already exists' do
