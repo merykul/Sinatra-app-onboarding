@@ -50,17 +50,12 @@ RSpec.describe '[Sessions API]' do
       let(:successful_user_creation) { data['successful_user_creation'] }
       let(:random_password) { Faker::Alphanumeric.alphanumeric(number: 10) }
       user_params = {
-          first_name: "Testsdc",
-          second_name: "Usered",
+          first_name: Faker::Name.unique.name,
+          second_name: Faker::Name.last_name,
           username: Faker::Internet.unique.username,
           password: "Test123456!",
           password_confirmation: "Test123456!"
       }
-
-      # before(:each) do
-      #   @username = Faker::Internet.unique.username
-      #   user_creds_log(@username, random_password)
-      # end
 
       it_behaves_like 'authorised POST request', '/sign_up', user_params do
         let(:success_message) { data['successful_user_creation'] }
