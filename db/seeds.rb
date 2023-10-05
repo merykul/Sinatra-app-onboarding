@@ -3,11 +3,17 @@ require_relative '../app/models/user'
 require_relative '../app/models/records'
 
 puts '🌱 Seeding data...'
-puts '🌱 Generating TestUser for you...'
+puts '🌱 Generating TestUser, TestAdmin, and TestUser2 for you...'
 
 User.create!(password: 'Test123456!', password_confirmation: 'Test123456!', username: 'TestUser',
              first_name: 'Mariia',
              second_name: 'Tester',
+             role: 0,
+             password_status: 1)
+
+User.create!(password: 'Test123456!', password_confirmation: 'Test123456!', username: 'TestUser2',
+             first_name: 'Mariia2',
+             second_name: 'Tester2',
              role: 0,
              password_status: 1)
 
@@ -49,6 +55,19 @@ puts '🌱 Generating records with Ivano-Frankivsk as a city'
   city = 'Ivano-Frankivsk'
   date_of_birth = Faker::Date.birthday
   user_id = 3
+  Records.create(first_name: first_name,
+                 second_name: second_name,
+                 city: city,
+                 date_of_birth: date_of_birth,
+                 user_id: user_id)
+end
+
+3.times do
+  first_name = Faker::Name.unique.name
+  second_name = Faker::Name.last_name
+  city = 'Ivano-Frankivsk'
+  date_of_birth = Faker::Date.birthday
+  user_id = 1
   Records.create(first_name: first_name,
                  second_name: second_name,
                  city: city,

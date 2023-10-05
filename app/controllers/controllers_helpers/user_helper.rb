@@ -22,6 +22,7 @@ module UserHelper
   end
 
   def create_user(admin_creates, parameters,  if_success_route = nil, if_error_erb = nil)
+    puts "User parameters inspection on the helper level: #{parameters}"
     user = User.create(parameters)
 
     if user.valid?

@@ -47,15 +47,16 @@ class RecordsController < ApplicationController
 
   # edit
   get '/records/:id/edit' do
-    id = params[:id]
     error_if_not_logged_in
-    @record = find_record(id)
+    @record = find_record(:id, params[:id])
+    if_prohibited_display_error(@record)
     erb :'/records/edit'
   end
 
   patch '/records/:id/edit' do
     error_if_not_logged_in
-    @record = find_record(params[:id])
+    @record = find_record(:id, params[:id])
+    if_prohibited_display_error(@record)
 
     opts = { first_name: params[:first_name],
              second_name: params[:second_name],
@@ -67,16 +68,22 @@ class RecordsController < ApplicationController
 
   # delete
   get '/records/:id/delete' do
-    id = params[:id]
     error_if_not_logged_in
-    @record = find_record(id)
-    erb :'records/delete'
+    @record = find_record(:id, params[:id])
+    if_prohibited_display_error(@record)
+    if @record.nil?
+      response.status = 404
+      erb :'errors/error_404'
+    else
+      response.status = 200
+      erb :'records/delete'
+    end
   end
 
   delete '/records/:id/delete' do
-    id = params[:id]
     error_if_not_logged_in
-    @record = find_record(id)
+    @record = find_record(:id, params[:id])
+    if_prohibited_display_error(@record)
     if @record.nil?
       response.status = 404
       erb :'errors/error_404'

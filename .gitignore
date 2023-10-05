@@ -1,3 +1,4 @@
 .env
 ./config/environment.txt
 .idea
+config/database.yml

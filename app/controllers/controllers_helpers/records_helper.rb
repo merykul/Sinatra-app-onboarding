@@ -38,15 +38,8 @@ module RecordsHelper
 
   private
 
-  def find_record(id)
-    begin
-      record = Records.find(id)
-      if_prohibited_display_error(record)
-    rescue ActiveRecord::RecordNotFound
-      response.status = 404
-      erb :'errors/error_404'
-      halt 404
-    end
+  def find_record(param, value)
+    Records.find_by(param => value)
   end
 
   # maybe will be removed soon

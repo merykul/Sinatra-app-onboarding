@@ -1,0 +1,35 @@
+---
+homepage_header: My Home Page
+registration_page_header: Registration form
+start_page_header: Hello 🌱, Do you have an account?
+records_list_page_title: Records List
+log_in_page_header: Log in
+create_person_page_title: Create a Person
+create_user_page_title: Create User
+cities_statistics_page_title: Cities Statistics
+delete_person_record_page_title: Delete Person Record
+edit_person_record_page_title: Edit Person
+delete_user_page_title: Delete User
+user_management_page_title: Hello, welcome to users management!
+set_password_page_title: Set permanent password and username
+
+page_not_found_error: 404 - Page not found
+not_authorised_error: 401 error - Not Authorised
+record_access_error: 403 error - Action is forbidden
+no_records_per_city_error:  There is no records with this city
+
+successful_record_delete: Record deleted successfully
+successful_user_creation: User created successfully
+successful_user_deletion_with_records_message: User deleted successfully with records
+
+invalid_username_or_password_error: Invalid username or password!
+username_taken_error: Username has already been taken
+blank_password_error: Password can't be blank
+blank_first_name_error: First name can't be blank
+blank_second_name_error: Second name can't be blank
+blank_username_error: Username can't be blank
+username_length_error: Username username length should be 4-20 symbols
+password_length_error: Password password must have length from 6 to 15 sym.
+blank_password_confirmation_error: Password confirmation can't be blank
+blank_city_error: City can't be blank
+city_length_error: City length should be between 1 and 100 symbols
