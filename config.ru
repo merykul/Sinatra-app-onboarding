@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rubygems'
 require 'bundler'
 Bundler.require
 
 # Database setup
 require 'yaml'
-database_config = YAML.safe_load(File.read(File.join(File.dirname(__FILE__), 'config', 'database.yml')))
+YAML.safe_load(File.read(File.join(File.dirname(__FILE__), 'config', 'database.yml')))
 # Now database_config holds the database configuration from database.yml
 
 # Load env variables from .env

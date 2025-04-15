@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_09_080809) do
+ActiveRecord::Schema[8.0].define(version: 2023_08_09_080809) do
   create_table "cities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "city"
     t.integer "number_of_records", default: 0

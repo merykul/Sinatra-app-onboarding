@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../controllers/controllers_helpers/user_helper'
 require_relative '../controllers/application_controller'
 
@@ -5,8 +7,8 @@ class User < ActiveRecord::Base
 
   has_secure_password
   has_many :records, foreign_key: :user_id
-  enum role: { user: 0, admin: 1 }
-  enum password_status: { temporary: 0, permanent: 1 }
+  enum(:role, { user: 0, admin: 1 })
+  enum(:password_status, { temporary: 0, permanent: 1 })
   validates :username, presence: true, uniqueness: true, length: { within: 4..20, message: 'username length should be 4-20 symbols' }, on: :create
   validates :first_name, presence: true
   validates :second_name, presence: true

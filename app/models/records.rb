@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'city'
 
 class Records < ActiveRecord::Base
@@ -13,7 +15,7 @@ class Records < ActiveRecord::Base
 
   def update_city_records_count
     city = City.find_or_create_by(city: self.city)
-    # use method from city model:
+    # used method from city model:
     city.update_records_count
   end
 end
