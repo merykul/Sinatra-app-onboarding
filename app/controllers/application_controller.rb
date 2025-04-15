@@ -18,15 +18,15 @@ class ApplicationController < Sinatra::Base
   # global settings
   configure do
     set :root, File.dirname(File.dirname(File.dirname(__FILE__)))
-    set :public_folder, File.dirname(File.dirname(File.dirname(__FILE__))) + '/public'
+    set :public_folder, "#{File.dirname(File.dirname(File.dirname(__FILE__)))}/public"
     set :database_file, './config/database.yml'
     set :sessions, true
-    set :session_secret, ENV['SESSION_SECRET']
     set :views, Proc.new { File.join(root, '/app/views') }
     set method_override: true
 
     register Sinatra::ActiveRecordExtension
     use Rack::MethodOverride
+    set :session_secret, ENV['SESSION_SECRET']
   end
 
   # Access errors routes
@@ -66,7 +66,7 @@ class ApplicationController < Sinatra::Base
     end
 
     def error_if_not_logged_in
-      halt 401, MultiJson.dump({message: 'You are not authorized to access this resource'}) unless logged_in?
+      halt 401, MultiJson.dump({ message: 'You are not authorized to access this resource' }) unless logged_in?
     end
   end
 end

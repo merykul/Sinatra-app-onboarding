@@ -28,6 +28,7 @@
     <th>Delete</th>
   </tr>
   <% @output.each do |record| %>
+    <% next if record.nil? %>
     <tr>
       <td><%= record.first_name %></td>
       <td><%= record.second_name %></td>
@@ -35,7 +36,7 @@
       <td><%= record.date_of_birth %></td>
       <td><%= record.user_id %></td>
       <td><a href="/records/<%= record.id %>/edit">Edit</a></td>
-      <td><a href="/records/<%= record.id %>/delete" data-confirm="Are you sure you want to delete this record?">Delete</a></td>
+      <td><a href="/records/<%= record.id %>/delete">Delete</a></td>
     </tr>
   <% end %>
 </table>

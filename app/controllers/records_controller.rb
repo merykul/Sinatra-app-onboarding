@@ -9,8 +9,8 @@ class RecordsController < ApplicationController
     error_if_not_logged_in
     city_filter = params[:city]
     user_id = current_user.id
-    @records = current_user.role == 'admin' ? Records.all : Records.where(:user_id => user_id)
-    @output = city_filter && !city_filter.strip.empty? ? @records.where(:city => "#{city_filter}") : @records
+    @records = current_user.role == 'admin' ? Records.all : Records.where(user_id: user_id)
+    @output = city_filter && !city_filter.strip.empty? ? @records.where(city: city_filter.to_s) : @records
 
     if city_filter && @output.empty?
       @error_message = 'There is no records with this city'

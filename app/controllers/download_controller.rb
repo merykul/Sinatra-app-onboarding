@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'axlsx'
 
 class DownloadController < ApplicationController
@@ -6,7 +8,7 @@ class DownloadController < ApplicationController
     @records = Records.all
 
     content_type 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    attachment 'всі_записи.xlsx'
+    attachment 'all_records.xlsx'
 
     Axlsx::Package.new do |p|
       p.workbook.add_worksheet(name: 'Records') do |sheet|

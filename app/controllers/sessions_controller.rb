@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'application_controller'
 
 class SessionsController < ApplicationController
@@ -21,7 +23,7 @@ class SessionsController < ApplicationController
     password = params[:password]
 
     user = find_user(:username, username)
-    if user && user.authenticate(password)
+    if user&.authenticate(password)
       session[:user_id] = user.id
       if user.temporary_password?
         redirect to "/user/#{user.id}/set_password"

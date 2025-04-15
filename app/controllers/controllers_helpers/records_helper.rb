@@ -39,14 +39,14 @@ module RecordsHelper
   private
 
   def find_record(id)
-    begin
-      record = Records.find(id)
-      if_prohibited_display_error(record)
-    rescue ActiveRecord::RecordNotFound
+    record = Records.find_by(id: id)
+    if record.nil?
       response.status = 404
-      erb :'errors/error_404'
-      halt 404
+      halt erb(:'errors/error_404')
     end
+
+    if_prohibited_display_error(record)
+    record
   end
 
   # maybe will be removed soon
